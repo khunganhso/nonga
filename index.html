@@ -8,7 +8,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="referrer" content="no-referrer">
     
-    <title>Khung Ảnh Số SaaS V111</title>
+    <title>Khung Ảnh Số SaaS V112</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -101,14 +101,22 @@
         .night-active #night-clock-box { display: flex; align-items: center; justify-content: center; flex-direction: row; }
         .night-hours, .night-minutes { font-family: 'Tourney', cursive !important; font-weight: 600 !important; color: #FF9500 !important; font-size: 46vmin; line-height: 0.9; margin: 0 1vmin; letter-spacing: -2vmin; }
 
+        /* 🌟 ĐÃ VÁ LỖI CẤU TRÚC MOBILE: Rút gọn font chữ để đồng hồ và thời tiết tuyệt đối không đè nhau */
         @media (orientation: portrait) {
-            .hours-style, .minutes-style { font-size: 7.5rem; text-align: center; } 
-            #date-solar-top { font-size: 1.6rem; text-align: center; } 
-            #date-lunar-top { font-size: 1.6rem; text-align: center; }
-            #bottom-container { flex-direction: column; align-items: stretch; gap: 15px; }
+            .hours-style, .minutes-style { font-size: 5rem; text-align: center; letter-spacing: -1px; } 
+            #date-solar-top { font-size: 1.3rem; text-align: center; } 
+            #date-lunar-top { font-size: 1.3rem; text-align: center; }
+            #info-container { top: 30px; left: 20px; align-items: center; }
+            #top-right-wrapper { top: 30px; right: 20px; gap: 4px; }
+            #weather-val { font-size: 2.6rem; }
+            .degree-symbol { font-size: 1.1rem; right: -12px; }
+            .env-rotating-item { font-size: 1rem; }
+            
+            #bottom-container { flex-direction: column; align-items: stretch; gap: 15px; left: 20px; right: 20px; bottom: 30px; }
             #bottom-left-events { align-items: flex-start; max-width: 100%; width: 100%; }
             #bottom-right-text { text-align: right; align-items: flex-end; margin-left: 0; width: 100%; }
-            #quote-row { font-size: 1.15rem; line-height: 1.45; text-align: right; }
+            #quote-row { font-size: 1.05rem; line-height: 1.45; text-align: right; }
+            
             .night-active #night-clock-box { flex-direction: column; }
             .night-hours, .night-minutes { font-size: 42vmin; margin: 0; line-height: 0.85; letter-spacing: -2vmin; }
         }
@@ -128,6 +136,7 @@
         <div id="brightness-overlay"></div>
         <div id="toast-msg">Thông báo</div>
 
+        <!-- CỘT TRÁI TRÊN -->
         <div id="info-container">
             <div id="clock-flex-wrapper">
                 <span class="hours-style tap-target" id="hr-node" ontouchstart="handleAction(event, 'night')" onclick="handleAction(event, 'night')">00</span>
@@ -142,6 +151,7 @@
             <span class="night-minutes tap-target" id="night-min-node" ontouchstart="handleAction(event, 'night')" onclick="handleAction(event, 'night')">00</span>
         </div>
 
+        <!-- CỘT PHẢI TRÊN -->
         <div id="top-right-wrapper">
             <div id="right-env-container" class="tap-target" ontouchstart="handleAction(event, 'open_location')" onclick="handleAction(event, 'open_location')"></div>
             <div id="temp-wrapper" class="tap-target" ontouchstart="handleAction(event, 'next')" onclick="handleAction(event, 'next')">
@@ -149,13 +159,15 @@
             </div>
         </div>
         
+        <!-- CỘT ĐÁY -->
         <div id="bottom-container">
             <div id="bottom-left-events" class="tap-target" ontouchstart="handleAction(event, 'show_birth')" onclick="handleAction(event, 'show_birth')"></div>
             <div id="bottom-right-text" class="tap-target" ontouchstart="handleAction(event, 'show_death')" onclick="handleAction(event, 'show_death')">
-                <span id="quote-row" style="color:#00E5FF; font-weight:700;">[1/5] Khởi động hệ thống CDN V111...</span>
+                <span id="quote-row" style="color:#00E5FF; font-weight:700;">[1/5] Khởi động hệ thống V112 Master...</span>
             </div>
         </div>
         
+        <!-- BẢNG CÀI ĐẶT VỊ TRÍ -->
         <div id="location-modal" class="modal-base">
             <div class="modal-title">CÀI ĐẶT VỊ TRÍ</div>
             <input type="text" id="loc-name" class="loc-input" placeholder="Tên địa phương">
@@ -183,8 +195,8 @@
         // =========================================================================================
         var DANH_SACH_KHACH_HANG = {
             "khach01": "17YOn0tWO8-hzloHM57bLhRh7e9LALZZk", // Khách hàng 01 hiện tại của bạn
-            "khach02": "NHAP_ID_THU_MUC_KHACH_2_VAO_DAY",     // Dành cho khách số 2
-            "khach03": "NHAP_ID_THU_MUC_KHACH_3_VAO_DAY"      // Dành cho khách số 3
+            "khach02": "NHAP_ID_THU_MUC_KHACH_2_VAO_DAY",
+            "khach03": "NHAP_ID_THU_MUC_KHACH_3_VAO_DAY"
         };
         // =========================================================================================
 
@@ -211,7 +223,7 @@
 
         var images = []; var currentIndex = 0; var slideInterval; var toastTimeout; var locationModalTimeout; var listModalTimeout;
         var audioCtx = null; var isGroup1Active = true; var audioUnlocked = false; var forceNightMode = null; 
-        var isSystemError = false; 
+        var isSystemError = false; var imgWatchdog;
         
         var globalAQI = "--", globalHum = "--", globalRain = "--", globalSunrise = "--", globalSunset = "--"; 
         var globalWind = "--", globalUV = "--", globalAlt = "--";
@@ -291,67 +303,107 @@
             isSystemError = true; 
             var el = document.getElementById('quote-row');
             if(el) el.innerHTML = '<span style="color:#FF3366; font-weight:700; background:rgba(0,0,0,0.8); padding:10px; border-radius:8px;">' + msg + '</span>'; 
-            images = ['https://images.unsplash.com/photo-1506744626753-14002fa88301?q=80&w=2048']; 
-            var currentGroupId = isGroup1Active ? 'group1' : 'group2'; var nextGroupId = isGroup1Active ? 'group2' : 'group1';
-            var nextBg = document.getElementById(isGroup1Active ? 'bg2' : 'bg1'); var nextFg = document.getElementById(isGroup1Active ? 'fg2' : 'fg1');
-            nextFg.onload = function() {
-                updateImageDisplayMechanism(nextFg, document.getElementById(nextGroupId)); 
-                document.getElementById(currentGroupId).classList.remove('active'); document.getElementById(nextGroupId).classList.add('active'); isGroup1Active = !isGroup1Active; 
-            };
-            nextBg.src = images[0]; nextFg.src = images[0];
+            images = ['1r1WUIKwAPAnsyIh-Zot7AevEW0uEZ-Hl']; // Fake ID, will trigger fail
         }
 
-        /* 🌟 THUẬT TOÁN KẾT NỐI CDN GOOGLE API (CHỐNG LỖI 100% CỦA SAFARI/SAMSUNG) */
+        /* ========================================================================
+           🌟 BỘ NẠP ẢNH KÉP TỐI THƯỢNG (DUAL-ENGINE ANTI-BLOCK)
+           Cơ chế 1: Tải API trực tiếp (Nhanh, sắc nét)
+           Cơ chế 2: Tự động đổi sang Thumbnail dự phòng nếu bị Samsung/Safari chặn
+           ======================================================================== */
         function syncDriveData() {
-            writeDebug("[2/5] Kiểm tra Mã Khách Hàng...");
-            if (!FOLDER_ID) { fallbackInit("LỖI: Mã Khách Hàng (Alias) không tồn tại!"); return; }
+            if (!FOLDER_ID) { fallbackInit("LỖI: Mã Khách Hàng (Alias) không tồn tại trong hệ thống!"); return; }
 
-            writeDebug("[3/5] Đang giải mã Lịch sự kiện...");
+            writeDebug("[2/5] Đang giải mã tệp cấu hình Lịch...");
             var query = encodeURIComponent("'" + FOLDER_ID + "' in parents and name = 'cauhinh.txt' and trashed = false");
             var xhrConfig = new XMLHttpRequest(); xhrConfig.open('GET', 'https://www.googleapis.com/drive/v3/files?q=' + query + '&key=' + API_KEY + '&fields=files(id)', true);
             xhrConfig.onreadystatechange = function() { if (xhrConfig.readyState === 4 && xhrConfig.status === 200) { var data = JSON.parse(xhrConfig.responseText); if (data.files && data.files.length > 0) { downloadConfigFile(data.files[0].id); } } }; 
             xhrConfig.send();
 
-            writeDebug("[4/5] Đang kết nối Cụm Máy Chủ Google Cloud CDN...");
+            writeDebug("[3/5] Đang phân tích máy chủ Google Drive...");
             var imgQuery = encodeURIComponent("'" + FOLDER_ID + "' in parents and mimeType contains 'image/'");
-            
-            // 🔥 YÊU CẦU THUMBNAILLINK TỪ API ĐỂ TRÁNH BỊ TRÌNH DUYỆT CHẶN
             var xhrDrive = new XMLHttpRequest(); 
-            xhrDrive.open('GET', 'https://www.googleapis.com/drive/v3/files?q=' + imgQuery + '&orderBy=createdTime desc&pageSize=1000&key=' + API_KEY + '&fields=files(id,createdTime,thumbnailLink)', true);
+            xhrDrive.open('GET', 'https://www.googleapis.com/drive/v3/files?q=' + imgQuery + '&orderBy=createdTime desc&pageSize=1000&key=' + API_KEY + '&fields=files(id,createdTime)', true);
             xhrDrive.onreadystatechange = function() {
                 if (xhrDrive.readyState === 4) {
                     if (xhrDrive.status === 200) {
                         var data = JSON.parse(xhrDrive.responseText);
                         if (data.files && data.files.length > 0) {
-                            writeDebug("[5/5] Hoàn tất! Đang nạp " + data.files.length + " bức ảnh...", "#2ecc71");
+                            writeDebug("[4/5] Kết nối thành công! Đang thiết lập luồng " + data.files.length + " bức ảnh...", "#2ecc71");
                             var allImgs = []; var recentImgs = []; var twoDaysAgo = new Date(Date.now() - 48 * 60 * 60 * 1000);
                             for (var i = 0; i < data.files.length; i++) { 
-                                // 🔥 KÍCH KÍCH THƯỚC THUMBNAIL LÊN ĐỘ PHÂN GIẢI 2048PX (KHÔNG BỊ LỖI CHUYỂN HƯỚNG VIRUS SCAN)
-                                if (data.files[i].thumbnailLink) {
-                                    var imgPath = data.files[i].thumbnailLink.replace(/=s\d+/, '=s2048');
-                                    allImgs.push(imgPath);
-                                    if (new Date(data.files[i].createdTime) >= twoDaysAgo) { recentImgs.push(imgPath); }
-                                }
+                                var fileId = data.files[i].id;
+                                allImgs.push(fileId);
+                                if (new Date(data.files[i].createdTime) >= twoDaysAgo) { recentImgs.push(fileId); }
                             }
                             function shuffle(arr) { var a = arr.slice(); for (var k = a.length - 1; k > 0; k--) { var j = Math.floor(Math.random() * (k + 1)); var t = a[k]; a[k] = a[j]; a[j] = t; } return a; }
                             images = recentImgs.length > 0 ? shuffle(recentImgs).concat(shuffle(allImgs)) : shuffle(allImgs);
                             
-                            if(images.length > 0) {
-                                currentIndex = 0; setTimeout(initSlideshow, 500);
-                            } else {
-                                fallbackInit("LỖI: Các ảnh trong Drive không được hỗ trợ định dạng xem trước.");
-                            }
-                        } else { fallbackInit("LỖI: Khách hàng chưa tải ảnh lên Drive!"); }
+                            currentIndex = 0; setTimeout(initSlideshow, 500);
+                        } else { fallbackInit("LỖI: Khách hàng chưa tải ảnh nào lên thư mục Drive!"); }
                     } else if (xhrDrive.status === 403) {
-                        fallbackInit("LỖI 403: Cài đặt Google Cloud chưa cấp quyền cho tên miền.");
+                        fallbackInit("LỖI 403: Google Cloud chặn. Bạn chưa cấp quyền cho Website.");
                     } else if (xhrDrive.status === 404) {
-                        fallbackInit("LỖI 404: Không tìm thấy Drive. Hãy bật chế độ Bất kỳ ai có liên kết (Viewer).");
+                        fallbackInit("LỖI 404: Không tìm thấy Drive. Hãy share công khai (Viewer).");
                     } else {
-                        fallbackInit("Lỗi API Google (Mã: " + xhrDrive.status + ").");
+                        fallbackInit("Lỗi kết nối API Google (Mã: " + xhrDrive.status + ").");
                     }
                 }
             }; xhrDrive.send();
         }
+
+        function updateImageDisplayMechanism(img, gp) { img.classList.remove('fit-cover', 'fit-contain'); gp.classList.add('show-blur'); if (window.innerWidth > window.innerHeight) { img.classList.add(img.naturalWidth > img.naturalHeight ? 'fit-cover' : 'fit-contain'); } else { img.classList.add(img.naturalWidth > img.naturalHeight ? 'fit-contain' : 'fit-cover'); } }
+        
+        function loadAndDisplayImage(fileId) {
+            writeDebug("[5/5] Đang nạp ảnh " + (currentIndex + 1) + "/" + images.length + "...", "#2ecc71");
+            
+            var currentGroupId = isGroup1Active ? 'group1' : 'group2'; var nextGroupId = isGroup1Active ? 'group2' : 'group1';
+            var nextBg = document.getElementById(isGroup1Active ? 'bg2' : 'bg1'); var nextFg = document.getElementById(isGroup1Active ? 'fg2' : 'fg1');
+            
+            // 👉 KIẾN TRÚC KÉP: Link chính (API) và Link dự phòng (Thumbnail)
+            var urlPrimary = 'https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media&key=' + API_KEY;
+            var urlFallback = 'https://drive.google.com/thumbnail?id=' + fileId + '&sz=w1080';
+            
+            // 👉 BỘ ĐẾM BẢO VỆ CHỐNG TREO MẠNG (Tối đa 12 giây/ảnh)
+            clearTimeout(imgWatchdog);
+            imgWatchdog = setTimeout(function() {
+                writeDebug("Mạng quá yếu, đang thử ảnh tiếp theo...", "#FF9500");
+                currentIndex = (currentIndex + 1) % images.length;
+                goToNextSlide();
+            }, 12000);
+
+            nextFg.onload = function() { 
+                clearTimeout(imgWatchdog);
+                updateImageDisplayMechanism(nextFg, document.getElementById(nextGroupId)); 
+                document.getElementById(currentGroupId).classList.remove('active'); 
+                document.getElementById(nextGroupId).classList.add('active'); 
+                isGroup1Active = !isGroup1Active; 
+                currentIndex = (currentIndex + 1) % images.length; 
+                isSystemError = false; 
+                updateDynamicContentBySlide(); 
+            };
+            
+            nextFg.onerror = function() { 
+                // Nếu link API bị Samsung/Safari chặn, chớp nhoáng thử lại bằng link Thumbnail!
+                if (nextFg.src === urlPrimary) {
+                    writeDebug("Kích hoạt máy chủ tải ảnh dự phòng...", "#F4B41A");
+                    nextBg.src = urlFallback;
+                    nextFg.src = urlFallback;
+                } else {
+                    clearTimeout(imgWatchdog);
+                    writeDebug("Không thể tải ảnh, bỏ qua...", "#FF3366"); 
+                    currentIndex = (currentIndex + 1) % images.length;
+                    setTimeout(goToNextSlide, 1000); 
+                }
+            };
+            
+            nextBg.src = urlPrimary; 
+            nextFg.src = urlPrimary;
+        }
+
+        function initSlideshow() { applyClockStyle(); loadAndDisplayImage(images[0]); changeIntervalMode(currentIntervalIdx + 1); }
+        function goToNextSlide() { if(images.length <= 1) return; loadAndDisplayImage(images[currentIndex]); }
+        function changeIntervalMode(modeVal) { currentIntervalIdx = modeVal - 1; var seconds = stepSeconds[currentIntervalIdx]; if (slideInterval) clearInterval(slideInterval); slideInterval = setInterval(goToNextSlide, seconds * 1000); }
 
         function downloadConfigFile(fileId) {
             var url = 'https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media&key=' + API_KEY;
@@ -516,34 +568,6 @@
                 if (extrasArray.length > 0) { var extrasStr = extrasArray.join(' <span style="color:#ffffff; font-weight:400;">|</span> '); if (linesCount <= 1) { quoteElement.innerHTML = finalQuote + '<br>' + extrasStr; } else { quoteElement.innerHTML = finalQuote + ' <span style="color:#ffffff; font-weight:400;">|</span> ' + extrasStr; } }
             }, 50);
         }
-
-        function updateImageDisplayMechanism(img, gp) { img.classList.remove('fit-cover', 'fit-contain'); gp.classList.add('show-blur'); if (window.innerWidth > window.innerHeight) { img.classList.add(img.naturalWidth > img.naturalHeight ? 'fit-cover' : 'fit-contain'); } else { img.classList.add(img.naturalWidth > img.naturalHeight ? 'fit-contain' : 'fit-cover'); } }
-        
-        function loadAndDisplayImage(imgUrl) {
-            var currentGroupId = isGroup1Active ? 'group1' : 'group2'; var nextGroupId = isGroup1Active ? 'group2' : 'group1';
-            var nextBgId = isGroup1Active ? 'bg2' : 'bg1'; var nextFgId = isGroup1Active ? 'fg2' : 'fg1';
-            
-            var currentGroup = document.getElementById(currentGroupId); var nextGroup = document.getElementById(nextGroupId);
-            var nextBg = document.getElementById(nextBgId); var nextFg = document.getElementById(nextFgId);
-            
-            nextFg.onload = function() { 
-                updateImageDisplayMechanism(nextFg, nextGroup); 
-                currentGroup.classList.remove('active'); nextGroup.classList.add('active'); 
-                isGroup1Active = !isGroup1Active; currentIndex = (currentIndex + 1) % images.length; 
-                isSystemError = false; 
-                updateDynamicContentBySlide(); 
-            };
-            nextFg.onerror = function() { 
-                writeDebug("Mạng yếu, tự động tải ảnh " + (currentIndex + 1) + "...", "#F4B41A"); 
-                currentIndex = (currentIndex + 1) % images.length;
-                setTimeout(goToNextSlide, 2000); 
-            };
-            nextBg.src = imgUrl; nextFg.src = imgUrl;
-        }
-
-        function initSlideshow() { applyClockStyle(); loadAndDisplayImage(images[0]); changeIntervalMode(currentIntervalIdx + 1); }
-        function goToNextSlide() { if(images.length <= 1) return; loadAndDisplayImage(images[currentIndex]); }
-        function changeIntervalMode(modeVal) { currentIntervalIdx = modeVal - 1; var seconds = stepSeconds[currentIntervalIdx]; if (slideInterval) clearInterval(slideInterval); slideInterval = setInterval(goToNextSlide, seconds * 1000); }
 
         try { updateClock(); } catch(e) { console.error(e); }
         try { updateWeatherAndAQI(); } catch(e) { console.error(e); }
