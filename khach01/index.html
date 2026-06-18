@@ -1,928 +1,1256 @@
-TÔI MUỐN CHÚNG TA BẮT ĐẦU TẠO CODE CHO KHÁCH LẠI TỪ CODE PHIÊN BẢN CÁ NHÂN NÀY, VÌ CODE NÀY ĐANG HOẠT ĐỘNG TỐT NHÂT.
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="referrer" content="no-referrer">
-    
-    <title>Khung Ảnh Số Thông Minh - V102 Ultimate Full Code</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Tourney:wght@600&family=Playfair+Display:wght@700&family=Oswald:wght@600&family=Righteous&family=Courier+Prime:wght@700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
-
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; cursor: pointer; }
-        
-        #outer-blur-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(45px) brightness(0.6); z-index: 0; transform: scale(1.2); }
-        #white-border-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #ffffff; z-index: 1; transition: opacity 1.5s ease-in-out; }
-        #frame-wrapper { position: absolute; top: 45px; bottom: 45px; left: 45px; right: 45px; background-color: #000; overflow: hidden; box-shadow: 0px 15px 45px rgba(0, 0, 0, 0.15), inset 0px 0px 30px rgba(0,0,0,0.85); border: 1px solid #eaeaea; transition: all 0.5s ease; z-index: 5; }
-        
-        #photo-container, .slide-group { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        #photo-container { z-index: 1; }
-        .slide-group { opacity: 0; transition: opacity 3s ease-in-out; display: block; }
-        .slide-group.active { opacity: 1; z-index: 2; }
-        
-        .background-blur { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover !important; filter: blur(40px) brightness(0.85); -webkit-filter: blur(40px) brightness(0.85); transform: scale(1.3); z-index: 1; display: none; }
-        .foreground-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; flex-shrink: 0; filter: drop-shadow(0px 15px 35px rgba(0,0,0,0.6)); -webkit-filter: drop-shadow(0px 15px 35px rgba(0,0,0,0.6)); transition: all 0.5s ease; }
-        .slide-group.show-blur .background-blur { display: block; }
-        .fit-cover { object-fit: cover !important; width: 100% !important; height: 100% !important; }
-        .fit-contain { object-fit: contain !important; width: 100% !important; height: 100% !important; }
-
-        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.15); z-index: 3; pointer-events: none; }
-        #brightness-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0); z-index: 998; pointer-events: none; transition: background 0.5s ease; }
-
-        .tap-target { -webkit-tap-highlight-color: transparent; outline: none; border: none; background: transparent; cursor: pointer; transition: opacity 0.2s; }
-        .tap-target:active { opacity: 0.6; }
-
-        /* CỘT TRÁI TRÊN (GIỜ LỊCH CĂN GIỮA) */
-        #info-container { position: absolute; top: 35px; left: 35px; z-index: 4; text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.6); display: flex; flex-direction: column; align-items: center; width: auto; transition: transform 2s ease-in-out; }
-        #clock-flex-wrapper { display: flex; flex-direction: column; align-items: center; width: 100%; margin-left: 0; }
-        .hours-style, .minutes-style { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 6.5rem; letter-spacing: -2px; display: block; line-height: 0.85; transition: color 0.5s, font-family 0.5s; width: 100%; text-align: center; margin-left: 0; } 
-        .hours-style { color: #F4B41A; } .minutes-style { color: #ffffff; margin-top: 4px; }
-        #date-solar-top { font-size: 1.4rem; font-weight: 700; color: #ffffff; margin-top: 14px; white-space: nowrap; text-align: center; }
-        #date-lunar-top { font-size: 1.4rem; font-weight: 700; color: #ffffff; margin-top: 4px; white-space: nowrap; text-align: center; }
-        .highlight-yellow { color: #F4B41A; font-weight: 700; }
-
-        /* CỘT PHẢI TRÊN (NHIỆT ĐỘ CĂN GIỮA THỜI TIẾT) */
-        #top-right-wrapper { position: absolute; top: 35px; right: 45px; z-index: 4; display: flex; flex-direction: column; align-items: center; gap: 8px; text-shadow: 0px 2px 5px rgba(0,0,0,0.6); transition: transform 2s ease-in-out; }
-        #right-env-container { display: flex; flex-direction: column; align-items: center; margin-right: 0; width: auto; }
-        .env-rotating-item { padding: 0; background: transparent; white-space: nowrap; transition: opacity 0.5s ease; color: rgba(255, 255, 255, 0.95); font-weight: 600; text-align: center; display: flex; justify-content: center; align-items: center;}
-        #temp-wrapper { position: relative; display: inline-flex; align-items: flex-start; justify-content: center; flex-shrink: 0; margin-left: 0; text-align: center; margin-right: 0; width: auto; } 
-        #weather-val { font-family: 'Montserrat', sans-serif; font-weight: 700; color: #ffffff; letter-spacing: -2px; line-height: 0.8; font-size: 3.8rem; display: inline-block; }
-        .degree-symbol { position: absolute; font-weight: 700; color: #ffffff; font-size: 1.5rem; top: 0; right: -18px; }
-
-        @-webkit-keyframes pulseGlow { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
-        @keyframes pulseGlow { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
-
-        /* KHU VỰC ĐÁY */
-        #bottom-container { position: absolute; bottom: 35px; left: 35px; right: 35px; z-index: 4; display: flex; flex-direction: row; align-items: flex-end; justify-content: space-between; text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.7); gap: 30px; transition: transform 2s ease-in-out; }
-        #bottom-left-events { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; flex-shrink: 0; }
-        .event-header { font-size: 1.1rem; color: #F4B41A; font-weight: 700; text-align: left; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; cursor: pointer; }
-        .event-item { font-size: 1.15rem; color: rgba(255, 255, 255, 0.95); font-weight: 600; text-align: left; padding: 4px 12px; border-radius: 4px; background: rgba(0, 0, 0, 0.4); margin-bottom: 2px; display: inline-block;}
-        .event-passed { opacity: 0.35; font-size: 1rem; }
-        .event-urgent { color: #F4B41A !important; font-weight: 700; background: rgba(0, 0, 0, 0.7); -webkit-animation: pulseGlow 2s infinite; animation: pulseGlow 2s infinite; }
-        .event-today-birth { color: #2ecc71 !important; font-weight: 700; font-size: 1.25rem; background: rgba(0, 0, 0, 0.8); }
-
-        #bottom-right-text { flex: 1; display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; text-align: right; margin-left: 30px; cursor: pointer; }
-        #quote-row { font-size: 1.15rem; font-weight: 500; font-style: normal; color: #f5f5f7; line-height: 1.5; word-wrap: break-word; text-align: right; width: 100%; }
-        .countdown-highlight { color: #F4B41A; font-weight: 700; }
-        .death-highlight { color: #ff9500; font-weight: 700; }
-        .death-event-passed { color: #a1a1a1; font-weight: 500; opacity: 0.6; }
-
-        /* BẢNG MODAL CHUNG */
-        .modal-base { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(15px); padding: 25px; border-radius: 16px; border: 1px solid #F4B41A; z-index: 10001; display: none; flex-direction: column; gap: 15px; width: 340px; box-shadow: 0px 10px 40px rgba(0,0,0,0.8); }
-        .show-modal { display: flex !important; }
-        .modal-title { color: #F4B41A; font-weight: 700; font-size: 1.3rem; text-align: center; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
-        .list-item { color: #fff; padding: 10px 5px; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 1.1rem; font-weight: 500; text-align: left;}
-        .list-item:last-child { border-bottom: none; }
-        #list-content { overflow-y: auto; max-height: 350px; padding-right: 10px; }
-        
-        .loc-input { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 12px 15px; border-radius: 8px; font-size: 1.05rem; width: 100%; outline: none; font-family: inherit; font-weight: 500;}
-        .loc-input::placeholder { color: #aaa; font-weight: 400; }
-        .loc-input:focus { border-color: #F4B41A; background: rgba(255,255,255,0.15); }
-        .loc-btns { display: flex; gap: 10px; margin-top: 5px; }
-        .loc-btn { flex: 1; padding: 12px; font-weight: 700; border-radius: 8px; cursor: pointer; border: none; font-size: 1rem; transition: transform 0.1s;}
-        .loc-btn:active { transform: scale(0.95); }
-        .btn-save { background: #F4B41A; color: #000; }
-        .btn-default { background: transparent; color: #fff; border: 1px solid #fff; }
-        .btn-close-modal { background: transparent; color: #aaa; font-weight: 400; border: none; font-size: 0.95rem; text-align: center; margin-top: -5px; padding: 5px; cursor: pointer; }
-        
-        #toast-msg { position: absolute; top: 15%; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.85); color: #F4B41A; border: 1px solid #F4B41A; padding: 12px 24px; border-radius: 8px; font-size: 1.2rem; font-weight: 700; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; text-align: center; box-shadow: 0px 4px 15px rgba(0,0,0,0.5); }
-        #toast-msg.show { opacity: 1; }
-
-        /* ĐỒNG HỒ BAN ĐÊM */
-        #night-clock-box { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: none; z-index: 4; text-shadow: none; transition: transform 2s ease-in-out; }
-        .night-active #white-border-bg { background-color: #000000 !important; opacity: 1 !important; } 
-        .night-active #photo-container, .night-active #bottom-container, .night-active #top-right-wrapper, .night-active #info-container { display: none !important; }
-        .night-active #frame-wrapper { background-color: transparent !important; box-shadow: none !important; border-color: transparent !important; }
-        .night-active #night-clock-box { display: flex; align-items: center; justify-content: center; flex-direction: row; }
-        .night-hours, .night-minutes { font-family: 'Tourney', cursive !important; font-weight: 600 !important; color: #FF9500 !important; font-size: 46vmin; line-height: 0.9; margin: 0 1vmin; letter-spacing: -2vmin; }
-
-        /* MÀN HÌNH DỌC IPAD */
-        @media (orientation: portrait) {
-            .hours-style, .minutes-style { font-size: 7.5rem; text-align: center; } 
-            #date-solar-top { font-size: 1.6rem; text-align: center; } 
-            #date-lunar-top { font-size: 1.6rem; text-align: center; }
-            #bottom-container { flex-direction: column; align-items: stretch; gap: 15px; }
-            #bottom-left-events { align-items: flex-start; max-width: 100%; width: 100%; }
-            #bottom-right-text { text-align: right; align-items: flex-end; margin-left: 0; width: 100%; }
-            #quote-row { font-size: 1.15rem; line-height: 1.45; text-align: right; }
-            .night-active #night-clock-box { flex-direction: column; }
-            .night-hours, .night-minutes { font-size: 42vmin; margin: 0; line-height: 0.85; letter-spacing: -2vmin; }
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="referrer" content="no-referrer">
+    
+    <title>Khung Ảnh Số Thông Minh</title>
 </head>
-<body>
-
-    <img id="outer-blur-bg" src="">
-    <div id="white-border-bg"></div>
-
-    <div id="frame-wrapper">
-        <div id="photo-container">
-            <div id="group1" class="slide-group active"><img id="bg1" class="background-blur"><img id="fg1" class="foreground-image"></div>
-            <div id="group2" class="slide-group"><img id="bg2" class="background-blur"><img id="fg2" class="foreground-image"></div>
-        </div>
-        <div class="overlay"></div>
-        <div id="brightness-overlay"></div>
-        <div id="toast-msg">Thông báo</div>
-
-        <div id="info-container">
-            <div id="clock-flex-wrapper">
-                <span class="hours-style tap-target" id="hr-node" ontouchstart="handleAction(event, 'night')" onclick="handleAction(event, 'night')">00</span>
-                <span class="minutes-style tap-target" id="min-node" ontouchstart="handleAction(event, 'style')" onclick="handleAction(event, 'style')">00</span>
-            </div>
-            <div id="date-solar-top" class="tap-target" ontouchstart="handleAction(event, 'wakeup')" onclick="handleAction(event, 'wakeup')">Th 0 00/00</div>
-            <div id="date-lunar-top" class="tap-target" ontouchstart="handleAction(event, 'interval')" onclick="handleAction(event, 'interval')"><span class="highlight-yellow">AL</span> 00/00</div>
-        </div>
-        
-        <div id="night-clock-box">
-            <span class="night-hours tap-target" id="night-hr-node" ontouchstart="handleAction(event, 'night')" onclick="handleAction(event, 'night')">00:</span>
-            <span class="night-minutes tap-target" id="night-min-node" ontouchstart="handleAction(event, 'night')" onclick="handleAction(event, 'night')">00</span>
-        </div>
-
-        <div id="top-right-wrapper">
-            <div id="right-env-container" class="tap-target" ontouchstart="handleAction(event, 'open_location')" onclick="handleAction(event, 'open_location')"></div>
-            <div id="temp-wrapper" class="tap-target" ontouchstart="handleAction(event, 'next')" onclick="handleAction(event, 'next')">
-                <span id="weather-val">--</span><span class="degree-symbol">°</span>
-            </div>
-        </div>
-        
-        <div id="bottom-container">
-            <div id="bottom-left-events" class="tap-target" ontouchstart="handleAction(event, 'show_birth')" onclick="handleAction(event, 'show_birth')"></div>
-            <div id="bottom-right-text" class="tap-target" ontouchstart="handleAction(event, 'show_death')" onclick="handleAction(event, 'show_death')">
-                <span id="quote-row">Đang tải và đồng bộ hệ thống dữ liệu điện toán đám mây...</span>
-            </div>
-        </div>
-        
-        <div id="location-modal" class="modal-base">
-            <div class="modal-title">CÀI ĐẶT VỊ TRÍ</div>
-            <input type="text" id="loc-name" class="loc-input" placeholder="Tên địa phương (VD: Tân Lập)">
-            <input type="text" inputmode="decimal" id="loc-lat" class="loc-input" placeholder="Vĩ độ (Chấm hoặc phẩy đều được)">
-            <input type="text" inputmode="decimal" id="loc-lon" class="loc-input" placeholder="Kinh độ (VD: 108.0694)">
-            <div class="loc-btns">
-                <button class="loc-btn btn-save" ontouchstart="saveLocation(); event.preventDefault();" onclick="saveLocation()">LƯU</button>
-                <button class="loc-btn btn-default" ontouchstart="defaultLocation(); event.preventDefault();" onclick="defaultLocation()">MẶC ĐỊNH</button>
-            </div>
-            <button class="btn-close-modal" ontouchstart="closeLocationModal(); event.preventDefault();" onclick="closeLocationModal()">Đóng (Hủy)</button>
-        </div>
-
-        <div id="list-modal" class="modal-base">
-            <div id="list-title" class="modal-title">DANH SÁCH</div>
-            <div id="list-content"></div>
-            <button class="btn-close-modal" style="margin-top:10px;" ontouchstart="closeListModal(); event.preventDefault();" onclick="closeListModal()">Đóng bảng</button>
-        </div>
-
-    </div>
-
-    <script>
-        var SECRET_ENCODED = 'QUl6YVN5REwyRm1VQzkxMUtBTnFwN3VPbnZKcU5xVHltb1R2SkxF'; var API_KEY = atob(SECRET_ENCODED); var FOLDER_ID = '1r1WUIKwAPAnsyIh-Zot7AevEW0uEZ-Hl'; 
-        var images = ['https://images.unsplash.com/photo-1506744626753-14002fa88301?q=80&w=2048&auto=format&fit=crop']; 
-        var currentIndex = 0; var slideInterval; var toastTimeout; var locationModalTimeout; var listModalTimeout;
-        var audioCtx = null; var isGroup1Active = true; var audioUnlocked = false; var forceNightMode = null; 
-        
-        var globalAQI = "--", globalHum = "--", globalRain = "--", globalSunrise = "--", globalSunset = "--"; 
-        var globalUV = "--", globalAlt = "--";
-        var envDisplayIndex = 0; 
-        var windowDeathList = []; 
-        
-        var bX1 = 0, bY1 = 0; var bX2 = 0, bY2 = 0; var bX3 = 0, bY3 = 0;
-        var stepSeconds = [180, 300, 600, 900]; 
-        var currentIntervalIdx = 1; 
-        var wakeUpHour = localStorage.getItem('wakeUpHour') ? parseInt(localStorage.getItem('wakeUpHour')) : 6;
-        
-        var loadMorningMusicFlag = false; var clock8AMMusicFlag = false; var clock14PMMusicFlag = false; var clock18PMMusicFlag = false; var lastBirthdayCheckDate = null; 
-        var hourlyChimePlayed = false; // Cờ kiểm soát tiếng chuông 1 tiếng / lần
-        
-        var clockStyles = [
-            { f: "'Montserrat', sans-serif", hc: "#F4B41A", mc: "#ffffff", fw: 700 }, { f: "'Montserrat', sans-serif", hc: "#ffffff", mc: "#F4B41A", fw: 700 },
-            { f: "'Tourney', cursive", hc: "#F4B41A", mc: "#ffffff", fw: 600 }, { f: "'Tourney', cursive", hc: "#ffffff", mc: "#F4B41A", fw: 600 },
-            { f: "'Playfair Display', serif", hc: "#F4B41A", mc: "#ffffff", fw: 700 }, { f: "'Playfair Display', serif", hc: "#ffffff", mc: "#F4B41A", fw: 700 },
-            { f: "'Oswald', sans-serif", hc: "#00E5FF", mc: "#ffffff", fw: 600 }, { f: "'Oswald', sans-serif", hc: "#F4B41A", mc: "#ffffff", fw: 600 },
-            { f: "'Righteous', cursive", hc: "#FF3366", mc: "#ffffff", fw: 400 }, { f: "'Righteous', cursive", hc: "#F4B41A", mc: "#ffffff", fw: 400 },
-            { f: "'Courier Prime', monospace", hc: "#B4E61D", mc: "#ffffff", fw: 700 }, { f: "'Courier Prime', monospace", hc: "#ffffff", mc: "#F4B41A", fw: 700 },
-            { f: "'Cinzel', serif", hc: "#F4B41A", mc: "#ffffff", fw: 700 }, { f: "'Cinzel', serif", hc: "#ffffff", mc: "#F4B41A", fw: 700 },
-            { f: "'Montserrat', sans-serif", hc: "#00E5FF", mc: "#FF3366", fw: 700 }, { f: "'Tourney', cursive", hc: "#B4E61D", mc: "#FF9100", fw: 600 },
-            { f: "'Playfair Display', serif", hc: "#E0E0E0", mc: "#E0E0E0", fw: 700 }, { f: "'Oswald', sans-serif", hc: "#FF9100", mc: "#ffffff", fw: 600 },
-            { f: "'Righteous', cursive", hc: "#00E5FF", mc: "#B4E61D", fw: 400 }, { f: "'Cinzel', serif", hc: "#E0E0E0", mc: "#F4B41A", fw: 700 },
-            { f: "'Montserrat', sans-serif", hc: "#FF9100", mc: "#F4B41A", fw: 700 }, { f: "'Courier Prime', monospace", hc: "#00E5FF", mc: "#00E5FF", fw: 700 },
-            { f: "'Tourney', cursive", hc: "#FF3366", mc: "#ffffff", fw: 600 }, { f: "'Playfair Display', serif", hc: "#ffffff", mc: "#ffffff", fw: 700 },
-            { f: "'Oswald', sans-serif", hc: "#B4E61D", mc: "#ffffff", fw: 600 }, { f: "'Righteous', cursive", hc: "#ffffff", mc: "#FF3366", fw: 400 },
-            { f: "'Cinzel', serif", hc: "#FF9100", mc: "#ffffff", fw: 700 }, { f: "'Montserrat', sans-serif", hc: "#E0E0E0", mc: "#FF3366", fw: 700 },
-            { f: "'Tourney', cursive", hc: "#00E5FF", mc: "#B4E61D", fw: 600 }, { f: "'Playfair Display', serif", hc: "#FF3366", mc: "#F4B41A", fw: 700 }
-        ];
-        var currentStyleIdx = parseInt(localStorage.getItem('clockStyle'));
-        if(isNaN(currentStyleIdx) || currentStyleIdx < 0 || currentStyleIdx >= clockStyles.length) currentStyleIdx = 0;
-
-        var defaultLatitude = 12.6792; var defaultLongitude = 108.0694; var defaultLocalName = "Tân Lập";
-        var clientLatitude = localStorage.getItem('myLat') ? parseFloat(localStorage.getItem('myLat')) : defaultLatitude;
-        var clientLongitude = localStorage.getItem('myLon') ? parseFloat(localStorage.getItem('myLon')) : defaultLongitude;
-        var clientLocalName = localStorage.getItem('myName') ? localStorage.getItem('myName') : defaultLocalName;
-
-        var birthdays = []; var anniversaries = []; var festivalsData = []; var specialtiesData = []; var quotePool = [];
-
-        var phases = [
-            [2025, 11, 20, 11, "Ất Tỵ"], [2026, 0, 19, 12, "Ất Tỵ"], [2026, 1, 17, 1, "Bính Ngọ"], [2026, 2, 19, 2, "Bính Ngọ"], [2026, 3, 17, 3, "Bính Ngọ"], [2026, 4, 16, 4, "Bính Ngọ"], [2026, 5, 15, 5, "Bính Ngọ"], [2026, 6, 14, 6, "Bính Ngọ"], [2026, 7, 13, 7, "Bính Ngọ"], [2026, 8, 11, 8, "Bính Ngọ"], [2026, 9, 11, 9, "Bính Ngọ"], [2026, 10, 10, 10, "Bính Ngọ"], [2026, 11, 9, 11, "Bính Ngọ"],
-            [2027, 0, 8, 12, "Bính Ngọ"], [2027, 1, 6, 1, "Đinh Mùi"], [2027, 2, 8, 2, "Đinh Mùi"], [2027, 3, 7, 3, "Đinh Mùi"], [2027, 4, 6, 4, "Đinh Mùi"], [2027, 5, 5, 5, "Đinh Mùi"], [2027, 6, 4, 6, "Đinh Mùi"], [2027, 7, 2, 7, "Đinh Mùi"], [2027, 7, 31, 7, "Đinh Mùi"], [2027, 8, 29, 8, "Đinh Mùi"], [2027, 9, 29, 9, "Đinh Mùi"], [2027, 10, 28, 10, "Đinh Mùi"], [2027, 11, 27, 11, "Đinh Mùi"],
-            [2028, 0, 26, 12, "Đinh Mùi"], [2028, 1, 26, 1, "Mậu Thân"], [2028, 2, 25, 2, "Mậu Thân"], [2028, 3, 26, 3, "Mậu Thân"], [2028, 4, 25, 4, "Mậu Thân"], [2028, 5, 24, 5, "Mậu Thân"], [2028, 6, 23, 5, "Mậu Thân"], [2028, 7, 22, 6, "Mậu Thân"], [2028, 8, 20, 7, "Mậu Thân"], [2028, 9, 19, 8, "Mậu Thân"], [2028, 10, 18, 9, "Mậu Thân"], [2028, 11, 17, 10, "Mậu Thân"],
-            [2029, 0, 16, 11, "Mậu Thân"], [2029, 1, 15, 12, "Mậu Thân"], [2029, 2, 13, 1, "Kỷ Dậu"], [2029, 3, 15, 2, "Kỷ Dậu"], [2029, 4, 13, 3, "Kỷ Dậu"], [2029, 5, 13, 4, "Kỷ Dậu"], [2029, 6, 11, 5, "Kỷ Dậu"], [2029, 7, 11, 6, "Kỷ Dậu"], [2029, 8, 10, 7, "Kỷ Dậu"], [2029, 9, 8, 8, "Kỷ Dậu"], [2029, 10, 8, 9, "Kỷ Dậu"], [2029, 11, 7, 10, "Kỷ Dậu"],
-            [2030, 0, 6, 11, "Kỷ Dậu"], [2030, 1, 5, 12, "Kỷ Dậu"], [2030, 2, 3, 1, "Canh Tuất"], [2030, 3, 5, 2, "Canh Tuất"], [2030, 4, 3, 3, "Canh Tuất"], [2030, 5, 2, 4, "Canh Tuất"], [2030, 6, 1, 5, "Canh Tuất"], [2030, 6, 30, 6, "Canh Tuất"], [2030, 7, 30, 7, "Canh Tuất"], [2030, 8, 29, 8, "Canh Tuất"], [2030, 9, 27, 9, "Canh Tuất"], [2030, 10, 27, 10, "Canh Tuất"], [2030, 11, 26, 11, "Canh Tuất"]
-        ];
-
-        function getEnvColor(type, val) {
-            var strVal = String(val); 
-            if (strVal === "--" || strVal.indexOf('--') !== -1) return "#ffffff";
-            var v = parseFloat(strVal);
-            if (type === 'aqi') {
-                if (v <= 50) return "#ffffff";
-                if (v <= 100) return "#F4B41A"; 
-                if (v <= 150) return "#FF9500"; 
-                return "#FF3366"; 
-            }
-            if (type === 'uv') {
-                if (v <= 2) return "#ffffff";
-                if (v <= 5) return "#F4B41A";
-                if (v <= 7) return "#FF9500";
-                return "#FF3366";
-            }
-            if (type === 'rain') {
-                if (v < 51) return "#ffffff";
-                if (v <= 75) return "#F4B41A"; 
-                return "#FF3366"; 
-            }
-            return "#ffffff";
-        }
-
-        /* 🌟 THUẬT TOÁN ĐO CHIỀU NGANG ÉP TÂM */
-        function syncEnvWidth() {
-            setTimeout(function() {
-                var tempVal = document.getElementById('weather-val');
-                var envItem = document.querySelector('.env-rotating-item');
-                if (tempVal && envItem) {
-                    var targetW = tempVal.getBoundingClientRect().width;
-                    if (targetW > 0) {
-                        envItem.style.width = targetW + 'px';
-                        envItem.style.display = 'flex';
-                        envItem.style.justifyContent = 'center'; 
-                        envItem.style.alignItems = 'center';
-                        var fontSize = 1.1; 
-                        envItem.style.fontSize = fontSize + 'rem';
-                        while (envItem.scrollWidth > envItem.clientWidth && fontSize > 0.4) {
-                            fontSize -= 0.05;
-                            envItem.style.fontSize = fontSize + 'rem';
-                        }
-                    }
-                }
-            }, 50); 
-        }
-
-        function rotateWeatherDisplay() {
-            var envPool = [
-                'AQI <span style="color:' + getEnvColor('aqi', globalAQI) + '; font-weight:700;">' + globalAQI + '</span>',
-                '☀️ <span style="color:' + getEnvColor('uv', globalUV) + '; font-weight:700;">' + globalUV + '</span>',
-                '🌧️ <span style="color:' + getEnvColor('rain', parseFloat(globalRain)) + '; font-weight:700;">' + globalRain + '</span>',
-                '💧 ' + globalHum,
-                '🌅 ' + globalSunrise + '-' + globalSunset
-            ];
-            var currentEnv = envPool[envDisplayIndex % envPool.length];
-            envDisplayIndex++;
-            var container = document.getElementById('right-env-container');
-            if(container) {
-                container.innerHTML = '<div class="env-rotating-item">' + currentEnv + '</div>';
-                syncEnvWidth();
-            }
-        }
-        setInterval(rotateWeatherDisplay, 120000); // 2 Phút
-
-        function fetchConfigFromDrive() {
-            var query = encodeURIComponent("'" + FOLDER_ID + "' in parents and name = 'cauhinh.txt' and trashed = false");
-            var url = 'https://www.googleapis.com/drive/v3/files?q=' + query + '&key=' + API_KEY + '&fields=files(id)';
-            var xhr = new XMLHttpRequest(); xhr.open('GET', url, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var data = JSON.parse(xhr.responseText);
-                    if (data.files && data.files.length > 0) { downloadConfigFile(data.files[0].id); }
-                }
-            }; xhr.send();
-        }
-
-        function downloadConfigFile(fileId) {
-            var url = 'https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media&key=' + API_KEY;
-            var xhr = new XMLHttpRequest(); xhr.open('GET', url, true);
-            if (xhr.overrideMimeType) xhr.overrideMimeType('text/plain; charset=utf-8');
-            xhr.onreadystatechange = function() { if (xhr.readyState === 4 && xhr.status === 200) { parseConfigText(xhr.responseText); } };
-            xhr.send();
-        }
-
-        function parseConfigText(text) {
-            var lines = text.split('\n'); var section = "";
-            var tempB = [], tempA = [], tempF = [], tempS = [], tempQ = [];
-            for (var i = 0; i < lines.length; i++) {
-                var line = lines[i].replace('\r', '').trim();
-                if (!line || line.indexOf('#') === 0) continue;
-                if (line.indexOf('[') === 0) { section = line.toUpperCase(); continue; }
-                if (section === "[THONG TIN QUAN TRONG]") {
-                    var parts = line.split('=');
-                    if(parts.length === 2) {
-                        var k = parts[0].trim().toUpperCase(); var v = parts[1].trim();
-                        if(k === "VI_DO") { if(!localStorage.getItem('myLat')) clientLatitude = parseFloat(v.replace(',', '.')); defaultLatitude = parseFloat(v.replace(',', '.')); }
-                        if(k === "KINH_DO") { if(!localStorage.getItem('myLon')) clientLongitude = parseFloat(v.replace(',', '.')); defaultLongitude = parseFloat(v.replace(',', '.')); }
-                        if(k === "TEN_DIA_PHUONG") { if(!localStorage.getItem('myName')) clientLocalName = v; defaultLocalName = v; }
-                    }
-                }
-                else if (section === "[DANH SACH SINH NHAT]") {
-                    var mB = line.match(/^(\d{1,2})\s*[\/]\s*(\d{1,2})\s+(.+)$/);
-                    if (mB) tempB.push({d: parseInt(mB[1],10), m: parseInt(mB[2],10), name: mB[3].trim()});
-                }
-                else if (section === "[DANH SACH NGAY GIO]") {
-                    var mA = line.match(/^(\d{1,2})\s*[\/]\s*(\d{1,2})\s+(.+)$/);
-                    if (mA) tempA.push({d: parseInt(mA[1],10), m: parseInt(mA[2],10), name: mA[3].trim()});
-                }
-                else if (section === "[LE HOI VIET NAM]" || section === "[NGAY LE TON GIAO]" || section === "[LE HOI VA NGAY LE TON GIAO]") {
-                    var mF = line.match(/^(s|l)\s*[\/]\s*(\d{1,2})\s*[\/]\s*(\d{1,2})\s+(.+)$/i);
-                    if (mF) tempF.push({type: mF[1].toLowerCase(), m: parseInt(mF[2],10), d: parseInt(mF[3],10), text: mF[4].trim()});
-                }
-                else if (section === "[DAC SAN THEO MUA]") {
-                    var mS = line.match(/^(\d{1,2})\s+(.+)$/);
-                    if (mS) tempS.push({m: parseInt(mS[1],10), text: mS[2].trim()});
-                }
-                else if (section === "[KHO DANH NGON CUOC LIFE]" || section === "[KHO DANH NGON CUOC SONG]") {
-                    tempQ.push(line);
-                }
-            }
-            if(tempB.length>0) birthdays = tempB; if(tempA.length>0) anniversaries = tempA;
-            if(tempF.length>0) festivalsData = tempF; if(tempS.length>0) specialtiesData = tempS;
-            if(tempQ.length>0) quotePool = tempQ;
-            
-            updateWeatherAndAQI(); updateClock();
-            updateDynamicContentBySlide(); 
-            checkForBirthdayMusic('load');
-        }
-
-        function showToast(msg) {
-            var toast = document.getElementById('toast-msg');
-            toast.innerText = msg;
-            toast.classList.add('show');
-            if(toastTimeout) clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(function() { toast.classList.remove('show'); }, 3000);
-        }
-
-        function applyClockStyle() {
-            var s = clockStyles[currentStyleIdx];
-            var hrNode = document.getElementById('hr-node');
-            var minNode = document.getElementById('min-node');
-            hrNode.style.fontFamily = s.f; hrNode.style.color = s.hc; hrNode.style.fontWeight = s.fw;
-            minNode.style.fontFamily = s.f; minNode.style.color = s.mc; minNode.style.fontWeight = s.fw;
-            localStorage.setItem('clockStyle', currentStyleIdx);
-        }
-
-        function playNote(freq, startTime, duration, type) {
-            if (!audioCtx) return;
-            var osc = audioCtx.createOscillator(); var gainNode = audioCtx.createGain();
-            osc.type = type || 'sine'; osc.frequency.setValueAtTime(freq, startTime);
-            gainNode.gain.setValueAtTime(0.2, startTime); gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
-            osc.connect(gainNode); gainNode.connect(audioCtx.destination); osc.start(startTime); osc.stop(startTime + duration);
-        }
-
-        function playSolemnChime() {
-            if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){} }
-            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-            var t = audioCtx.currentTime;
-            playNote(220.00, t, 3.5, 'sine'); playNote(440.00, t + 0.2, 3.0, 'sine'); playNote(554.37, t + 0.5, 3.0, 'sine'); playNote(659.25, t + 0.8, 3.0, 'sine'); playNote(880.00, t + 1.2, 4.0, 'sine'); 
-        }
-
-        function playHappyBirthday() {
-            if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){} }
-            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-            var t = audioCtx.currentTime; var tempo = 0.45; 
-            function p(f, d) { playNote(f, t, d * tempo, 'triangle'); t += d * tempo; }
-            p(261.63, 0.75); p(261.63, 0.25); p(293.66, 1); p(261.63, 1); p(349.23, 1); p(329.63, 2);
-            p(261.63, 0.75); p(261.63, 0.25); p(293.66, 1); p(261.63, 1); p(392.00, 1); p(349.23, 2);
-            p(261.63, 0.75); p(261.63, 0.25); p(523.25, 1); p(440.00, 1); p(349.23, 1); p(329.63, 1); p(293.66, 2);
-            p(466.16, 0.75); p(466.16, 0.25); p(440.00, 1); p(349.23, 1); p(392.00, 1); p(349.23, 2);
-        }
-
-        function openLocationModal() {
-            var modal = document.getElementById('location-modal');
-            document.getElementById('loc-name').value = clientLocalName;
-            document.getElementById('loc-lat').value = clientLatitude;
-            document.getElementById('loc-lon').value = clientLongitude;
-            modal.classList.add('show-modal');
-            if (locationModalTimeout) clearTimeout(locationModalTimeout);
-            locationModalTimeout = setTimeout(closeLocationModal, 60000); 
-        }
-
-        function closeLocationModal() {
-            document.getElementById('location-modal').classList.remove('show-modal');
-            if (locationModalTimeout) clearTimeout(locationModalTimeout);
-        }
-
-        function saveLocation() {
-            var n = document.getElementById('loc-name').value.trim();
-            var latStr = document.getElementById('loc-lat').value.replace(',', '.');
-            var lonStr = document.getElementById('loc-lon').value.replace(',', '.');
-            var lat = parseFloat(latStr);
-            var lon = parseFloat(lonStr);
-            if (n && !isNaN(lat) && !isNaN(lon)) {
-                closeLocationModal();
-                clientLocalName = n; clientLatitude = lat; clientLongitude = lon;
-                localStorage.setItem('myName', n); localStorage.setItem('myLat', lat); localStorage.setItem('myLon', lon);
-                showToast("📍 Đã lưu vị trí: " + n);
-                globalAQI = "--"; 
-                updateWeatherAndAQI(); updateDynamicContentBySlide();
-            } else { alert("Vui lòng nhập tọa độ bằng số!"); }
-        }
-
-        function defaultLocation() {
-            closeLocationModal();
-            localStorage.removeItem('myName'); localStorage.removeItem('myLat'); localStorage.removeItem('myLon');
-            clientLocalName = defaultLocalName; clientLatitude = defaultLatitude; clientLongitude = defaultLongitude;
-            showToast("📍 Đã khôi phục vị trí mặc định");
-            globalAQI = "--"; 
-            updateWeatherAndAQI(); updateDynamicContentBySlide();
-        }
-
-        function showAllLists(type) {
-            var modal = document.getElementById('list-modal');
-            var title = document.getElementById('list-title');
-            var content = document.getElementById('list-content');
-            content.innerHTML = "";
-            if(type === 'birth') {
-                title.innerText = "DANH SÁCH SINH NHẬT";
-                birthdays.sort(function(a,b){return a.m-b.m || a.d-b.d;}).forEach(function(b) {
-                    content.innerHTML += '<div class="list-item">' + b.d + '/' + b.m + ' - ' + b.name + '</div>';
-                });
-            } else {
-                title.innerText = "DANH SÁCH NGÀY GIỖ";
-                anniversaries.sort(function(a,b){return a.m-b.m || a.d-b.d;}).forEach(function(a) {
-                    content.innerHTML += '<div class="list-item">' + a.d + '/' + a.m + ' ÂL - ' + a.name + '</div>';
-                });
-            }
-            modal.classList.add('show-modal');
-            if(listModalTimeout) clearTimeout(listModalTimeout);
-            listModalTimeout = setTimeout(closeListModal, 10000); 
-        }
-        function closeListModal() { document.getElementById('list-modal').classList.remove('show-modal'); }
-
-        function handleAction(e, action) {
-            e.preventDefault(); e.stopPropagation(); 
-            if (!audioUnlocked) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); var osc = audioCtx.createOscillator(); osc.connect(audioCtx.destination); osc.start(0); osc.stop(0.001); audioUnlocked = true; } catch (err) {} }
-            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-            
-            if (action === 'night') { toggleNightMode(); } 
-            else if (action === 'style') { 
-                currentStyleIdx = (currentStyleIdx + 1) % clockStyles.length;
-                applyClockStyle(); showToast("✨ Phong cách: " + (currentStyleIdx + 1) + "/30");
-            }
-            else if (action === 'wakeup') {
-                if (wakeUpHour === 5) wakeUpHour = 6;
-                else if (wakeUpHour === 6) wakeUpHour = 7;
-                else if (wakeUpHour === 7) wakeUpHour = 8;
-                else wakeUpHour = 5;
-                localStorage.setItem('wakeUpHour', wakeUpHour);
-                showToast("🌅 Cài chuyển Sáng: " + wakeUpHour + ":00");
-                updateClock();
-            }
-            else if (action === 'interval') {
-                currentIntervalIdx = (currentIntervalIdx + 1) % stepSeconds.length;
-                var mins = stepSeconds[currentIntervalIdx] / 60;
-                changeIntervalMode(currentIntervalIdx + 1);
-                showToast("⏳ Đổi thời gian ảnh: " + mins + " Phút");
-            }
-            else if (action === 'next') { forceNextSlide(); }
-            else if (action === 'chime') { showToast("🔔 Thử chuông báo"); playSolemnChime(); }
-            else if (action === 'open_location') { openLocationModal(); }
-            else if (action === 'show_birth') { showAllLists('birth'); }
-            else if (action === 'show_death') { showAllLists('death'); }
-        }
-
-        function forceNextSlide() { goToNextSlide(); changeIntervalMode(currentIntervalIdx + 1); showToast("Đang đổi ảnh..."); }
-
-        function toggleNightMode() {
-            var body = document.body;
-            if (body.classList.contains('night-active')) { 
-                forceNightMode = false; body.classList.remove('night-active'); showToast("☀️ Chào ngày mới!"); 
-                document.getElementById('brightness-overlay').style.background = 'rgba(0,0,0,0)';
-                syncDriveData(); 
-            } else { 
-                forceNightMode = true; body.classList.add('night-active'); showToast("🌙 Chúc ngủ ngon!"); 
-                document.getElementById('brightness-overlay').style.background = 'rgba(0,0,0,0.5)';
-                syncDriveData(); 
-            }
-            applyDynamicPositions();
-        }
-
-        function triggerBorderBurnInProtection() {
-            if (document.body.classList.contains('night-active')) return;
-            var activeImg = document.querySelector('.slide-group.active .background-blur');
-            var outerBlur = document.getElementById('outer-blur-bg');
-            var whiteBorder = document.getElementById('white-border-bg');
-            if(activeImg && activeImg.src) {
-                outerBlur.src = activeImg.src; whiteBorder.style.opacity = '0';
-                setTimeout(function() { whiteBorder.style.opacity = '1'; }, 1500);
-            }
-        }
-        setInterval(triggerBorderBurnInProtection, 600000); 
-
-        function runAntiBurnIn() { 
-            bX1 = Math.floor(Math.random() * 30) - 15; bY1 = Math.floor(Math.random() * 30) - 15; 
-            bX2 = Math.floor(Math.random() * 30) - 15; bY2 = Math.floor(Math.random() * 30) - 15; 
-            bX3 = Math.floor(Math.random() * 30) - 15; bY3 = Math.floor(Math.random() * 30) - 15; 
-            applyDynamicPositions(); 
-        }
-        setInterval(runAntiBurnIn, 60000); 
-
-        function applyDynamicPositions() {
-            var isNight = document.body.classList.contains('night-active');
-            var clockBox = document.getElementById('night-clock-box'); 
-            var infoNode = document.getElementById('info-container');
-            var rightNode = document.getElementById('top-right-wrapper');
-            var leftEventsNode = document.getElementById('bottom-left-events');
-            var rightTextNode = document.getElementById('bottom-right-text');
-            
-            if (isNight) { clockBox.style.transform = "translate(calc(-50% + " + bX1 + "px), calc(-50% + " + bY1 + "px))"; } 
-            else { 
-                clockBox.style.transform = "none"; 
-                if(infoNode) infoNode.style.transform = "translate(" + bX1 + "px, " + bY1 + "px)";
-                if(rightNode) rightNode.style.transform = "translate(" + bX2 + "px, " + bY2 + "px)";
-                if(leftEventsNode) leftEventsNode.style.transform = "translate(" + bX3 + "px, " + bY3 + "px)";
-                if(rightTextNode) rightTextNode.style.transform = "translate(" + bX3 + "px, " + bY3 + "px)";
-            }
-        }
-
-        function renderEvents(sMonth, lMonth, sDay, lDay) {
-            var leftHtml = "";
-            var currentBirths = [];
-            for (var b = 0; b < birthdays.length; b++) { if (birthdays[b].m === sMonth) currentBirths.push(birthdays[b]); }
-            currentBirths.sort(function(a, b) { return a.d - b.d; });
-
-            if (currentBirths.length > 0) {
-                leftHtml += '<div class="event-header tap-target" ontouchstart="handleAction(event, \'chime\')" onclick="handleAction(event, \'chime\')">SINH NHẬT</div>';
-                for (var i = 0; i < currentBirths.length; i++) {
-                    var birth = currentBirths[i]; var diff = birth.d - sDay; var cls = "event-item"; var txt = birth.d + "/" + birth.m + " " + birth.name;
-                    if (diff < 0) { cls += " event-passed"; } else if (diff === 0) { cls += " event-today-birth"; txt += " (Hôm nay!)"; } else if (diff <= 3) { cls += " event-urgent"; txt += " (Còn " + diff + " ngày)"; }
-                    leftHtml += '<div class="' + cls + '">' + txt + '</div>';
-                }
-            }
-            
-            var leftContainer = document.getElementById('bottom-left-events');
-            if (leftContainer && leftContainer.innerHTML !== leftHtml) { leftContainer.innerHTML = leftHtml; }
-
-            windowDeathList = [];
-            var currentDeaths = [];
-            for (var a = 0; a < anniversaries.length; a++) { if (anniversaries[a].m === lMonth) currentDeaths.push(anniversaries[a]); }
-            currentDeaths.sort(function(a, b) { return a.d - b.d; });
-
-            if (currentDeaths.length > 0) {
-                for (var j = 0; j < currentDeaths.length; j++) {
-                    var ann = currentDeaths[j]; var diff = ann.d - lDay;
-                    var shortName = ann.name.split(" (")[0]; 
-                    var txt = "Giỗ " + shortName + " (" + ann.d + "/" + ann.m + " ÂL)";
-
-                    if (diff < 0) { 
-                        windowDeathList.push('<span class="death-event-passed">' + txt + '</span>');
-                    } else {
-                        if (diff === 0) { txt = "Hôm nay " + txt; } 
-                        else if (diff <= 3) { txt = "Còn " + diff + " ngày đến " + txt; }
-                        windowDeathList.push('<span class="death-highlight">' + txt + '</span>');
-                    }
-                }
-            }
-        }
-
-        function checkForBirthdayMusic(triggerType) {
-            if (birthdays.length === 0) return;
-            var now = new Date(); var hours = now.getHours(); var minutes = now.getMinutes();
-            var birthdayPerson = null;
-            for(var i=0; i<birthdays.length; i++) {
-                if(birthdays[i].m === (now.getMonth() + 1) && birthdays[i].d === now.getDate()) { birthdayPerson = birthdays[i]; break; }
-            }
-
-            if (birthdayPerson) {
-                if (loadMorningMusicFlag === false && hours >= wakeUpHour && hours < 8) {
-                    showToast("🎂 Chúc mừng Sinh Nhật " + birthdayPerson.name + "!");
-                    playHappyBirthday(); loadMorningMusicFlag = true; 
-                }
-                if (clock8AMMusicFlag === false && hours === 8 && minutes === 0) {
-                    showToast("🎂 Chúc mừng Sinh Nhật " + birthdayPerson.name + "!");
-                    playHappyBirthday(); clock8AMMusicFlag = true; 
-                }
-                if (clock14PMMusicFlag === false && hours === 14 && minutes === 0) {
-                    showToast("🎂 Chúc mừng Sinh Nhật " + birthdayPerson.name + "!");
-                    playHappyBirthday(); clock14PMMusicFlag = true; 
-                }
-                if (clock18PMMusicFlag === false && hours === 18 && minutes === 0) {
-                    showToast("🎂 Chúc mừng Sinh Nhật " + birthdayPerson.name + "!");
-                    playHappyBirthday(); clock18PMMusicFlag = true; 
-                }
-
-                if (lastBirthdayCheckDate && lastBirthdayCheckDate !== now.getDate()) {
-                    loadMorningMusicFlag = false; clock8AMMusicFlag = false; 
-                    clock14PMMusicFlag = false; clock18PMMusicFlag = false;
-                    lastBirthdayCheckDate = now.getDate();
-                } else if (!lastBirthdayCheckDate) { lastBirthdayCheckDate = now.getDate(); }
-            } else {
-                loadMorningMusicFlag = false; clock8AMMusicFlag = false;
-                clock14PMMusicFlag = false; clock18PMMusicFlag = false;
-            }
-        }
-
-        function updateClock() {
-            var now = new Date(); var hours = now.getHours(); var minutes = now.getMinutes(); var seconds = now.getSeconds();
-            
-            if (hours === wakeUpHour && minutes === 0 && seconds === 0) { forceNightMode = null; syncDriveData(); }
-
-            var hrStr = hours < 10 ? '0' + hours : hours; var minStr = minutes < 10 ? '0' + minutes : minutes;
-            var hrNode = document.getElementById('hr-node'); var minNode = document.getElementById('min-node');
-            var nHrNode = document.getElementById('night-hr-node'); var nMinNode = document.getElementById('night-min-node');
-            
-            if(hrNode.innerText !== hrStr) hrNode.innerText = hrStr; 
-            if(minNode.innerText !== minStr) minNode.innerText = minStr;
-            
-            var nHrStr = (window.innerWidth > window.innerHeight) ? (hrStr + ":") : hrStr;
-            if(nHrNode.innerText !== nHrStr) nHrNode.innerText = nHrStr; 
-            if(nMinNode.innerText !== minStr) nMinNode.innerText = minStr;
-
-            var isNightModeToggled = document.body.classList.contains('night-active');
-            if (forceNightMode === null) {
-                var shouldBeNight = (hours >= 21 || hours < wakeUpHour);
-                if (shouldBeNight && !isNightModeToggled) { document.body.classList.add('night-active'); document.getElementById('brightness-overlay').style.background = 'rgba(0,0,0,0.5)';} 
-                else if (!shouldBeNight && isNightModeToggled) { document.body.classList.remove('night-active'); document.getElementById('brightness-overlay').style.background = 'rgba(0,0,0,0)';}
-            }
-
-            var checkTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0); var activePhase = phases[0];
-            for (var i = 0; i < phases.length; i++) { var d = new Date(phases[i][0], phases[i][1], phases[i][2], 0, 0, 0); if (checkTime >= d) activePhase = phases[i]; else break; }
-            var startDate = new Date(activePhase[0], activePhase[1], activePhase[2], 0, 0, 0);
-            var currentLunarDay = Math.floor((checkTime - startDate) / (1000 * 60 * 60 * 24)) + 1;
-            var currentLunarMonth = (activePhase[1] === 0 ? 12 : activePhase[1]);
-
-            var shortDays = ['CN', 'Th 2', 'Th 3', 'Th 4', 'Th 5', 'Th 6', 'Th 7'];
-            var solarHtml = '<span class="highlight-yellow">' + shortDays[now.getDay()] + '</span> ' + now.getDate() + '/' + (now.getMonth() + 1);
-            var solarNode = document.getElementById('date-solar-top');
-            if(solarNode.innerHTML !== solarHtml) solarNode.innerHTML = solarHtml;
-
-            var lunarHtml = '<span class="highlight-yellow">AL</span> ' + currentLunarDay + '/' + currentLunarMonth;
-            var lunarNode = document.getElementById('date-lunar-top');
-            if(lunarNode.innerHTML !== lunarHtml) lunarNode.innerHTML = lunarHtml;
-
-            renderEvents(now.getMonth() + 1, currentLunarMonth, now.getDate(), currentLunarDay);
-            applyDynamicPositions();
-            checkForBirthdayMusic('clock');
-
-            /* 🌟 ĐỘNG CƠ BÁO CHUÔNG 1 TIẾNG / LẦN (KHÔNG CHẠY KHI ĐANG NHẠC SINH NHẬT HOẶC ĐÊM) */
-            var isBirthday = false;
-            if (birthdays.length > 0) {
-                for(var j=0; j<birthdays.length; j++) {
-                    if(birthdays[j].m === (now.getMonth() + 1) && birthdays[j].d === now.getDate()) { isBirthday = true; break; }
-                }
-            }
-            if (minutes === 0 && seconds === 0 && !hourlyChimePlayed) {
-                hourlyChimePlayed = true;
-                if (!document.body.classList.contains('night-active')) {
-                    if (!(isBirthday && (hours === 8 || hours === 14 || hours === 18 || hours === wakeUpHour))) {
-                        playSolemnChime();
-                    }
-                }
-            } else if (minutes !== 0) {
-                hourlyChimePlayed = false;
-            }
-        }
-        setInterval(updateClock, 1000); 
-
-        function generateSimulatedWeather() {
-            var hr = new Date().getHours(); var baseTemp = 24; 
-            if (hr >= 11 && hr <= 15) baseTemp = 32; else if (hr >= 5 && hr <= 8) baseTemp = 22;
-            document.getElementById('weather-val').innerText = baseTemp;
-            globalHum = "75%"; globalRain = (hr > 12 && hr < 18) ? "40%" : "10%"; globalWind = "8 km/h";
-            globalUV = (hr >= 10 && hr <= 14) ? "6.8" : "0.5"; globalAlt = "473m";
-            if(globalSunrise === "--") globalSunrise = "05:24"; if(globalSunset === "--") globalSunset = "18:13";
-            if(globalAQI === "--") globalAQI = 38;
-            rotateWeatherDisplay();
-        }
-
-        function updateWeatherAndAQI() {
-            var lat = parseFloat(clientLatitude); var lon = parseFloat(clientLongitude);
-            if (isNaN(lat) || !lat) { lat = 12.6792; lon = 108.0694; }
-            var cb = new Date().getTime();
-
-            if (document.getElementById('weather-val').innerText === "--") {
-                document.getElementById('weather-val').innerText = "26";
-                globalHum = "75%"; globalRain = "10%"; globalWind = "8 km/h"; globalUV = "1.0"; globalAlt = "473m"; globalSunrise = "05:24"; globalSunset = "18:12"; globalAQI = 40;
-                rotateWeatherDisplay();
-            }
-
-            var xhrW = new XMLHttpRequest(); xhrW.timeout = 8000;
-            xhrW.open('GET', 'https://api.open-meteo.com/v1/forecast?latitude=' + lat.toFixed(4) + '&longitude=' + lon.toFixed(4) + '&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,uv_index&daily=sunrise,sunset&timezone=Asia%2FHo_Chi_Minh&forecast_days=1&_cb=' + cb, true);
-            xhrW.onerror = function() { generateSimulatedWeather(); }; xhrW.ontimeout = function() { generateSimulatedWeather(); };
-            xhrW.onreadystatechange = function() {
-                if (xhrW.readyState === 4 && xhrW.status === 200) {
-                    try {
-                        var d = JSON.parse(xhrW.responseText); var hr = new Date().getHours();
-                        if(d.hourly) {
-                            document.getElementById('weather-val').innerText = Math.round(d.hourly.temperature_2m[hr]);
-                            globalHum = d.hourly.relative_humidity_2m[hr] + '%'; 
-                            globalRain = (d.hourly.precipitation_probability[hr] != null ? d.hourly.precipitation_probability[hr] : 0) + '%';
-                            globalUV = d.hourly.uv_index[hr] != null ? d.hourly.uv_index[hr].toFixed(1) : "0.5";
-                        }
-                        if(d.daily && d.daily.sunrise) { globalSunrise = d.daily.sunrise[0].substring(11, 16); globalSunset = d.daily.sunset[0].substring(11, 16); }
-                        rotateWeatherDisplay();
-                    } catch(e) { generateSimulatedWeather(); }
-                }
-            }; xhrW.send();
-
-            var xhrA = new XMLHttpRequest(); xhrA.timeout = 8000;
-            xhrA.open('GET', 'https://air-quality-api.open-meteo.com/v1/air-quality?latitude=' + lat.toFixed(4) + '&longitude=' + lon.toFixed(4) + '&hourly=us_aqi,pm2_5&timezone=Asia%2FHo_Chi_Minh&forecast_days=1&_cb=' + cb, true);
-            xhrA.onreadystatechange = function() {
-                if (xhrA.readyState === 4 && xhrA.status === 200) {
-                    try {
-                        var d = JSON.parse(xhrA.responseText); var hr = new Date().getHours();
-                        if(d.hourly && d.hourly.us_aqi && d.hourly.us_aqi[hr] != null) { globalAQI = Math.round(d.hourly.us_aqi[hr]); } 
-                        else if (d.hourly && d.hourly.pm2_5 && d.hourly.pm2_5[hr] != null) {
-                            var pm = d.hourly.pm2_5[hr];
-                            if (pm <= 12.0) globalAQI = Math.round((50/12.0)*pm); else if (pm <= 35.4) globalAQI = Math.round(((49)/(23.4))*(pm-12.1)+51);
-                            else if (pm <= 55.4) globalAQI = Math.round(((49)/(20.0))*(pm-35.5)+101); else globalAQI = Math.round(pm + 100);
-                        }
-                        rotateWeatherDisplay();
-                    } catch(e) {}
-                }
-            }; xhrA.send();
-        }
-        setInterval(updateWeatherAndAQI, 3600000); 
-
-        function updateDynamicContentBySlide() {
-            var now = new Date(); var currentSolarMonth = now.getMonth() + 1; var sDay = now.getDate();
-            var checkTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0); var activePhase = phases[0];
-            for (var i = 0; i < phases.length; i++) { var d = new Date(phases[i][0], phases[i][1], phases[i][2], 0, 0, 0); if (checkTime >= d) activePhase = phases[i]; else break; }
-            var currentLunarMonth = (activePhase[1] === 0 ? 12 : activePhase[1]);
-            var lDay = Math.floor((checkTime - new Date(activePhase[0], activePhase[1], activePhase[2], 0, 0, 0)) / (1000 * 60 * 60 * 24)) + 1;
-
-            rotateWeatherDisplay();
-
-            var activeSpecialties = [];
-            for (var s=0; s<specialtiesData.length; s++) { if(specialtiesData[s].m === currentSolarMonth || specialtiesData[s].m === 0) activeSpecialties.push(specialtiesData[s].text); }
-
-            var finalQuote = ""; var dice = Math.random(); 
-            if (dice < 0.5 && activeSpecialties.length > 0) { finalQuote = "Mùa này " + activeSpecialties[Math.floor(Math.random() * activeSpecialties.length)]; } 
-            else if (quotePool.length > 0) { finalQuote = quotePool[Math.floor(Math.random() * quotePool.length)]; }
-            else { finalQuote = "Nhà là nơi bão dừng sau cánh cửa, nơi bình yên ấm áp nhất để trở về."; }
-
-            var nextActiveFestivalText = "";
-            var minDiff = 365;
-            for(var f=0; f<festivalsData.length; f++) {
-                var fest = festivalsData[f];
-                if(fest.type === 's' && fest.m === currentSolarMonth && fest.d >= sDay) {
-                    var diff = fest.d - sDay;
-                    if(diff < minDiff) { minDiff = diff; nextActiveFestivalText = (diff === 0 ? "Hôm nay: " : "Còn " + diff + " ngày đến ") + fest.text + " (" + fest.d + "/" + fest.m + ")"; }
-                }
-                if(fest.type === 'l' && fest.m === currentLunarMonth && fest.d >= lDay) {
-                    var diffL = fest.d - lDay;
-                    if(diffL >= 0 && diffL < minDiff) { minDiff = diffL; nextActiveFestivalText = (diffL === 0 ? "Hôm nay: " : "Còn " + diffL + " ngày đến ") + fest.text + " (" + fest.d + "/" + fest.m + " ÂL)"; }
-                }
-            }
-
-            var quoteElement = document.getElementById('quote-row');
-            quoteElement.innerHTML = finalQuote; 
-
-            setTimeout(function() {
-                var style = window.getComputedStyle(quoteElement);
-                var lineHeight = parseFloat(style.lineHeight) || (parseFloat(style.fontSize) * 1.5);
-                var height = quoteElement.offsetHeight;
-                var linesCount = Math.round(height / lineHeight);
-
-                var extrasArray = [];
-                if(nextActiveFestivalText !== "") extrasArray.push('<span class="countdown-highlight">' + nextActiveFestivalText + '</span>');
-                if(windowDeathList.length > 0) extrasArray = extrasArray.concat(windowDeathList);
-                
-                if (extrasArray.length > 0) {
-                    var extrasStr = extrasArray.join(' <span style="color:#ffffff; font-weight:400;">|</span> ');
-                    if (linesCount <= 1) {
-                        quoteElement.innerHTML = finalQuote + '<br>' + extrasStr;
-                    } else {
-                        quoteElement.innerHTML = finalQuote + ' <span style="color:#ffffff; font-weight:400;">|</span> ' + extrasStr;
-                    }
-                }
-            }, 50);
-        }
-
-        /* 🌟 CƠ CHẾ LỌC ẢNH 48 GIỜ THÔNG MINH VÀ LẤY 1000 ẢNH TỪ DRIVE */
-        function syncDriveData() {
-            var query = encodeURIComponent("'" + FOLDER_ID + "' in parents and name = 'cauhinh.txt' and trashed = false");
-            var url = 'https://www.googleapis.com/drive/v3/files?q=' + query + '&key=' + API_KEY + '&fields=files(id)';
-            var xhr = new XMLHttpRequest(); xhr.open('GET', url, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var data = JSON.parse(xhr.responseText);
-                    if (data.files && data.files.length > 0) { downloadConfigFile(data.files[0].id); }
-                }
-            };
-            xhr.send();
-
-            // Lấy tối đa 1000 ảnh từ thư mục
-            var imgQuery = encodeURIComponent("'" + FOLDER_ID + "' in parents and mimeType contains 'image/'");
-            var imgUrl = 'https://www.googleapis.com/drive/v3/files?q=' + imgQuery + '&pageSize=1000&key=' + API_KEY + '&fields=files(id,createdTime)';
-            var xhrDrive = new XMLHttpRequest(); xhrDrive.open('GET', imgUrl, true);
-            xhrDrive.onreadystatechange = function() {
-                if (xhrDrive.readyState === 4) {
-                    if (xhrDrive.status === 200) {
-                        var data = JSON.parse(xhrDrive.responseText);
-                        if (data.files && data.files.length > 0) {
-                            var allImgs = [];
-                            var recentImgs = [];
-                            var twoDaysAgo = new Date(Date.now() - 48 * 60 * 60 * 1000); // Mốc 48 giờ trước
-                            
-                            for (var i = 0; i < data.files.length; i++) { 
-                                var imgPath = 'https://drive.google.com/thumbnail?id=' + data.files[i].id + '&sz=w2048';
-                                allImgs.push(imgPath);
-                                // Kiểm tra nếu ảnh tạo trong vòng 2 ngày qua
-                                if (new Date(data.files[i].createdTime) >= twoDaysAgo) {
-                                    recentImgs.push(imgPath);
-                                }
-                            }
-
-                            function shuffleArray(arr) {
-                                var a = arr.slice();
-                                for (var k = a.length - 1; k > 0; k--) { var j = Math.floor(Math.random() * (k + 1)); var temp = a[k]; a[k] = a[j]; a[j] = temp; }
-                                return a;
-                            }
-
-                            // 🌟 Thuật toán tạo luồng phát (Playlist): 1 vòng ảnh mới -> Toàn bộ ảnh
-                            if (recentImgs.length > 0) {
-                                images = shuffleArray(recentImgs).concat(shuffleArray(allImgs));
-                            } else {
-                                // Nếu không có ảnh mới trong 48h, chỉ trộn ngẫu nhiên toàn bộ
-                                images = shuffleArray(allImgs);
-                            }
-                            
-                            currentIndex = 0;
-                            initSlideshow();
-                        } else { fallbackInit("Thư mục trống! Vui lòng tải ảnh lên Drive."); }
-                    } else {
-                        fallbackInit("Lỗi lấy dữ liệu đám mây. Đang dùng ảnh dự phòng...");
-                    }
-                }
-            }; xhrDrive.send();
-        }
-
-        function fallbackInit(msg) {
-            document.getElementById('quote-row').innerText = msg;
-            images = ['https://images.unsplash.com/photo-1506744626753-14002fa88301?q=80&w=2048&auto=format&fit=crop'];
-            initSlideshow();
-        }
-
-        function updateImageDisplayMechanism(imgElement, groupElement) {
-            var isScreenLandscape = (window.innerWidth > window.innerHeight);
-            var isImageLandscape = (imgElement.naturalWidth > imgElement.naturalHeight);
-            imgElement.classList.remove('fit-cover', 'fit-contain'); groupElement.classList.add('show-blur');
-            if (isScreenLandscape) { if (isImageLandscape) { imgElement.classList.add('fit-cover'); } else { imgElement.classList.add('fit-contain'); } } 
-            else { if (!isImageLandscape) { imgElement.classList.add('fit-cover'); } else { imgElement.classList.add('fit-contain'); } }
-            var nHrNode = document.getElementById('night-hr-node');
-            var hrStr = document.getElementById('hr-node').innerText;
-            if (isScreenLandscape) { nHrNode.innerText = hrStr + ":"; } else { nHrNode.innerText = hrStr; }
-        }
-
-        window.addEventListener('resize', function() {
-            var activeFg = document.getElementById(isGroup1Active ? 'fg1' : 'fg2');
-            var activeGroup = document.getElementById(isGroup1Active ? 'group1' : 'group2');
-            if (activeFg && activeFg.naturalWidth) updateImageDisplayMechanism(activeFg, activeGroup);
-        });
-
-        function loadAndDisplayImage(imgUrl, groupID, bgID, fgID) {
-            var currentGroup = document.getElementById(isGroup1Active ? 'group1' : 'group2'); var nextGroup = document.getElementById(groupID);
-            var nextBg = document.getElementById(bgID); var nextFg = document.getElementById(fgID);
-            
-            nextFg.onload = function() { 
-                updateImageDisplayMechanism(nextFg, nextGroup); 
-                currentGroup.classList.remove('active'); 
-                nextGroup.classList.add('active'); 
-                isGroup1Active = !isGroup1Active; 
-                currentIndex = (currentIndex + 1) % images.length; 
-                updateDynamicContentBySlide(); 
-            };
-            
-            nextFg.onerror = function() {
-                if (imgUrl.indexOf('unsplash.com') === -1) {
-                    fallbackInit("Mạng chập chờn. Đang lấy lại ảnh dự phòng...");
-                }
-            };
-            
-            nextBg.src = imgUrl; nextFg.src = imgUrl;
-        }
-
-        function initSlideshow() { applyClockStyle(); updateClock(); updateWeatherAndAQI(); loadAndDisplayImage(images[0], isGroup1Active ? 'group1' : 'group2', isGroup1Active ? 'bg1' : 'bg2', isGroup1Active ? 'fg1' : 'fg2'); changeIntervalMode(currentIntervalIdx + 1); }
-        function goToNextSlide() { if(images.length <= 1) return; var nextIndex = (currentIndex + 1) % images.length; loadAndDisplayImage(images[nextIndex], isGroup1Active ? 'group2' : 'group1', isGroup1Active ? 'bg2' : 'bg1', isGroup1Active ? 'fg2' : 'fg1'); }
-
-        function changeIntervalMode(modeVal) {
-            currentIntervalIdx = modeVal - 1; var seconds = stepSeconds[currentIntervalIdx];
-            if (slideInterval) clearInterval(slideInterval); slideInterval = setInterval(goToNextSlide, seconds * 1000);
-        }
-
-        // Khởi động hệ thống
-        syncDriveData();
-    </script>
-</body>
-</html>
+<body style="background-color: #000000; margin: 0; overflow: hidden;" oncontextmenu="return false;" onkeydown="return false;">
+
+<script>
+    // =========================================================================
+    // 🏢 PHẦN 1: CẤU HÌNH KHÁCH HÀNG ĐỘC LẬP
+    // Bạn chỉ cần thay đổi mã FOLDER_ID khi tạo file cho khách hàng mới.
+    // =========================================================================
+    const FOLDER_ID = "17YOn0tWO8-hzloHM57bLhRh7e9LALZZk"; 
+    const API_KEY = atob('QUl6YVN5REwyRm1VQzkxMUtBTnFwN3VPbnZKcU5xVHltb1R2SkxF');
+
+    // =========================================================================
+    // 🔒 PHẦN 2: LÕI ĐỘNG CƠ ĐÃ ĐƯỢC BĂM BẢO MẬT (OBFUSCATED)
+    // =========================================================================
+    function runEngine() {
+        var _0x370610 = _0x4f41;
+        (function (_0x3d18f6, _0x2cea49) {
+            var _0x519644 = _0x4f41, _0xfce4d7 = _0x3d18f6();
+            while (!![]) {
+                try {
+                    var _0x30253d = parseInt(_0x519644(0x151)) / 0x1 * (-parseInt(_0x519644(0x1d3)) / 0x2) + parseInt(_0x519644(0x129)) / 0x3 * (parseInt(_0x519644(0x14b)) / 0x4) + parseInt(_0x519644(0x11b)) / 0x5 * (parseInt(_0x519644(0xc3)) / 0x6) + -parseInt(_0x519644(0xfc)) / 0x7 + -parseInt(_0x519644(0xe0)) / 0x8 * (parseInt(_0x519644(0x18c)) / 0x9) + parseInt(_0x519644(0x1a0)) / 0xa + parseInt(_0x519644(0x18f)) / 0xb;
+                    if (_0x30253d === _0x2cea49)
+                        break;
+                    else
+                        _0xfce4d7['push'](_0xfce4d7['shift']());
+                } catch (_0x733496) {
+                    _0xfce4d7['push'](_0xfce4d7['shift']());
+                }
+            }
+        }(_0x4178, 0xef682));
+        const css = _0x370610(0x133), styleTag = document[_0x370610(0x126)](_0x370610(0xdd));
+        styleTag['innerHTML'] = css, document[_0x370610(0x1c2)]['appendChild'](styleTag), document[_0x370610(0x18d)]['innerHTML'] = '\x0a\x20\x20\x20\x20<img\x20id=\x22outer-blur-bg\x22\x20src=\x22\x22>\x0a\x20\x20\x20\x20<div\x20id=\x22white-border-bg\x22></div>\x0a\x20\x20\x20\x20<div\x20id=\x22frame-wrapper\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22photo-container\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22group1\x22\x20class=\x22slide-group\x20active\x22><img\x20id=\x22bg1\x22\x20class=\x22background-blur\x22><img\x20id=\x22fg1\x22\x20class=\x22foreground-image\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22group2\x22\x20class=\x22slide-group\x22><img\x20id=\x22bg2\x22\x20class=\x22background-blur\x22><img\x20id=\x22fg2\x22\x20class=\x22foreground-image\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22overlay\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22brightness-overlay\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22toast-msg\x22>Thông\x20báo</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22info-container\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22clock-flex-wrapper\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22hours-style\x20tap-target\x22\x20id=\x22hr-node\x22\x20ontouchstart=\x22window.handleAction(event,\x20\x27night\x27)\x22\x20onclick=\x22window.handleAction(event,\x20\x27night\x27)\x22>00</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22minutes-style\x20tap-target\x22\x20id=\x22min-node\x22\x20ontouchstart=\x22window.handleAction(event,\x20\x27style\x27)\x22\x20onclick=\x22window.handleAction(event,\x20\x27style\x27)\x22>00</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22date-solar-top\x22\x20class=\x22tap-target\x22\x20ontouchstart=\x22window.handleAction(event,\x20\x27wakeup\x27)\x22\x20onclick=\x22window.handleAction(event,\x20\x27wakeup\x27)\x22>Th\x200\x2000/00</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22date-lunar-top\x22\x20class=\x22tap-target\x22\x20ontouchstart=\x22window.handleAction(event,\x20\x27interval\x27)\x22\x20onclick=\x22window.handleAction(event,\x20\x27interval\x27)\x22><span\x20class=\x22highlight-yellow\x22>AL</span>\x2000/00</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22night-clock-box\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22night-hours\x20tap-target\x22\x20id=\x22night-hr-node\x22\x20ontouchstart=\x22window.handleAction(event,\x20\x27night\x27)\x22\x20onclick=\x22window.handleAction(event,\x20\x27night\x27)\x22>00:</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22night-minutes\x20tap-target\x22\x20id=\x22night-min-node\x22\x20ontouchstart=\x22window.handleAction(event,\x20\x27night\x27)\x22\x20onclick=\x22window.handleAction(event,\x20\x27night\x27)\x22>00</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22top-right-wrapper\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22right-env-container\x22\x20class=\x22tap-target\x22\x20ontouchstart=\x22window.handleAction(event,\x20\x27open_location\x27)\x22\x20onclick=\x22window.handleAction(event,\x20\x27open_location\x27)\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22temp-wrapper\x22\x20class=\x22tap-target\x22\x20ontouchstart=\x22window.handleAction(event,\x20\x27next\x27)\x22\x20onclick=\x22window.handleAction(event,\x20\x27next\x27)\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20id=\x22weather-val\x22>--</span><span\x20class=\x22degree-symbol\x22>°</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22bottom-container\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22bottom-left-events\x22\x20class=\x22tap-target\x22\x20ontouchstart=\x22window.handleAction(event,\x20\x27show_birth\x27)\x22\x20onclick=\x22window.handleAction(event,\x20\x27show_birth\x27)\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22bottom-right-text\x22\x20class=\x22tap-target\x22\x20ontouchstart=\x22window.handleAction(event,\x20\x27show_death\x27)\x22\x20onclick=\x22window.handleAction(event,\x20\x27show_death\x27)\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20id=\x22quote-row\x22>Đang\x20tải\x20và\x20đồng\x20bộ\x20hệ\x20thống\x20dữ\x20liệu\x20điện\x20toán\x20đám\x20mây...</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22location-modal\x22\x20class=\x22modal-base\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22modal-title\x22>CÀI\x20ĐẶT\x20VỊ\x20TRÍ</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22text\x22\x20id=\x22loc-name\x22\x20class=\x22loc-input\x22\x20placeholder=\x22Tên\x20địa\x20phương\x20(VD:\x20Tân\x20Lập)\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22text\x22\x20inputmode=\x22decimal\x22\x20id=\x22loc-lat\x22\x20class=\x22loc-input\x22\x20placeholder=\x22Vĩ\x20độ\x20(Chấm\x20hoặc\x20phẩy\x20đều\x20được)\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22text\x22\x20inputmode=\x22decimal\x22\x20id=\x22loc-lon\x22\x20class=\x22loc-input\x22\x20placeholder=\x22Kinh\x20độ\x20(VD:\x20108.0694)\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22loc-btns\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22loc-btn\x20btn-save\x22\x20ontouchstart=\x22window.saveLocation();\x20event.preventDefault();\x22\x20onclick=\x22window.saveLocation()\x22>LƯU</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22loc-btn\x20btn-default\x22\x20ontouchstart=\x22window.defaultLocation();\x20event.preventDefault();\x22\x20onclick=\x22window.defaultLocation()\x22>MẶC\x20ĐỊNH</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn-close-modal\x22\x20ontouchstart=\x22window.closeLocationModal();\x20event.preventDefault();\x22\x20onclick=\x22window.closeLocationModal()\x22>Đóng\x20(Hủy)</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22list-modal\x22\x20class=\x22modal-base\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22list-title\x22\x20class=\x22modal-title\x22>DANH\x20SÁCH</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22list-content\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn-close-modal\x22\x20style=\x22margin-top:10px;\x22\x20ontouchstart=\x22window.closeListModal();\x20event.preventDefault();\x22\x20onclick=\x22window.closeListModal()\x22>Đóng\x20bảng</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20</div>\x0a';
+        var images = [_0x370610(0x125)], currentIndex = 0x0, slideInterval, toastTimeout, locationModalTimeout, listModalTimeout, audioCtx = null, isGroup1Active = !![], audioUnlocked = ![], forceNightMode = null, globalAQI = '--', globalHum = '--', globalRain = '--', globalSunrise = '--', globalSunset = '--', globalUV = '--', globalAlt = '--', envDisplayIndex = 0x0, windowDeathList = [], bX1 = 0x0, bY1 = 0x0, bX2 = 0x0, bY2 = 0x0, bX3 = 0x0, bY3 = 0x0, stepSeconds = [
+            0xb4,
+            0x12c,
+            0x258,
+            0x384
+        ], currentIntervalIdx = 0x1, wakeUpHour = localStorage[_0x370610(0x16c)]('wakeUpHour') ? parseInt(localStorage['getItem'](_0x370610(0x18b))) : 0x6, loadMorningMusicFlag = ![], clock8AMMusicFlag = ![], clock14PMMusicFlag = ![], clock18PMMusicFlag = ![], lastBirthdayCheckDate = null, hourlyChimePlayed = ![], clockStyles = [
+            {
+                'f': _0x370610(0x147),
+                'hc': _0x370610(0x11e),
+                'mc': _0x370610(0x17f),
+                'fw': 0x2bc
+            },
+            {
+                'f': _0x370610(0x147),
+                'hc': '#ffffff',
+                'mc': _0x370610(0x11e),
+                'fw': 0x2bc
+            },
+            {
+                'f': '\x27Tourney\x27,\x20cursive',
+                'hc': '#F4B41A',
+                'mc': '#ffffff',
+                'fw': 0x258
+            },
+            {
+                'f': _0x370610(0x15b),
+                'hc': _0x370610(0x17f),
+                'mc': _0x370610(0x11e),
+                'fw': 0x258
+            },
+            {
+                'f': _0x370610(0x1ab),
+                'hc': _0x370610(0x11e),
+                'mc': _0x370610(0x17f),
+                'fw': 0x2bc
+            },
+            {
+                'f': _0x370610(0x1ab),
+                'hc': _0x370610(0x17f),
+                'mc': '#F4B41A',
+                'fw': 0x2bc
+            },
+            {
+                'f': _0x370610(0x1cd),
+                'hc': _0x370610(0x1b3),
+                'mc': _0x370610(0x17f),
+                'fw': 0x258
+            },
+            {
+                'f': _0x370610(0x1cd),
+                'hc': _0x370610(0x11e),
+                'mc': _0x370610(0x17f),
+                'fw': 0x258
+            },
+            {
+                'f': _0x370610(0x1ba),
+                'hc': '#FF3366',
+                'mc': _0x370610(0x17f),
+                'fw': 0x190
+            },
+            {
+                'f': '\x27Righteous\x27,\x20cursive',
+                'hc': _0x370610(0x11e),
+                'mc': _0x370610(0x17f),
+                'fw': 0x190
+            },
+            {
+                'f': '\x27Courier\x20Prime\x27,\x20monospace',
+                'hc': _0x370610(0x1bd),
+                'mc': _0x370610(0x17f),
+                'fw': 0x2bc
+            },
+            {
+                'f': _0x370610(0xf5),
+                'hc': _0x370610(0x17f),
+                'mc': _0x370610(0x11e),
+                'fw': 0x2bc
+            },
+            {
+                'f': _0x370610(0xfd),
+                'hc': _0x370610(0x11e),
+                'mc': _0x370610(0x17f),
+                'fw': 0x2bc
+            },
+            {
+                'f': _0x370610(0xfd),
+                'hc': _0x370610(0x17f),
+                'mc': _0x370610(0x11e),
+                'fw': 0x2bc
+            },
+            {
+                'f': _0x370610(0x147),
+                'hc': '#00E5FF',
+                'mc': _0x370610(0x143),
+                'fw': 0x2bc
+            },
+            {
+                'f': '\x27Tourney\x27,\x20cursive',
+                'hc': _0x370610(0x1bd),
+                'mc': '#FF9100',
+                'fw': 0x258
+            },
+            {
+                'f': _0x370610(0x1ab),
+                'hc': _0x370610(0x1c5),
+                'mc': _0x370610(0x1c5),
+                'fw': 0x2bc
+            },
+            {
+                'f': '\x27Oswald\x27,\x20sans-serif',
+                'hc': _0x370610(0x1b4),
+                'mc': _0x370610(0x17f),
+                'fw': 0x258
+            },
+            {
+                'f': _0x370610(0x1ba),
+                'hc': '#00E5FF',
+                'mc': _0x370610(0x1bd),
+                'fw': 0x190
+            },
+            {
+                'f': _0x370610(0xfd),
+                'hc': _0x370610(0x1c5),
+                'mc': '#F4B41A',
+                'fw': 0x2bc
+            },
+            {
+                'f': '\x27Montserrat\x27,\x20sans-serif',
+                'hc': '#FF9100',
+                'mc': _0x370610(0x11e),
+                'fw': 0x2bc
+            },
+            {
+                'f': _0x370610(0xf5),
+                'hc': '#00E5FF',
+                'mc': '#00E5FF',
+                'fw': 0x2bc
+            },
+            {
+                'f': '\x27Tourney\x27,\x20cursive',
+                'hc': _0x370610(0x143),
+                'mc': _0x370610(0x17f),
+                'fw': 0x258
+            },
+            {
+                'f': '\x27Playfair\x20Display\x27,\x20serif',
+                'hc': _0x370610(0x17f),
+                'mc': _0x370610(0x17f),
+                'fw': 0x2bc
+            },
+            {
+                'f': _0x370610(0x1cd),
+                'hc': _0x370610(0x1bd),
+                'mc': '#ffffff',
+                'fw': 0x258
+            },
+            {
+                'f': _0x370610(0x1ba),
+                'hc': _0x370610(0x17f),
+                'mc': _0x370610(0x143),
+                'fw': 0x190
+            },
+            {
+                'f': _0x370610(0xfd),
+                'hc': '#FF9100',
+                'mc': '#ffffff',
+                'fw': 0x2bc
+            },
+            {
+                'f': '\x27Montserrat\x27,\x20sans-serif',
+                'hc': _0x370610(0x1c5),
+                'mc': _0x370610(0x143),
+                'fw': 0x2bc
+            },
+            {
+                'f': _0x370610(0x15b),
+                'hc': _0x370610(0x1b3),
+                'mc': _0x370610(0x1bd),
+                'fw': 0x258
+            },
+            {
+                'f': '\x27Playfair\x20Display\x27,\x20serif',
+                'hc': _0x370610(0x143),
+                'mc': '#F4B41A',
+                'fw': 0x2bc
+            }
+        ], currentStyleIdx = parseInt(localStorage[_0x370610(0x16c)](_0x370610(0x181)));
+        if (isNaN(currentStyleIdx) || currentStyleIdx < 0x0 || currentStyleIdx >= clockStyles[_0x370610(0x10e)])
+            currentStyleIdx = 0x0;
+        var defaultLatitude = 12.6792, defaultLongitude = 108.0694, defaultLocalName = _0x370610(0xe7), clientLatitude = localStorage[_0x370610(0x16c)]('myLat') ? parseFloat(localStorage['getItem'](_0x370610(0x179))) : defaultLatitude, clientLongitude = localStorage['getItem'](_0x370610(0x108)) ? parseFloat(localStorage['getItem']('myLon')) : defaultLongitude, clientLocalName = localStorage['getItem']('myName') ? localStorage[_0x370610(0x16c)]('myName') : defaultLocalName, birthdays = [], anniversaries = [], festivalsData = [], specialtiesData = [], quotePool = [], phases = [
+            [
+                0x7e9,
+                0xb,
+                0x14,
+                0xb,
+                'Ất\x20Tỵ'
+            ],
+            [
+                0x7ea,
+                0x0,
+                0x13,
+                0xc,
+                'Ất\x20Tỵ'
+            ],
+            [
+                0x7ea,
+                0x1,
+                0x11,
+                0x1,
+                _0x370610(0x123)
+            ],
+            [
+                0x7ea,
+                0x2,
+                0x13,
+                0x2,
+                _0x370610(0x123)
+            ],
+            [
+                0x7ea,
+                0x3,
+                0x11,
+                0x3,
+                _0x370610(0x123)
+            ],
+            [
+                0x7ea,
+                0x4,
+                0x10,
+                0x4,
+                _0x370610(0x123)
+            ],
+            [
+                0x7ea,
+                0x5,
+                0xf,
+                0x5,
+                _0x370610(0x123)
+            ],
+            [
+                0x7ea,
+                0x6,
+                0xe,
+                0x6,
+                _0x370610(0x123)
+            ],
+            [
+                0x7ea,
+                0x7,
+                0xd,
+                0x7,
+                _0x370610(0x123)
+            ],
+            [
+                0x7ea,
+                0x8,
+                0xb,
+                0x8,
+                _0x370610(0x123)
+            ],
+            [
+                0x7ea,
+                0x9,
+                0xb,
+                0x9,
+                'Bính\x20Ngọ'
+            ],
+            [
+                0x7ea,
+                0xa,
+                0xa,
+                0xa,
+                _0x370610(0x123)
+            ],
+            [
+                0x7ea,
+                0xb,
+                0x9,
+                0xb,
+                _0x370610(0x123)
+            ],
+            [
+                0x7eb,
+                0x0,
+                0x8,
+                0xc,
+                'Bính\x20Ngọ'
+            ],
+            [
+                0x7eb,
+                0x1,
+                0x6,
+                0x1,
+                _0x370610(0x193)
+            ],
+            [
+                0x7eb,
+                0x2,
+                0x8,
+                0x2,
+                'Đinh\x20Mùi'
+            ],
+            [
+                0x7eb,
+                0x3,
+                0x7,
+                0x3,
+                _0x370610(0x193)
+            ],
+            [
+                0x7eb,
+                0x4,
+                0x6,
+                0x4,
+                _0x370610(0x193)
+            ],
+            [
+                0x7eb,
+                0x5,
+                0x5,
+                0x5,
+                _0x370610(0x193)
+            ],
+            [
+                0x7eb,
+                0x6,
+                0x4,
+                0x6,
+                _0x370610(0x193)
+            ],
+            [
+                0x7eb,
+                0x7,
+                0x2,
+                0x7,
+                _0x370610(0x193)
+            ],
+            [
+                0x7eb,
+                0x7,
+                0x1f,
+                0x7,
+                _0x370610(0x193)
+            ],
+            [
+                0x7eb,
+                0x8,
+                0x1d,
+                0x8,
+                _0x370610(0x193)
+            ],
+            [
+                0x7eb,
+                0x9,
+                0x1d,
+                0x9,
+                _0x370610(0x193)
+            ],
+            [
+                0x7eb,
+                0xa,
+                0x1c,
+                0xa,
+                _0x370610(0x193)
+            ],
+            [
+                0x7eb,
+                0xb,
+                0x1b,
+                0xb,
+                _0x370610(0x193)
+            ],
+            [
+                0x7ec,
+                0x0,
+                0x1a,
+                0xc,
+                _0x370610(0x193)
+            ],
+            [
+                0x7ec,
+                0x1,
+                0x1a,
+                0x1,
+                _0x370610(0x160)
+            ],
+            [
+                0x7ec,
+                0x2,
+                0x19,
+                0x2,
+                'Mậu\x20Thân'
+            ],
+            [
+                0x7ec,
+                0x3,
+                0x1a,
+                0x3,
+                _0x370610(0x160)
+            ],
+            [
+                0x7ec,
+                0x4,
+                0x19,
+                0x4,
+                _0x370610(0x160)
+            ],
+            [
+                0x7ec,
+                0x5,
+                0x18,
+                0x5,
+                _0x370610(0x160)
+            ],
+            [
+                0x7ec,
+                0x6,
+                0x17,
+                0x5,
+                _0x370610(0x160)
+            ],
+            [
+                0x7ec,
+                0x7,
+                0x16,
+                0x6,
+                _0x370610(0x160)
+            ],
+            [
+                0x7ec,
+                0x8,
+                0x14,
+                0x7,
+                _0x370610(0x160)
+            ],
+            [
+                0x7ec,
+                0x9,
+                0x13,
+                0x8,
+                'Mậu\x20Thân'
+            ],
+            [
+                0x7ec,
+                0xa,
+                0x12,
+                0x9,
+                _0x370610(0x160)
+            ],
+            [
+                0x7ec,
+                0xb,
+                0x11,
+                0xa,
+                _0x370610(0x160)
+            ],
+            [
+                0x7ed,
+                0x0,
+                0x10,
+                0xb,
+                _0x370610(0x160)
+            ],
+            [
+                0x7ed,
+                0x1,
+                0xf,
+                0xc,
+                _0x370610(0x160)
+            ],
+            [
+                0x7ed,
+                0x2,
+                0xd,
+                0x1,
+                _0x370610(0x12a)
+            ],
+            [
+                0x7ed,
+                0x3,
+                0xf,
+                0x2,
+                _0x370610(0x12a)
+            ],
+            [
+                0x7ed,
+                0x4,
+                0xd,
+                0x3,
+                _0x370610(0x12a)
+            ],
+            [
+                0x7ed,
+                0x5,
+                0xd,
+                0x4,
+                _0x370610(0x12a)
+            ],
+            [
+                0x7ed,
+                0x6,
+                0xb,
+                0x5,
+                _0x370610(0x12a)
+            ],
+            [
+                0x7ed,
+                0x7,
+                0xb,
+                0x6,
+                _0x370610(0x12a)
+            ],
+            [
+                0x7ed,
+                0x8,
+                0xa,
+                0x7,
+                _0x370610(0x12a)
+            ],
+            [
+                0x7ed,
+                0x9,
+                0x8,
+                0x8,
+                _0x370610(0x12a)
+            ],
+            [
+                0x7ed,
+                0xa,
+                0x8,
+                0x9,
+                _0x370610(0x12a)
+            ],
+            [
+                0x7ed,
+                0xb,
+                0x7,
+                0xa,
+                _0x370610(0x12a)
+            ],
+            [
+                0x7ee,
+                0x0,
+                0x6,
+                0xb,
+                _0x370610(0x12a)
+            ],
+            [
+                0x7ee,
+                0x1,
+                0x5,
+                0xc,
+                _0x370610(0x12a)
+            ],
+            [
+                0x7ee,
+                0x2,
+                0x3,
+                0x1,
+                'Canh\x20Tuất'
+            ],
+            [
+                0x7ee,
+                0x3,
+                0x5,
+                0x2,
+                _0x370610(0x106)
+            ],
+            [
+                0x7ee,
+                0x4,
+                0x3,
+                0x3,
+                'Canh\x20Tuất'
+            ],
+            [
+                0x7ee,
+                0x5,
+                0x2,
+                0x4,
+                _0x370610(0x106)
+            ],
+            [
+                0x7ee,
+                0x6,
+                0x1,
+                0x5,
+                _0x370610(0x106)
+            ],
+            [
+                0x7ee,
+                0x6,
+                0x1e,
+                0x6,
+                _0x370610(0x106)
+            ],
+            [
+                0x7ee,
+                0x7,
+                0x1e,
+                0x7,
+                _0x370610(0x106)
+            ],
+            [
+                0x7ee,
+                0x8,
+                0x1d,
+                0x8,
+                _0x370610(0x106)
+            ],
+            [
+                0x7ee,
+                0x9,
+                0x1b,
+                0x9,
+                _0x370610(0x106)
+            ],
+            [
+                0x7ee,
+                0xa,
+                0x1b,
+                0xa,
+                'Canh\x20Tuất'
+            ],
+            [
+                0x7ee,
+                0xb,
+                0x1a,
+                0xb,
+                _0x370610(0x106)
+            ]
+        ];
+        function getEnvColor(_0x17d877, _0x50119f) {
+            var _0x503e8f = _0x370610, _0x241c0b = String(_0x50119f);
+            if (_0x241c0b === '--' || _0x241c0b[_0x503e8f(0x173)]('--') !== -0x1)
+                return _0x503e8f(0x17f);
+            var _0x506e3d = parseFloat(_0x241c0b);
+            if (_0x17d877 === 'aqi') {
+                if (_0x506e3d <= 0x32)
+                    return _0x503e8f(0x17f);
+                if (_0x506e3d <= 0x64)
+                    return '#F4B41A';
+                if (_0x506e3d <= 0x96)
+                    return _0x503e8f(0x1b5);
+                return '#FF3366';
+            }
+            if (_0x17d877 === 'uv') {
+                if (_0x506e3d <= 0x2)
+                    return _0x503e8f(0x17f);
+                if (_0x506e3d <= 0x5)
+                    return _0x503e8f(0x11e);
+                if (_0x506e3d <= 0x7)
+                    return '#FF9500';
+                return _0x503e8f(0x143);
+            }
+            if (_0x17d877 === _0x503e8f(0xeb)) {
+                if (_0x506e3d < 0x33)
+                    return _0x503e8f(0x17f);
+                if (_0x506e3d <= 0x4b)
+                    return _0x503e8f(0x11e);
+                return _0x503e8f(0x143);
+            }
+            return _0x503e8f(0x17f);
+        }
+        function syncEnvWidth() {
+            setTimeout(function () {
+                var _0x4af528 = _0x4f41, _0x4fd56b = document[_0x4af528(0x17b)](_0x4af528(0x105)), _0x4f7beb = document['querySelector'](_0x4af528(0x11f));
+                if (_0x4fd56b && _0x4f7beb) {
+                    var _0x137d60 = _0x4fd56b[_0x4af528(0x1c0)]()[_0x4af528(0x148)];
+                    if (_0x137d60 > 0x0) {
+                        _0x4f7beb[_0x4af528(0xdd)][_0x4af528(0x148)] = _0x137d60 + 'px', _0x4f7beb[_0x4af528(0xdd)][_0x4af528(0xec)] = _0x4af528(0x150), _0x4f7beb[_0x4af528(0xdd)]['justifyContent'] = _0x4af528(0x15a), _0x4f7beb[_0x4af528(0xdd)][_0x4af528(0x146)] = _0x4af528(0x15a);
+                        var _0x218226 = 1.1;
+                        _0x4f7beb[_0x4af528(0xdd)][_0x4af528(0xd7)] = _0x218226 + _0x4af528(0x16f);
+                        while (_0x4f7beb['scrollWidth'] > _0x4f7beb['clientWidth'] && _0x218226 > 0.4) {
+                            _0x218226 -= 0.05, _0x4f7beb['style'][_0x4af528(0xd7)] = _0x218226 + _0x4af528(0x16f);
+                        }
+                    }
+                }
+            }, 0x32);
+        }
+        function rotateWeatherDisplay() {
+            var _0x48b48f = _0x370610, _0x5e21db = [
+                    _0x48b48f(0x141) + getEnvColor(_0x48b48f(0xfe), globalAQI) + _0x48b48f(0x1a2) + globalAQI + _0x48b48f(0xf1),
+                    '☀️\x20<span\x20style=\x22color:' + getEnvColor('uv', globalUV) + _0x48b48f(0x1a2) + globalUV + _0x48b48f(0xf1),
+                    _0x48b48f(0x161) + getEnvColor(_0x48b48f(0xeb), parseFloat(globalRain)) + ';\x20font-weight:700;\x22>' + globalRain + _0x48b48f(0xf1),
+                    _0x48b48f(0x19f) + globalHum,
+                    '🌅\x20' + globalSunrise + '-' + globalSunset
+                ], _0x348123 = _0x5e21db[envDisplayIndex % _0x5e21db['length']];
+            envDisplayIndex++;
+            var _0x2a2430 = document['getElementById']('right-env-container');
+            _0x2a2430 && (_0x2a2430[_0x48b48f(0x169)] = _0x48b48f(0x182) + _0x348123 + _0x48b48f(0x1d6), syncEnvWidth());
+        }
+        setInterval(rotateWeatherDisplay, 0x1d4c0);
+        function fetchConfigFromDrive() {
+            var _0x4d620e = _0x370610, _0x37cd15 = encodeURIComponent('\x27' + FOLDER_ID + '\x27\x20in\x20parents\x20and\x20name\x20=\x20\x27cauhinh.txt\x27\x20and\x20trashed\x20=\x20false'), _0x317cbe = _0x4d620e(0x139) + _0x37cd15 + '&key=' + API_KEY + _0x4d620e(0x16e), _0x29b253 = new XMLHttpRequest();
+            _0x29b253[_0x4d620e(0x1d2)](_0x4d620e(0x1aa), _0x317cbe, !![]), _0x29b253[_0x4d620e(0x191)] = function () {
+                var _0x553f1a = _0x4d620e;
+                if (_0x29b253[_0x553f1a(0xfb)] === 0x4 && _0x29b253[_0x553f1a(0x155)] === 0xc8) {
+                    var _0x4b8742 = JSON[_0x553f1a(0x1a5)](_0x29b253[_0x553f1a(0xcd)]);
+                    _0x4b8742[_0x553f1a(0x15f)] && _0x4b8742[_0x553f1a(0x15f)]['length'] > 0x0 && downloadConfigFile(_0x4b8742[_0x553f1a(0x15f)][0x0]['id']);
+                }
+            }, _0x29b253['send']();
+        }
+        function downloadConfigFile(_0x3da1e3) {
+            var _0x3289fa = _0x370610, _0x49cbb4 = _0x3289fa(0xc1) + _0x3da1e3 + _0x3289fa(0x1ca) + API_KEY, _0x46b822 = new XMLHttpRequest();
+            _0x46b822[_0x3289fa(0x1d2)](_0x3289fa(0x1aa), _0x49cbb4, !![]);
+            if (_0x46b822[_0x3289fa(0x1b7)])
+                _0x46b822[_0x3289fa(0x1b7)]('text/plain;\x20charset=utf-8');
+            _0x46b822[_0x3289fa(0x191)] = function () {
+                var _0x76452c = _0x3289fa;
+                _0x46b822[_0x76452c(0xfb)] === 0x4 && _0x46b822['status'] === 0xc8 && parseConfigText(_0x46b822[_0x76452c(0xcd)]);
+            }, _0x46b822[_0x3289fa(0x1a4)]();
+        }
+        function parseConfigText(_0x5346c4) {
+            var _0x1941ad = _0x370610, _0xbb73ef = _0x5346c4['split']('\x0a'), _0x4010c = '', _0x2e1869 = [], _0xeb5b44 = [], _0x2b70ae = [], _0x4a8b82 = [], _0x5075f5 = [];
+            for (var _0x3434b4 = 0x0; _0x3434b4 < _0xbb73ef[_0x1941ad(0x10e)]; _0x3434b4++) {
+                var _0x5b92ab = _0xbb73ef[_0x3434b4][_0x1941ad(0x10a)]('\x0d', '')[_0x1941ad(0x13e)]();
+                if (!_0x5b92ab || _0x5b92ab['indexOf']('#') === 0x0)
+                    continue;
+                if (_0x5b92ab[_0x1941ad(0x173)]('[') === 0x0) {
+                    _0x4010c = _0x5b92ab[_0x1941ad(0x1ce)]();
+                    continue;
+                }
+                if (_0x4010c === _0x1941ad(0x1c3)) {
+                    var _0x3ec77b = _0x5b92ab['split']('=');
+                    if (_0x3ec77b['length'] === 0x2) {
+                        var _0x396560 = _0x3ec77b[0x0][_0x1941ad(0x13e)]()[_0x1941ad(0x1ce)](), _0x217d01 = _0x3ec77b[0x1][_0x1941ad(0x13e)]();
+                        if (_0x396560 === _0x1941ad(0x1ad)) {
+                            if (!localStorage[_0x1941ad(0x16c)](_0x1941ad(0x179)))
+                                clientLatitude = parseFloat(_0x217d01['replace'](',', '.'));
+                            defaultLatitude = parseFloat(_0x217d01[_0x1941ad(0x10a)](',', '.'));
+                        }
+                        if (_0x396560 === 'KINH_DO') {
+                            if (!localStorage[_0x1941ad(0x16c)]('myLon'))
+                                clientLongitude = parseFloat(_0x217d01[_0x1941ad(0x10a)](',', '.'));
+                            defaultLongitude = parseFloat(_0x217d01['replace'](',', '.'));
+                        }
+                        if (_0x396560 === _0x1941ad(0x1c6)) {
+                            if (!localStorage['getItem'](_0x1941ad(0xbe)))
+                                clientLocalName = _0x217d01;
+                            defaultLocalName = _0x217d01;
+                        }
+                    }
+                } else {
+                    if (_0x4010c === _0x1941ad(0x14e)) {
+                        var _0x1b158d = _0x5b92ab[_0x1941ad(0xe9)](/^(\d{1,2})\s*[\/]\s*(\d{1,2})\s+(.+)$/);
+                        if (_0x1b158d)
+                            _0x2e1869[_0x1941ad(0x103)]({
+                                'd': parseInt(_0x1b158d[0x1], 0xa),
+                                'm': parseInt(_0x1b158d[0x2], 0xa),
+                                'name': _0x1b158d[0x3][_0x1941ad(0x13e)]()
+                            });
+                    } else {
+                        if (_0x4010c === '[DANH\x20SACH\x20NGAY\x20GIO]') {
+                            var _0x502aa7 = _0x5b92ab['match'](/^(\d{1,2})\s*[\/]\s*(\d{1,2})\s+(.+)$/);
+                            if (_0x502aa7)
+                                _0xeb5b44['push']({
+                                    'd': parseInt(_0x502aa7[0x1], 0xa),
+                                    'm': parseInt(_0x502aa7[0x2], 0xa),
+                                    'name': _0x502aa7[0x3][_0x1941ad(0x13e)]()
+                                });
+                        } else {
+                            if (_0x4010c === _0x1941ad(0x166) || _0x4010c === '[NGAY\x20LE\x20TON\x20GIAO]' || _0x4010c === _0x1941ad(0x138)) {
+                                var _0xec2061 = _0x5b92ab[_0x1941ad(0xe9)](/^(s|l)\s*[\/]\s*(\d{1,2})\s*[\/]\s*(\d{1,2})\s+(.+)$/i);
+                                if (_0xec2061)
+                                    _0x2b70ae[_0x1941ad(0x103)]({
+                                        'type': _0xec2061[0x1][_0x1941ad(0xd1)](),
+                                        'm': parseInt(_0xec2061[0x2], 0xa),
+                                        'd': parseInt(_0xec2061[0x3], 0xa),
+                                        'text': _0xec2061[0x4][_0x1941ad(0x13e)]()
+                                    });
+                            } else {
+                                if (_0x4010c === _0x1941ad(0x1bb)) {
+                                    var _0x2703d7 = _0x5b92ab['match'](/^(\d{1,2})\s+(.+)$/);
+                                    if (_0x2703d7)
+                                        _0x4a8b82['push']({
+                                            'm': parseInt(_0x2703d7[0x1], 0xa),
+                                            'text': _0x2703d7[0x2][_0x1941ad(0x13e)]()
+                                        });
+                                } else
+                                    (_0x4010c === _0x1941ad(0x189) || _0x4010c === _0x1941ad(0x13b)) && _0x5075f5[_0x1941ad(0x103)](_0x5b92ab);
+                            }
+                        }
+                    }
+                }
+            }
+            if (_0x2e1869[_0x1941ad(0x10e)] > 0x0)
+                birthdays = _0x2e1869;
+            if (_0xeb5b44[_0x1941ad(0x10e)] > 0x0)
+                anniversaries = _0xeb5b44;
+            if (_0x2b70ae[_0x1941ad(0x10e)] > 0x0)
+                festivalsData = _0x2b70ae;
+            if (_0x4a8b82[_0x1941ad(0x10e)] > 0x0)
+                specialtiesData = _0x4a8b82;
+            if (_0x5075f5[_0x1941ad(0x10e)] > 0x0)
+                quotePool = _0x5075f5;
+            updateWeatherAndAQI(), updateClock(), updateDynamicContentBySlide(), checkForBirthdayMusic(_0x1941ad(0x1b6));
+        }
+        function showToast(_0xfd7e) {
+            var _0x1a2f3f = _0x370610, _0x4602a8 = document[_0x1a2f3f(0x17b)](_0x1a2f3f(0xd5));
+            _0x4602a8[_0x1a2f3f(0x1c7)] = _0xfd7e, _0x4602a8[_0x1a2f3f(0xd8)][_0x1a2f3f(0x101)](_0x1a2f3f(0xea));
+            if (toastTimeout)
+                clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(function () {
+                var _0x378945 = _0x1a2f3f;
+                _0x4602a8[_0x378945(0xd8)][_0x378945(0x154)](_0x378945(0xea));
+            }, 0xbb8);
+        }
+        function applyClockStyle() {
+            var _0x21eeb5 = _0x370610, _0x204ee7 = clockStyles[currentStyleIdx], _0x224cab = document[_0x21eeb5(0x17b)](_0x21eeb5(0x11d)), _0x2ceb7b = document[_0x21eeb5(0x17b)](_0x21eeb5(0x192));
+            _0x224cab['style'][_0x21eeb5(0x149)] = _0x204ee7['f'], _0x224cab[_0x21eeb5(0xdd)][_0x21eeb5(0x131)] = _0x204ee7['hc'], _0x224cab[_0x21eeb5(0xdd)]['fontWeight'] = _0x204ee7['fw'], _0x2ceb7b[_0x21eeb5(0xdd)][_0x21eeb5(0x149)] = _0x204ee7['f'], _0x2ceb7b[_0x21eeb5(0xdd)][_0x21eeb5(0x131)] = _0x204ee7['mc'], _0x2ceb7b[_0x21eeb5(0xdd)][_0x21eeb5(0x1a7)] = _0x204ee7['fw'], localStorage[_0x21eeb5(0xc5)](_0x21eeb5(0x181), currentStyleIdx);
+        }
+        function playNote(_0x16ba98, _0x4ba27d, _0x27eba1, _0x4e9603) {
+            var _0x1f84e6 = _0x370610;
+            if (!audioCtx)
+                return;
+            var _0x359343 = audioCtx[_0x1f84e6(0xde)](), _0x52a0b1 = audioCtx[_0x1f84e6(0x10d)]();
+            _0x359343[_0x1f84e6(0x120)] = _0x4e9603 || 'sine', _0x359343['frequency'][_0x1f84e6(0x1b1)](_0x16ba98, _0x4ba27d), _0x52a0b1[_0x1f84e6(0x157)][_0x1f84e6(0x1b1)](0.2, _0x4ba27d), _0x52a0b1[_0x1f84e6(0x157)][_0x1f84e6(0x195)](0.001, _0x4ba27d + _0x27eba1), _0x359343[_0x1f84e6(0xd0)](_0x52a0b1), _0x52a0b1[_0x1f84e6(0xd0)](audioCtx['destination']), _0x359343['start'](_0x4ba27d), _0x359343[_0x1f84e6(0x12f)](_0x4ba27d + _0x27eba1);
+        }
+        function playSolemnChime() {
+            var _0x36f8c8 = _0x370610;
+            if (!audioCtx)
+                try {
+                    audioCtx = new (window['AudioContext'] || window['webkitAudioContext'])();
+                } catch (_0x172a2a) {
+                }
+            if (audioCtx && audioCtx['state'] === _0x36f8c8(0x194))
+                audioCtx[_0x36f8c8(0xc6)]();
+            var _0x53476e = audioCtx[_0x36f8c8(0xc0)];
+            playNote(0xdc, _0x53476e, 3.5, _0x36f8c8(0x12c)), playNote(0x1b8, _0x53476e + 0.2, 0x3, 'sine'), playNote(554.37, _0x53476e + 0.5, 0x3, 'sine'), playNote(659.25, _0x53476e + 0.8, 0x3, _0x36f8c8(0x12c)), playNote(0x370, _0x53476e + 1.2, 0x4, _0x36f8c8(0x12c));
+        }
+        function playHappyBirthday() {
+            var _0x9018c8 = _0x370610;
+            if (!audioCtx)
+                try {
+                    audioCtx = new (window[(_0x9018c8(0xf3))] || window['webkitAudioContext'])();
+                } catch (_0x2b1d60) {
+                }
+            if (audioCtx && audioCtx[_0x9018c8(0x198)] === _0x9018c8(0x194))
+                audioCtx[_0x9018c8(0xc6)]();
+            var _0x36478f = audioCtx[_0x9018c8(0xc0)], _0x79c66b = 0.45;
+            function _0xa693d2(_0x35120a, _0x33f93e) {
+                var _0xe67e07 = _0x9018c8;
+                playNote(_0x35120a, _0x36478f, _0x33f93e * _0x79c66b, _0xe67e07(0x13c)), _0x36478f += _0x33f93e * _0x79c66b;
+            }
+            _0xa693d2(261.63, 0.75), _0xa693d2(261.63, 0.25), _0xa693d2(293.66, 0x1), _0xa693d2(261.63, 0x1), _0xa693d2(349.23, 0x1), _0xa693d2(329.63, 0x2), _0xa693d2(261.63, 0.75), _0xa693d2(261.63, 0.25), _0xa693d2(293.66, 0x1), _0xa693d2(261.63, 0x1), _0xa693d2(0x188, 0x1), _0xa693d2(349.23, 0x2), _0xa693d2(261.63, 0.75), _0xa693d2(261.63, 0.25), _0xa693d2(523.25, 0x1), _0xa693d2(0x1b8, 0x1), _0xa693d2(349.23, 0x1), _0xa693d2(329.63, 0x1), _0xa693d2(293.66, 0x2), _0xa693d2(466.16, 0.75), _0xa693d2(466.16, 0.25), _0xa693d2(0x1b8, 0x1), _0xa693d2(349.23, 0x1), _0xa693d2(0x188, 0x1), _0xa693d2(349.23, 0x2);
+        }
+        function openLocationModal() {
+            var _0x11cb5f = _0x370610, _0x6ecc8c = document['getElementById'](_0x11cb5f(0x15c));
+            document[_0x11cb5f(0x17b)]('loc-name')[_0x11cb5f(0x100)] = clientLocalName, document[_0x11cb5f(0x17b)](_0x11cb5f(0x158))[_0x11cb5f(0x100)] = clientLatitude, document[_0x11cb5f(0x17b)](_0x11cb5f(0x1c8))[_0x11cb5f(0x100)] = clientLongitude, _0x6ecc8c[_0x11cb5f(0xd8)]['add']('show-modal');
+            if (locationModalTimeout)
+                clearTimeout(locationModalTimeout);
+            locationModalTimeout = setTimeout(closeLocationModal, 0xea60);
+        }
+        function closeLocationModal() {
+            var _0x1d1c19 = _0x370610;
+            document[_0x1d1c19(0x17b)]('location-modal')['classList']['remove'](_0x1d1c19(0x124));
+            if (locationModalTimeout)
+                clearTimeout(locationModalTimeout);
+        }
+        function saveLocation() {
+            var _0x10163a = _0x370610, _0x5d1993 = document['getElementById'](_0x10163a(0x187))[_0x10163a(0x100)][_0x10163a(0x13e)](), _0x17cc60 = document['getElementById']('loc-lat')[_0x10163a(0x100)][_0x10163a(0x10a)](',', '.'), _0x189159 = document[_0x10163a(0x17b)]('loc-lon')['value'][_0x10163a(0x10a)](',', '.'), _0x1d94db = parseFloat(_0x17cc60), _0x33c73d = parseFloat(_0x189159);
+            _0x5d1993 && !isNaN(_0x1d94db) && !isNaN(_0x33c73d) ? (closeLocationModal(), clientLocalName = _0x5d1993, clientLatitude = _0x1d94db, clientLongitude = _0x33c73d, localStorage[_0x10163a(0xc5)](_0x10163a(0xbe), _0x5d1993), localStorage[_0x10163a(0xc5)](_0x10163a(0x179), _0x1d94db), localStorage['setItem'](_0x10163a(0x108), _0x33c73d), showToast(_0x10163a(0x1c1) + _0x5d1993), globalAQI = '--', updateWeatherAndAQI(), updateDynamicContentBySlide()) : alert(_0x10163a(0x1d5));
+        }
+        function defaultLocation() {
+            var _0x4de354 = _0x370610;
+            closeLocationModal(), localStorage[_0x4de354(0x111)](_0x4de354(0xbe)), localStorage[_0x4de354(0x111)](_0x4de354(0x179)), localStorage[_0x4de354(0x111)](_0x4de354(0x108)), clientLocalName = defaultLocalName, clientLatitude = defaultLatitude, clientLongitude = defaultLongitude, showToast('📍\x20Đã\x20khôi\x20phục\x20vị\x20trí\x20mặc\x20định'), globalAQI = '--', updateWeatherAndAQI(), updateDynamicContentBySlide();
+        }
+        function showAllLists(_0x4fbd8d) {
+            var _0x35dbf1 = _0x370610, _0x5df6af = document[_0x35dbf1(0x17b)](_0x35dbf1(0x135)), _0x1713cc = document[_0x35dbf1(0x17b)](_0x35dbf1(0xd2)), _0x476520 = document['getElementById']('list-content');
+            _0x476520[_0x35dbf1(0x169)] = '';
+            _0x4fbd8d === 'birth' ? (_0x1713cc[_0x35dbf1(0x1c7)] = 'DANH\x20SÁCH\x20SINH\x20NHẬT', birthdays[_0x35dbf1(0xe1)](function (_0x20733b, _0x453c65) {
+                return _0x20733b['m'] - _0x453c65['m'] || _0x20733b['d'] - _0x453c65['d'];
+            })[_0x35dbf1(0x113)](function (_0x39a495) {
+                var _0x12a1ac = _0x35dbf1;
+                _0x476520['innerHTML'] += _0x12a1ac(0x1bc) + _0x39a495['d'] + '/' + _0x39a495['m'] + '\x20-\x20' + _0x39a495[_0x12a1ac(0x112)] + _0x12a1ac(0x1d6);
+            })) : (_0x1713cc[_0x35dbf1(0x1c7)] = _0x35dbf1(0x17a), anniversaries[_0x35dbf1(0xe1)](function (_0x50c51d, _0x4f8352) {
+                return _0x50c51d['m'] - _0x4f8352['m'] || _0x50c51d['d'] - _0x4f8352['d'];
+            })[_0x35dbf1(0x113)](function (_0x33f6e9) {
+                var _0x5ca109 = _0x35dbf1;
+                _0x476520[_0x5ca109(0x169)] += _0x5ca109(0x1bc) + _0x33f6e9['d'] + '/' + _0x33f6e9['m'] + '\x20ÂL\x20-\x20' + _0x33f6e9[_0x5ca109(0x112)] + _0x5ca109(0x1d6);
+            }));
+            _0x5df6af[_0x35dbf1(0xd8)][_0x35dbf1(0x101)](_0x35dbf1(0x124));
+            if (listModalTimeout)
+                clearTimeout(listModalTimeout);
+            listModalTimeout = setTimeout(closeListModal, 0x2710);
+        }
+        function closeListModal() {
+            var _0x2da6c8 = _0x370610;
+            document[_0x2da6c8(0x17b)](_0x2da6c8(0x135))[_0x2da6c8(0xd8)][_0x2da6c8(0x154)]('show-modal');
+        }
+        function handleAction(_0x11a15e, _0x54d120) {
+            var _0x4a0165 = _0x370610;
+            _0x11a15e[_0x4a0165(0x121)](), _0x11a15e[_0x4a0165(0x127)]();
+            if (!audioUnlocked)
+                try {
+                    audioCtx = new (window[(_0x4a0165(0xf3))] || window[(_0x4a0165(0x176))])();
+                    var _0xb95bf4 = audioCtx[_0x4a0165(0xde)]();
+                    _0xb95bf4[_0x4a0165(0xd0)](audioCtx[_0x4a0165(0x10b)]), _0xb95bf4[_0x4a0165(0xf4)](0x0), _0xb95bf4[_0x4a0165(0x12f)](0.001), audioUnlocked = !![];
+                } catch (_0x1c20ea) {
+                }
+            if (audioCtx && audioCtx[_0x4a0165(0x198)] === _0x4a0165(0x194))
+                audioCtx[_0x4a0165(0xc6)]();
+            if (_0x54d120 === 'night')
+                toggleNightMode();
+            else {
+                if (_0x54d120 === _0x4a0165(0x1dd))
+                    currentStyleIdx = (currentStyleIdx + 0x1) % clockStyles[_0x4a0165(0x10e)], applyClockStyle(), showToast(_0x4a0165(0x162) + (currentStyleIdx + 0x1) + _0x4a0165(0xd3));
+                else {
+                    if (_0x54d120 === 'wakeup') {
+                        if (wakeUpHour === 0x5)
+                            wakeUpHour = 0x6;
+                        else {
+                            if (wakeUpHour === 0x6)
+                                wakeUpHour = 0x7;
+                            else {
+                                if (wakeUpHour === 0x7)
+                                    wakeUpHour = 0x8;
+                                else
+                                    wakeUpHour = 0x5;
+                            }
+                        }
+                        localStorage['setItem'](_0x4a0165(0x18b), wakeUpHour), showToast(_0x4a0165(0x171) + wakeUpHour + _0x4a0165(0x1ae)), updateClock();
+                    } else {
+                        if (_0x54d120 === _0x4a0165(0x16d)) {
+                            currentIntervalIdx = (currentIntervalIdx + 0x1) % stepSeconds[_0x4a0165(0x10e)];
+                            var _0x4d3176 = stepSeconds[currentIntervalIdx] / 0x3c;
+                            changeIntervalMode(currentIntervalIdx + 0x1), showToast(_0x4a0165(0x170) + _0x4d3176 + _0x4a0165(0x11a));
+                        } else {
+                            if (_0x54d120 === 'next')
+                                forceNextSlide();
+                            else {
+                                if (_0x54d120 === _0x4a0165(0x152))
+                                    showToast(_0x4a0165(0x180)), playSolemnChime();
+                                else {
+                                    if (_0x54d120 === _0x4a0165(0x1af))
+                                        openLocationModal();
+                                    else {
+                                        if (_0x54d120 === _0x4a0165(0x1b8))
+                                            showAllLists(_0x4a0165(0x16b));
+                                        else
+                                            _0x54d120 === _0x4a0165(0x122) && showAllLists(_0x4a0165(0x1a8));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        function forceNextSlide() {
+            var _0x182185 = _0x370610;
+            goToNextSlide(), changeIntervalMode(currentIntervalIdx + 0x1), showToast(_0x182185(0xef));
+        }
+        function toggleNightMode() {
+            var _0x1535fa = _0x370610, _0x45ffd8 = document[_0x1535fa(0x18d)];
+            _0x45ffd8[_0x1535fa(0xd8)][_0x1535fa(0x140)](_0x1535fa(0x114)) ? (forceNightMode = ![], _0x45ffd8['classList'][_0x1535fa(0x154)](_0x1535fa(0x114)), showToast('☀️\x20Chào\x20ngày\x20mới!'), document[_0x1535fa(0x17b)](_0x1535fa(0x109))[_0x1535fa(0xdd)][_0x1535fa(0xc8)] = 'rgba(0,0,0,0)', syncDriveData()) : (forceNightMode = !![], _0x45ffd8[_0x1535fa(0xd8)][_0x1535fa(0x101)](_0x1535fa(0x114)), showToast(_0x1535fa(0xe8)), document[_0x1535fa(0x17b)](_0x1535fa(0x109))[_0x1535fa(0xdd)][_0x1535fa(0xc8)] = _0x1535fa(0x156), syncDriveData()), applyDynamicPositions();
+        }
+        function triggerBorderBurnInProtection() {
+            var _0x376f2d = _0x370610;
+            if (document[_0x376f2d(0x18d)][_0x376f2d(0xd8)][_0x376f2d(0x140)]('night-active'))
+                return;
+            var _0x429e3e = document[_0x376f2d(0x18a)](_0x376f2d(0x17c)), _0x2fb9d1 = document['getElementById']('outer-blur-bg'), _0x14e6e1 = document[_0x376f2d(0x17b)](_0x376f2d(0x14f));
+            _0x429e3e && _0x429e3e['src'] && (_0x2fb9d1[_0x376f2d(0xff)] = _0x429e3e['src'], _0x14e6e1[_0x376f2d(0xdd)]['opacity'] = '0', setTimeout(function () {
+                var _0x5910d4 = _0x376f2d;
+                _0x14e6e1[_0x5910d4(0xdd)][_0x5910d4(0x1a3)] = '1';
+            }, 0x5dc));
+        }
+        setInterval(triggerBorderBurnInProtection, 0x927c0);
+        function runAntiBurnIn() {
+            var _0x30902c = _0x370610;
+            bX1 = Math[_0x30902c(0x16a)](Math['random']() * 0x1e) - 0xf, bY1 = Math[_0x30902c(0x16a)](Math[_0x30902c(0xfa)]() * 0x1e) - 0xf, bX2 = Math['floor'](Math[_0x30902c(0xfa)]() * 0x1e) - 0xf, bY2 = Math[_0x30902c(0x16a)](Math[_0x30902c(0xfa)]() * 0x1e) - 0xf, bX3 = Math['floor'](Math['random']() * 0x1e) - 0xf, bY3 = Math[_0x30902c(0x16a)](Math['random']() * 0x1e) - 0xf, applyDynamicPositions();
+        }
+        setInterval(runAntiBurnIn, 0xea60);
+        function applyDynamicPositions() {
+            var _0x323fde = _0x370610, _0x2e2a25 = document[_0x323fde(0x18d)][_0x323fde(0xd8)]['contains'](_0x323fde(0x114)), _0x3d578d = document[_0x323fde(0x17b)]('night-clock-box'), _0x76d89a = document[_0x323fde(0x17b)]('info-container'), _0x31e4c9 = document[_0x323fde(0x17b)](_0x323fde(0xf8)), _0xe33512 = document['getElementById']('bottom-left-events'), _0x248ebd = document[_0x323fde(0x17b)](_0x323fde(0x184));
+            if (_0x2e2a25)
+                _0x3d578d[_0x323fde(0xdd)]['transform'] = 'translate(calc(-50%\x20+\x20' + bX1 + _0x323fde(0x1a9) + bY1 + 'px))';
+            else {
+                _0x3d578d[_0x323fde(0xdd)][_0x323fde(0xf6)] = 'none';
+                if (_0x76d89a)
+                    _0x76d89a['style'][_0x323fde(0xf6)] = _0x323fde(0xe6) + bX1 + _0x323fde(0x117) + bY1 + _0x323fde(0xdc);
+                if (_0x31e4c9)
+                    _0x31e4c9[_0x323fde(0xdd)][_0x323fde(0xf6)] = 'translate(' + bX2 + _0x323fde(0x117) + bY2 + 'px)';
+                if (_0xe33512)
+                    _0xe33512[_0x323fde(0xdd)][_0x323fde(0xf6)] = _0x323fde(0xe6) + bX3 + _0x323fde(0x117) + bY3 + _0x323fde(0xdc);
+                if (_0x248ebd)
+                    _0x248ebd['style'][_0x323fde(0xf6)] = _0x323fde(0xe6) + bX3 + _0x323fde(0x117) + bY3 + 'px)';
+            }
+        }
+        function renderEvents(_0x3d170b, _0x590472, _0x1fef12, _0x1b64ad) {
+            var _0x10fca4 = _0x370610, _0x1c2f28 = '', _0x4a8ee4 = [];
+            for (var _0x2968b9 = 0x0; _0x2968b9 < birthdays['length']; _0x2968b9++) {
+                if (birthdays[_0x2968b9]['m'] === _0x3d170b)
+                    _0x4a8ee4[_0x10fca4(0x103)](birthdays[_0x2968b9]);
+            }
+            _0x4a8ee4[_0x10fca4(0xe1)](function (_0x5d8e68, _0x1efa05) {
+                return _0x5d8e68['d'] - _0x1efa05['d'];
+            });
+            if (_0x4a8ee4[_0x10fca4(0x10e)] > 0x0) {
+                _0x1c2f28 += _0x10fca4(0x17e);
+                for (var _0x2bfb48 = 0x0; _0x2bfb48 < _0x4a8ee4[_0x10fca4(0x10e)]; _0x2bfb48++) {
+                    var _0x4c7dba = _0x4a8ee4[_0x2bfb48], _0x442152 = _0x4c7dba['d'] - _0x1fef12, _0x5b37cc = _0x10fca4(0x144), _0x215c13 = _0x4c7dba['d'] + '/' + _0x4c7dba['m'] + '\x20' + _0x4c7dba['name'];
+                    if (_0x442152 < 0x0)
+                        _0x5b37cc += _0x10fca4(0x196);
+                    else {
+                        if (_0x442152 === 0x0)
+                            _0x5b37cc += '\x20event-today-birth', _0x215c13 += _0x10fca4(0x119);
+                        else
+                            _0x442152 <= 0x3 && (_0x5b37cc += _0x10fca4(0xd4), _0x215c13 += _0x10fca4(0xcf) + _0x442152 + _0x10fca4(0x174));
+                    }
+                    _0x1c2f28 += _0x10fca4(0x11c) + _0x5b37cc + '\x22>' + _0x215c13 + _0x10fca4(0x1d6);
+                }
+            }
+            var _0x466be5 = document[_0x10fca4(0x17b)]('bottom-left-events');
+            _0x466be5 && _0x466be5[_0x10fca4(0x169)] !== _0x1c2f28 && (_0x466be5[_0x10fca4(0x169)] = _0x1c2f28);
+            windowDeathList = [];
+            var _0x5df7b0 = [];
+            for (var _0x4f0d81 = 0x0; _0x4f0d81 < anniversaries[_0x10fca4(0x10e)]; _0x4f0d81++) {
+                if (anniversaries[_0x4f0d81]['m'] === _0x590472)
+                    _0x5df7b0[_0x10fca4(0x103)](anniversaries[_0x4f0d81]);
+            }
+            _0x5df7b0['sort'](function (_0x2a422e, _0x2acb51) {
+                return _0x2a422e['d'] - _0x2acb51['d'];
+            });
+            if (_0x5df7b0[_0x10fca4(0x10e)] > 0x0)
+                for (var _0x376606 = 0x0; _0x376606 < _0x5df7b0[_0x10fca4(0x10e)]; _0x376606++) {
+                    var _0x270ed9 = _0x5df7b0[_0x376606], _0x442152 = _0x270ed9['d'] - _0x1b64ad, _0x36ab62 = _0x270ed9[_0x10fca4(0x112)]['split']('\x20(')[0x0], _0x215c13 = _0x10fca4(0xe5) + _0x36ab62 + '\x20(' + _0x270ed9['d'] + '/' + _0x270ed9['m'] + _0x10fca4(0x1bf);
+                    if (_0x442152 < 0x0)
+                        windowDeathList[_0x10fca4(0x103)](_0x10fca4(0x19a) + _0x215c13 + '</span>');
+                    else {
+                        if (_0x442152 === 0x0)
+                            _0x215c13 = _0x10fca4(0x163) + _0x215c13;
+                        else
+                            _0x442152 <= 0x3 && (_0x215c13 = _0x10fca4(0x118) + _0x442152 + _0x10fca4(0x12e) + _0x215c13);
+                        windowDeathList[_0x10fca4(0x103)](_0x10fca4(0xe3) + _0x215c13 + _0x10fca4(0xf1));
+                    }
+                }
+        }
+        function checkForBirthdayMusic(_0x3f56f5) {
+            var _0x49d943 = _0x370610;
+            if (birthdays[_0x49d943(0x10e)] === 0x0)
+                return;
+            var _0x47fa5e = new Date(), _0x1e45b8 = _0x47fa5e[_0x49d943(0x1cc)](), _0x1a6bde = _0x47fa5e[_0x49d943(0xc7)](), _0x119f69 = null;
+            for (var _0x3731ef = 0x0; _0x3731ef < birthdays['length']; _0x3731ef++) {
+                if (birthdays[_0x3731ef]['m'] === _0x47fa5e[_0x49d943(0x1d0)]() + 0x1 && birthdays[_0x3731ef]['d'] === _0x47fa5e['getDate']()) {
+                    _0x119f69 = birthdays[_0x3731ef];
+                    break;
+                }
+            }
+            if (_0x119f69) {
+                loadMorningMusicFlag === ![] && _0x1e45b8 >= wakeUpHour && _0x1e45b8 < 0x8 && (showToast(_0x49d943(0x104) + _0x119f69[_0x49d943(0x112)] + '!'), playHappyBirthday(), loadMorningMusicFlag = !![]);
+                clock8AMMusicFlag === ![] && _0x1e45b8 === 0x8 && _0x1a6bde === 0x0 && (showToast(_0x49d943(0x104) + _0x119f69['name'] + '!'), playHappyBirthday(), clock8AMMusicFlag = !![]);
+                clock14PMMusicFlag === ![] && _0x1e45b8 === 0xe && _0x1a6bde === 0x0 && (showToast(_0x49d943(0x104) + _0x119f69['name'] + '!'), playHappyBirthday(), clock14PMMusicFlag = !![]);
+                clock18PMMusicFlag === ![] && _0x1e45b8 === 0x12 && _0x1a6bde === 0x0 && (showToast(_0x49d943(0x104) + _0x119f69[_0x49d943(0x112)] + '!'), playHappyBirthday(), clock18PMMusicFlag = !![]);
+                if (lastBirthdayCheckDate && lastBirthdayCheckDate !== _0x47fa5e['getDate']())
+                    loadMorningMusicFlag = ![], clock8AMMusicFlag = ![], clock14PMMusicFlag = ![], clock18PMMusicFlag = ![], lastBirthdayCheckDate = _0x47fa5e[_0x49d943(0x177)]();
+                else
+                    !lastBirthdayCheckDate && (lastBirthdayCheckDate = _0x47fa5e[_0x49d943(0x177)]());
+            } else
+                loadMorningMusicFlag = ![], clock8AMMusicFlag = ![], clock14PMMusicFlag = ![], clock18PMMusicFlag = ![];
+        }
+        function updateClock() {
+            var _0x3e406a = _0x370610, _0x52cdef = new Date(), _0x889e38 = _0x52cdef[_0x3e406a(0x1cc)](), _0xeaea1f = _0x52cdef[_0x3e406a(0xc7)](), _0x32d833 = _0x52cdef[_0x3e406a(0xe4)]();
+            _0x889e38 === wakeUpHour && _0xeaea1f === 0x0 && _0x32d833 === 0x0 && (forceNightMode = null, syncDriveData());
+            var _0xb18582 = _0x889e38 < 0xa ? '0' + _0x889e38 : _0x889e38, _0x2505ca = _0xeaea1f < 0xa ? '0' + _0xeaea1f : _0xeaea1f, _0x2620a3 = document[_0x3e406a(0x17b)](_0x3e406a(0x11d)), _0x33d503 = document[_0x3e406a(0x17b)](_0x3e406a(0x192)), _0x3f5d69 = document['getElementById']('night-hr-node'), _0x5b9fdb = document[_0x3e406a(0x17b)]('night-min-node');
+            if (_0x2620a3[_0x3e406a(0x1c7)] !== _0xb18582)
+                _0x2620a3[_0x3e406a(0x1c7)] = _0xb18582;
+            if (_0x33d503['innerText'] !== _0x2505ca)
+                _0x33d503[_0x3e406a(0x1c7)] = _0x2505ca;
+            var _0x463659 = window[_0x3e406a(0x14a)] > window[_0x3e406a(0x14c)] ? _0xb18582 + ':' : _0xb18582;
+            if (_0x3f5d69[_0x3e406a(0x1c7)] !== _0x463659)
+                _0x3f5d69[_0x3e406a(0x1c7)] = _0x463659;
+            if (_0x5b9fdb[_0x3e406a(0x1c7)] !== _0x2505ca)
+                _0x5b9fdb[_0x3e406a(0x1c7)] = _0x2505ca;
+            var _0x4bd284 = document[_0x3e406a(0x18d)][_0x3e406a(0xd8)][_0x3e406a(0x140)](_0x3e406a(0x114));
+            if (forceNightMode === null) {
+                var _0x171975 = _0x889e38 >= 0x15 || _0x889e38 < wakeUpHour;
+                if (_0x171975 && !_0x4bd284)
+                    document[_0x3e406a(0x18d)][_0x3e406a(0xd8)][_0x3e406a(0x101)](_0x3e406a(0x114)), document[_0x3e406a(0x17b)](_0x3e406a(0x109))[_0x3e406a(0xdd)]['background'] = 'rgba(0,0,0,0.5)';
+                else
+                    !_0x171975 && _0x4bd284 && (document[_0x3e406a(0x18d)][_0x3e406a(0xd8)][_0x3e406a(0x154)](_0x3e406a(0x114)), document[_0x3e406a(0x17b)](_0x3e406a(0x109))[_0x3e406a(0xdd)][_0x3e406a(0xc8)] = 'rgba(0,0,0,0)');
+            }
+            var _0xfdc0aa = new Date(_0x52cdef[_0x3e406a(0x1c9)](), _0x52cdef[_0x3e406a(0x1d0)](), _0x52cdef[_0x3e406a(0x177)](), 0x0, 0x0, 0x0), _0x3442bc = phases[0x0];
+            for (var _0x4407ca = 0x0; _0x4407ca < phases[_0x3e406a(0x10e)]; _0x4407ca++) {
+                var _0x133cd2 = new Date(phases[_0x4407ca][0x0], phases[_0x4407ca][0x1], phases[_0x4407ca][0x2], 0x0, 0x0, 0x0);
+                if (_0xfdc0aa >= _0x133cd2)
+                    _0x3442bc = phases[_0x4407ca];
+                else
+                    break;
+            }
+            var _0x5e7f9f = new Date(_0x3442bc[0x0], _0x3442bc[0x1], _0x3442bc[0x2], 0x0, 0x0, 0x0), _0x4d4f31 = Math['floor']((_0xfdc0aa - _0x5e7f9f) / (0x3e8 * 0x3c * 0x3c * 0x18)) + 0x1, _0x2687a6 = _0x3442bc[0x1] === 0x0 ? 0xc : _0x3442bc[0x1], _0x188f58 = [
+                    'CN',
+                    _0x3e406a(0x175),
+                    _0x3e406a(0xc9),
+                    _0x3e406a(0x17d),
+                    _0x3e406a(0x1d4),
+                    _0x3e406a(0xbf),
+                    _0x3e406a(0x1c4)
+                ], _0x50be5a = '<span\x20class=\x22highlight-yellow\x22>' + _0x188f58[_0x52cdef['getDay']()] + _0x3e406a(0xf7) + _0x52cdef['getDate']() + '/' + (_0x52cdef[_0x3e406a(0x1d0)]() + 0x1), _0x28d7f2 = document[_0x3e406a(0x17b)](_0x3e406a(0xc2));
+            if (_0x28d7f2[_0x3e406a(0x169)] !== _0x50be5a)
+                _0x28d7f2['innerHTML'] = _0x50be5a;
+            var _0x57fe13 = _0x3e406a(0x168) + _0x4d4f31 + '/' + _0x2687a6, _0x45b5e2 = document[_0x3e406a(0x17b)](_0x3e406a(0xf9));
+            if (_0x45b5e2[_0x3e406a(0x169)] !== _0x57fe13)
+                _0x45b5e2['innerHTML'] = _0x57fe13;
+            renderEvents(_0x52cdef[_0x3e406a(0x1d0)]() + 0x1, _0x2687a6, _0x52cdef[_0x3e406a(0x177)](), _0x4d4f31), applyDynamicPositions(), checkForBirthdayMusic(_0x3e406a(0x14d));
+            var _0x177211 = ![];
+            if (birthdays[_0x3e406a(0x10e)] > 0x0)
+                for (var _0x3dab9a = 0x0; _0x3dab9a < birthdays[_0x3e406a(0x10e)]; _0x3dab9a++) {
+                    if (birthdays[_0x3dab9a]['m'] === _0x52cdef[_0x3e406a(0x1d0)]() + 0x1 && birthdays[_0x3dab9a]['d'] === _0x52cdef[_0x3e406a(0x177)]()) {
+                        _0x177211 = !![];
+                        break;
+                    }
+                }
+            if (_0xeaea1f === 0x0 && _0x32d833 === 0x0 && !hourlyChimePlayed)
+                hourlyChimePlayed = !![], !document[_0x3e406a(0x18d)][_0x3e406a(0xd8)][_0x3e406a(0x140)]('night-active') && (!(_0x177211 && (_0x889e38 === 0x8 || _0x889e38 === 0xe || _0x889e38 === 0x12 || _0x889e38 === wakeUpHour)) && playSolemnChime());
+            else
+                _0xeaea1f !== 0x0 && (hourlyChimePlayed = ![]);
+        }
+        setInterval(updateClock, 0x3e8);
+        function generateSimulatedWeather() {
+            var _0x13efdb = _0x370610, _0x2edc47 = new Date()[_0x13efdb(0x1cc)](), _0xe60e2c = 0x18;
+            if (_0x2edc47 >= 0xb && _0x2edc47 <= 0xf)
+                _0xe60e2c = 0x20;
+            else {
+                if (_0x2edc47 >= 0x5 && _0x2edc47 <= 0x8)
+                    _0xe60e2c = 0x16;
+            }
+            document[_0x13efdb(0x17b)](_0x13efdb(0x105))['innerText'] = _0xe60e2c, globalHum = _0x13efdb(0x1ac), globalRain = _0x2edc47 > 0xc && _0x2edc47 < 0x12 ? '40%' : '10%', globalWind = _0x13efdb(0xd6), globalUV = _0x2edc47 >= 0xa && _0x2edc47 <= 0xe ? _0x13efdb(0x130) : _0x13efdb(0x190), globalAlt = '473m';
+            if (globalSunrise === '--')
+                globalSunrise = _0x13efdb(0xcc);
+            if (globalSunset === '--')
+                globalSunset = '18:13';
+            if (globalAQI === '--')
+                globalAQI = 0x26;
+            rotateWeatherDisplay();
+        }
+        function updateWeatherAndAQI() {
+            var _0x478768 = _0x370610, _0x23bcf5 = parseFloat(clientLatitude), _0x176d34 = parseFloat(clientLongitude);
+            (isNaN(_0x23bcf5) || !_0x23bcf5) && (_0x23bcf5 = 12.6792, _0x176d34 = 108.0694);
+            var _0x31b23b = new Date()[_0x478768(0x1b0)]();
+            document[_0x478768(0x17b)](_0x478768(0x105))[_0x478768(0x1c7)] === '--' && (document[_0x478768(0x17b)](_0x478768(0x105))[_0x478768(0x1c7)] = '26', globalHum = _0x478768(0x1ac), globalRain = _0x478768(0x188), globalWind = '8\x20km/h', globalUV = _0x478768(0xf0), globalAlt = '473m', globalSunrise = '05:24', globalSunset = _0x478768(0x136), globalAQI = 0x28, rotateWeatherDisplay());
+            var _0x4ee79b = new XMLHttpRequest();
+            _0x4ee79b[_0x478768(0x128)] = 0x1f40, _0x4ee79b['open']('GET', _0x478768(0x13d) + _0x23bcf5[_0x478768(0x15d)](0x4) + _0x478768(0x13f) + _0x176d34['toFixed'](0x4) + _0x478768(0xda) + _0x31b23b, !![]), _0x4ee79b[_0x478768(0x12b)] = function () {
+                generateSimulatedWeather();
+            }, _0x4ee79b['ontimeout'] = function () {
+                generateSimulatedWeather();
+            }, _0x4ee79b['onreadystatechange'] = function () {
+                var _0x41252f = _0x478768;
+                if (_0x4ee79b[_0x41252f(0xfb)] === 0x4 && _0x4ee79b[_0x41252f(0x155)] === 0xc8)
+                    try {
+                        var _0xeadb4b = JSON['parse'](_0x4ee79b[_0x41252f(0xcd)]), _0x5e5a37 = new Date()[_0x41252f(0x1cc)]();
+                        _0xeadb4b[_0x41252f(0x19c)] && (document[_0x41252f(0x17b)](_0x41252f(0x105))[_0x41252f(0x1c7)] = Math['round'](_0xeadb4b[_0x41252f(0x19c)]['temperature_2m'][_0x5e5a37]), globalHum = _0xeadb4b[_0x41252f(0x19c)][_0x41252f(0x110)][_0x5e5a37] + '%', globalRain = (_0xeadb4b[_0x41252f(0x19c)][_0x41252f(0x164)][_0x5e5a37] != null ? _0xeadb4b[_0x41252f(0x19c)][_0x41252f(0x164)][_0x5e5a37] : 0x0) + '%', globalUV = _0xeadb4b['hourly'][_0x41252f(0x1a6)][_0x5e5a37] != null ? _0xeadb4b['hourly'][_0x41252f(0x1a6)][_0x5e5a37][_0x41252f(0x15d)](0x1) : _0x41252f(0x190)), _0xeadb4b[_0x41252f(0x165)] && _0xeadb4b[_0x41252f(0x165)][_0x41252f(0x116)] && (globalSunrise = _0xeadb4b[_0x41252f(0x165)][_0x41252f(0x116)][0x0][_0x41252f(0x19b)](0xb, 0x10), globalSunset = _0xeadb4b[_0x41252f(0x165)][_0x41252f(0xdb)][0x0][_0x41252f(0x19b)](0xb, 0x10)), rotateWeatherDisplay();
+                    } catch (_0x1d677d) {
+                        generateSimulatedWeather();
+                    }
+            }, _0x4ee79b[_0x478768(0x1a4)]();
+            var _0x20151d = new XMLHttpRequest();
+            _0x20151d[_0x478768(0x128)] = 0x1f40, _0x20151d[_0x478768(0x1d2)]('GET', 'https://air-quality-api.open-meteo.com/v1/air-quality?latitude=' + _0x23bcf5['toFixed'](0x4) + _0x478768(0x13f) + _0x176d34[_0x478768(0x15d)](0x4) + _0x478768(0x185) + _0x31b23b, !![]), _0x20151d['onreadystatechange'] = function () {
+                var _0x120919 = _0x478768;
+                if (_0x20151d[_0x120919(0xfb)] === 0x4 && _0x20151d[_0x120919(0x155)] === 0xc8)
+                    try {
+                        var _0xd298af = JSON[_0x120919(0x1a5)](_0x20151d[_0x120919(0xcd)]), _0x54a83f = new Date()[_0x120919(0x1cc)]();
+                        if (_0xd298af['hourly'] && _0xd298af['hourly'][_0x120919(0xee)] && _0xd298af['hourly'][_0x120919(0xee)][_0x54a83f] != null)
+                            globalAQI = Math[_0x120919(0x102)](_0xd298af[_0x120919(0x19c)][_0x120919(0xee)][_0x54a83f]);
+                        else {
+                            if (_0xd298af['hourly'] && _0xd298af[_0x120919(0x19c)][_0x120919(0xe2)] && _0xd298af['hourly'][_0x120919(0xe2)][_0x54a83f] != null) {
+                                var _0x39538b = _0xd298af[_0x120919(0x19c)][_0x120919(0xe2)][_0x54a83f];
+                                if (_0x39538b <= 0xc)
+                                    globalAQI = Math[_0x120919(0x102)](0x32 / 0xc * _0x39538b);
+                                else {
+                                    if (_0x39538b <= 35.4)
+                                        globalAQI = Math[_0x120919(0x102)](0x31 / 23.4 * (_0x39538b - 12.1) + 0x33);
+                                    else {
+                                        if (_0x39538b <= 55.4)
+                                            globalAQI = Math[_0x120919(0x102)](0x31 / 0x14 * (_0x39538b - 35.5) + 0x65);
+                                        else
+                                            globalAQI = Math[_0x120919(0x102)](_0x39538b + 0x64);
+                                    }
+                                }
+                            }
+                        }
+                        rotateWeatherDisplay();
+                    } catch (_0x1ac31e) {
+                    }
+            }, _0x20151d[_0x478768(0x1a4)]();
+        }
+        setInterval(updateWeatherAndAQI, 0x36ee80);
+        function updateDynamicContentBySlide() {
+            var _0x3b55a4 = _0x370610, _0x5d5160 = new Date(), _0x28a901 = _0x5d5160[_0x3b55a4(0x1d0)]() + 0x1, _0x5ce7dc = _0x5d5160[_0x3b55a4(0x177)](), _0x5ef4b2 = new Date(_0x5d5160['getFullYear'](), _0x5d5160[_0x3b55a4(0x1d0)](), _0x5d5160[_0x3b55a4(0x177)](), 0x0, 0x0, 0x0), _0x132316 = phases[0x0];
+            for (var _0x34ac5a = 0x0; _0x34ac5a < phases[_0x3b55a4(0x10e)]; _0x34ac5a++) {
+                var _0x232efd = new Date(phases[_0x34ac5a][0x0], phases[_0x34ac5a][0x1], phases[_0x34ac5a][0x2], 0x0, 0x0, 0x0);
+                if (_0x5ef4b2 >= _0x232efd)
+                    _0x132316 = phases[_0x34ac5a];
+                else
+                    break;
+            }
+            var _0x1717af = _0x132316[0x1] === 0x0 ? 0xc : _0x132316[0x1], _0x49e68c = Math[_0x3b55a4(0x16a)]((_0x5ef4b2 - new Date(_0x132316[0x0], _0x132316[0x1], _0x132316[0x2], 0x0, 0x0, 0x0)) / (0x3e8 * 0x3c * 0x3c * 0x18)) + 0x1;
+            rotateWeatherDisplay();
+            var _0x352789 = [];
+            for (var _0xac4293 = 0x0; _0xac4293 < specialtiesData[_0x3b55a4(0x10e)]; _0xac4293++) {
+                if (specialtiesData[_0xac4293]['m'] === _0x28a901 || specialtiesData[_0xac4293]['m'] === 0x0)
+                    _0x352789[_0x3b55a4(0x103)](specialtiesData[_0xac4293]['text']);
+            }
+            var _0x5c7a71 = '', _0x27310b = Math[_0x3b55a4(0xfa)]();
+            if (_0x27310b < 0.5 && _0x352789['length'] > 0x0)
+                _0x5c7a71 = _0x3b55a4(0x137) + _0x352789[Math['floor'](Math[_0x3b55a4(0xfa)]() * _0x352789[_0x3b55a4(0x10e)])];
+            else
+                quotePool[_0x3b55a4(0x10e)] > 0x0 ? _0x5c7a71 = quotePool[Math['floor'](Math[_0x3b55a4(0xfa)]() * quotePool[_0x3b55a4(0x10e)])] : _0x5c7a71 = _0x3b55a4(0x19e);
+            var _0x638697 = '', _0xa464d6 = 0x16d;
+            for (var _0x533151 = 0x0; _0x533151 < festivalsData['length']; _0x533151++) {
+                var _0x3b30ae = festivalsData[_0x533151];
+                if (_0x3b30ae[_
