@@ -3,186 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="referrer" content="no-referrer">
-    
-    <title>Khung Ảnh Số Thông Minh - SaaS V113 Secure</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Tourney:wght@600&family=Playfair+Display:wght@700&family=Oswald:wght@600&family=Righteous&family=Courier+Prime:wght@700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
-
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
-        body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; cursor: default; }
-        #outer-blur-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(45px) brightness(0.6); z-index: 0; transform: scale(1.2); }
-        #white-border-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #ffffff; z-index: 1; transition: opacity 1.5s ease-in-out; }
-        #frame-wrapper { position: absolute; top: 45px; bottom: 45px; left: 45px; right: 45px; background-color: #000; overflow: hidden; box-shadow: 0px 15px 45px rgba(0, 0, 0, 0.15), inset 0px 0px 30px rgba(0,0,0,0.85); border: 1px solid #eaeaea; transition: all 0.5s ease; z-index: 5; }
-        #photo-container, .slide-group { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        #photo-container { z-index: 1; }
-        .slide-group { opacity: 0; transition: opacity 3s ease-in-out; display: block; }
-        .slide-group.active { opacity: 1; z-index: 2; }
-        .background-blur { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover !important; filter: blur(40px) brightness(0.85); -webkit-filter: blur(40px) brightness(0.85); transform: scale(1.3); z-index: 1; display: none; }
-        .foreground-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; flex-shrink: 0; filter: drop-shadow(0px 15px 35px rgba(0,0,0,0.6)); -webkit-filter: drop-shadow(0px 15px 35px rgba(0,0,0,0.6)); transition: all 0.5s ease; }
-        .slide-group.show-blur .background-blur { display: block; }
-        .fit-cover { object-fit: cover !important; width: 100% !important; height: 100% !important; }
-        .fit-contain { object-fit: contain !important; width: 100% !important; height: 100% !important; }
-        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.15); z-index: 3; pointer-events: none; }
-        #brightness-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0); z-index: 998; pointer-events: none; transition: background 0.5s ease; }
-        .tap-target { -webkit-tap-highlight-color: transparent; outline: none; border: none; background: transparent; cursor: pointer; transition: opacity 0.2s; }
-        .tap-target:active { opacity: 0.6; }
-        #info-container { position: absolute; top: 35px; left: 35px; z-index: 4; text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.6); display: flex; flex-direction: column; align-items: center; width: auto; transition: transform 2s ease-in-out; }
-        #clock-flex-wrapper { display: flex; flex-direction: column; align-items: center; width: 100%; }
-        .hours-style, .minutes-style { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 6.5rem; letter-spacing: -2px; display: block; line-height: 0.85; transition: color 0.5s, font-family 0.5s; width: 100%; text-align: center; } 
-        .hours-style { color: #F4B41A; } .minutes-style { color: #ffffff; margin-top: 4px; }
-        #date-solar-top { font-size: 1.4rem; font-weight: 700; color: #ffffff; margin-top: 14px; white-space: nowrap; text-align: center; }
-        #date-lunar-top { font-size: 1.4rem; font-weight: 700; color: #ffffff; margin-top: 4px; white-space: nowrap; text-align: center; }
-        .highlight-yellow { color: #F4B41A; font-weight: 700; }
-        #top-right-wrapper { position: absolute; top: 35px; right: 45px; z-index: 4; display: flex; flex-direction: column; align-items: center; gap: 8px; text-shadow: 0px 2px 5px rgba(0,0,0,0.6); transition: transform 2s ease-in-out; }
-        #temp-wrapper { position: relative; display: inline-flex; align-items: flex-start; justify-content: center; margin-right: 15px; } 
-        #weather-val { font-family: 'Montserrat', sans-serif; font-weight: 700; color: #ffffff; letter-spacing: -2px; line-height: 0.8; font-size: 3.8rem; display: inline-block; }
-        .degree-symbol { position: absolute; font-weight: 700; color: #ffffff; font-size: 1.5rem; top: 0; right: -18px; }
-        #right-env-container { display: flex; flex-direction: column; align-items: center; margin-right: 0; width: auto; }
-        .env-rotating-item { padding: 0; background: transparent; white-space: nowrap; transition: opacity 0.5s ease; color: rgba(255, 255, 255, 0.95); font-weight: 600; text-align: center; display: flex; justify-content: center; align-items: center; }
-        #bottom-container { position: absolute; bottom: 35px; left: 35px; right: 35px; z-index: 4; display: flex; flex-direction: row; align-items: flex-end; justify-content: space-between; text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.7); gap: 30px; transition: transform 2s ease-in-out; }
-        #bottom-left-events { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; flex-shrink: 0; }
-        .event-header { font-size: 1.1rem; color: #F4B41A; font-weight: 700; text-align: left; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; cursor: pointer; }
-        .event-item { font-size: 1.15rem; color: rgba(255, 255, 255, 0.95); font-weight: 600; text-align: left; padding: 4px 12px; border-radius: 4px; background: rgba(0, 0, 0, 0.4); margin-bottom: 2px; display: inline-block;}
-        .event-passed { opacity: 0.35; font-size: 1rem; }
-        .event-urgent { color: #F4B41A !important; font-weight: 700; background: rgba(0, 0, 0, 0.7); animation: pulseGlow 2s infinite; }
-        .event-today-birth { color: #2ecc71 !important; font-weight: 700; font-size: 1.25rem; background: rgba(0, 0, 0, 0.8); }
-        #bottom-right-text { flex: 1; display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; text-align: right; margin-left: 30px; cursor: pointer; }
-        #quote-row { font-size: 1.15rem; font-weight: 500; font-style: normal; color: #f5f5f7; line-height: 1.5; word-wrap: break-word; text-align: right; width: 100%; }
-        .countdown-highlight { color: #F4B41A; font-weight: 700; }
-        .death-highlight { color: #ff9500; font-weight: 700; }
-        .death-event-passed { color: #a1a1a1; font-weight: 500; opacity: 0.6; }
-        .modal-base { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(15px); padding: 25px; border-radius: 16px; border: 1px solid #F4B41A; z-index: 10001; display: none; flex-direction: column; gap: 15px; width: 340px; box-shadow: 0px 10px 40px rgba(0,0,0,0.8); }
-        .show-modal { display: flex !important; }
-        .modal-title { color: #F4B41A; font-weight: 700; font-size: 1.3rem; text-align: center; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
-        .list-item { color: #fff; padding: 10px 5px; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 1.1rem; font-weight: 500; text-align: left;}
-        .list-item:last-child { border-bottom: none; }
-        #list-content { overflow-y: auto; max-height: 350px; padding-right: 10px; }
-        .loc-input { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 12px 15px; border-radius: 8px; font-size: 1.05rem; width: 100%; outline: none; font-family: inherit; font-weight: 500;}
-        .loc-btns { display: flex; gap: 10px; margin-top: 5px; }
-        .loc-btn { flex: 1; padding: 12px; font-weight: 700; border-radius: 8px; cursor: pointer; border: none; font-size: 1rem; }
-        .btn-save { background: #F4B41A; color: #000; }
-        .btn-default { background: transparent; color: #fff; border: 1px solid #fff; }
-        .btn-close-modal { background: transparent; color: #aaa; font-weight: 400; border: none; font-size: 0.95rem; text-align: center; margin-top: -5px; padding: 5px; cursor: pointer; }
-        #toast-msg { position: absolute; top: 15%; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.85); color: #F4B41A; border: 1px solid #F4B41A; padding: 12px 24px; border-radius: 8px; font-size: 1.2rem; font-weight: 700; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; text-align: center; box-shadow: 0px 4px 15px rgba(0,0,0,0.5); }
-        #toast-msg.show { opacity: 1; }
-        #night-clock-box { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: none; z-index: 4; text-shadow: none; transition: transform 2s ease-in-out; }
-        .night-active #white-border-bg { background-color: #000000 !important; opacity: 1 !important; } 
-        .night-active #photo-container, .night-active #bottom-container, .night-active #top-right-wrapper, .night-active #info-container { display: none !important; }
-        .night-active #frame-wrapper { background-color: transparent !important; box-shadow: none !important; border-color: transparent !important; }
-        .night-active #night-clock-box { display: flex; align-items: center; justify-content: center; flex-direction: row; }
-        .night-hours, .night-minutes { font-family: 'Tourney', cursive !important; font-weight: 600 !important; color: #FF9500 !important; font-size: 46vmin; line-height: 0.9; margin: 0 1vmin; letter-spacing: -2vmin; }
-
-        @media (orientation: portrait) {
-            .hours-style, .minutes-style { font-size: 5rem; text-align: center; letter-spacing: -1px; } 
-            #date-solar-top { font-size: 1.3rem; text-align: center; } 
-            #date-lunar-top { font-size: 1.3rem; text-align: center; }
-            #info-container { top: 30px; left: 20px; align-items: center; }
-            #top-right-wrapper { top: 30px; right: 20px; gap: 4px; }
-            #weather-val { font-size: 2.6rem; }
-            .degree-symbol { font-size: 1.1rem; right: -12px; }
-            .env-rotating-item { font-size: 1rem; }
-            #bottom-container { flex-direction: column; align-items: stretch; gap: 15px; left: 20px; right: 20px; bottom: 30px; }
-            #bottom-left-events { align-items: flex-start; max-width: 100%; width: 100%; }
-            #bottom-right-text { text-align: right; align-items: flex-end; margin-left: 0; width: 100%; }
-            #quote-row { font-size: 1.05rem; line-height: 1.45; text-align: right; }
-            .night-active #night-clock-box { flex-direction: column; }
-            .night-hours, .night-minutes { font-size: 42vmin; margin: 0; line-height: 0.85; letter-spacing: -2vmin; }
-        }
-    </style>
+    <title>SaaS Smart Frame</title>
 </head>
-<body oncontextmenu="return false;" onkeydown="return false;">
+<body style="background:#000; margin:0; overflow:hidden;" oncontextmenu="return false;" onkeydown="return false;">
 
-    <img id="outer-blur-bg" src="">
-    <div id="white-border-bg"></div>
+<script>
+    // =======================================================
+    // PHẦN 1: CẤU HÌNH KHÁCH HÀNG (BẠN CHỈ CHỈNH SỬA Ở ĐÂY)
+    // =======================================================
+    const KHACH_HANG = {
+        "khach01": "17YOn0tWO8-hzloHM57bLhRh7e9LALZZk", // ID thật
+        "khach02": "ID_KHACH_02_NEU_CO"
+    };
+    const urlParams = new URLSearchParams(window.location.search);
+    const clientAlias = urlParams.get('c') || 'khach01';
+    const FOLDER_ID = KHACH_HANG[clientAlias];
+    const API_KEY = atob('QUl6YVN5REwyRm1VQzkxMUtBTnFwN3VPbnZKcU5xVHltb1R2SkxF');
 
-    <div id="frame-wrapper">
-        <div id="photo-container">
-            <div id="group1" class="slide-group active"><img id="bg1" class="background-blur"><img id="fg1" class="foreground-image"></div>
-            <div id="group2" class="slide-group"><img id="bg2" class="background-blur"><img id="fg2" class="foreground-image"></div>
-        </div>
-        <div class="overlay"></div>
-        <div id="brightness-overlay"></div>
-        <div id="toast-msg">Thông báo</div>
+    // =======================================================
+    // PHẦN 2: LÕI ĐỘNG CƠ FULL 100% (MANG PHẦN NÀY ĐI MÃ HÓA)
+    // =======================================================
+    function runEngine() {
+        // 1. TỰ ĐỘNG BƠM CSS BẢO MẬT
+        const css = `
+            @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Tourney:wght@600&family=Playfair+Display:wght@700&family=Oswald:wght@600&family=Righteous&family=Courier+Prime:wght@700&family=Cinzel:wght@700&display=swap');
+            * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
+            body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; cursor: pointer; }
+            #outer-blur-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(45px) brightness(0.6); z-index: 0; transform: scale(1.2); }
+            #white-border-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #ffffff; z-index: 1; transition: opacity 1.5s ease-in-out; }
+            #frame-wrapper { position: absolute; top: 45px; bottom: 45px; left: 45px; right: 45px; background-color: #000; overflow: hidden; box-shadow: 0px 15px 45px rgba(0, 0, 0, 0.15), inset 0px 0px 30px rgba(0,0,0,0.85); border: 1px solid #eaeaea; transition: all 0.5s ease; z-index: 5; }
+            #photo-container, .slide-group { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+            #photo-container { z-index: 1; }
+            .slide-group { opacity: 0; transition: opacity 3s ease-in-out; display: block; }
+            .slide-group.active { opacity: 1; z-index: 2; }
+            .background-blur { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover !important; filter: blur(40px) brightness(0.85); transform: scale(1.3); z-index: 1; display: none; }
+            .foreground-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; flex-shrink: 0; filter: drop-shadow(0px 15px 35px rgba(0,0,0,0.6)); transition: all 0.5s ease; }
+            .slide-group.show-blur .background-blur { display: block; }
+            .fit-cover { object-fit: cover !important; width: 100% !important; height: 100% !important; }
+            .fit-contain { object-fit: contain !important; width: 100% !important; height: 100% !important; }
+            .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.15); z-index: 3; pointer-events: none; }
+            #brightness-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0); z-index: 998; pointer-events: none; transition: background 0.5s ease; }
+            .tap-target { -webkit-tap-highlight-color: transparent; outline: none; border: none; background: transparent; cursor: pointer; transition: opacity 0.2s; }
+            .tap-target:active { opacity: 0.6; }
+            #info-container { position: absolute; top: 35px; left: 35px; z-index: 4; text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.6); display: flex; flex-direction: column; align-items: center; width: auto; transition: transform 2s ease-in-out; }
+            #clock-flex-wrapper { display: flex; flex-direction: column; align-items: center; width: 100%; }
+            .hours-style, .minutes-style { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 6.5rem; letter-spacing: -2px; display: block; line-height: 0.85; transition: color 0.5s, font-family 0.5s; width: 100%; text-align: center; } 
+            .hours-style { color: #F4B41A; } .minutes-style { color: #ffffff; margin-top: 4px; }
+            #date-solar-top { font-size: 1.4rem; font-weight: 700; color: #ffffff; margin-top: 14px; white-space: nowrap; text-align: center; }
+            #date-lunar-top { font-size: 1.4rem; font-weight: 700; color: #ffffff; margin-top: 4px; white-space: nowrap; text-align: center; }
+            .highlight-yellow { color: #F4B41A; font-weight: 700; }
+            #top-right-wrapper { position: absolute; top: 35px; right: 45px; z-index: 4; display: flex; flex-direction: column; align-items: center; gap: 8px; text-shadow: 0px 2px 5px rgba(0,0,0,0.6); transition: transform 2s ease-in-out; }
+            #temp-wrapper { position: relative; display: inline-flex; align-items: flex-start; justify-content: center; margin-right: 15px; } 
+            #weather-val { font-family: 'Montserrat', sans-serif; font-weight: 700; color: #ffffff; letter-spacing: -2px; line-height: 0.8; font-size: 3.8rem; display: inline-block; }
+            .degree-symbol { position: absolute; font-weight: 700; color: #ffffff; font-size: 1.5rem; top: 0; right: -18px; }
+            #right-env-container { display: flex; flex-direction: column; align-items: center; margin-right: 0; width: auto; }
+            .env-rotating-item { padding: 0; background: transparent; white-space: nowrap; transition: opacity 0.5s ease; color: rgba(255, 255, 255, 0.95); font-weight: 600; text-align: center; display: flex; justify-content: center; align-items: center; }
+            @keyframes pulseGlow { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
+            #bottom-container { position: absolute; bottom: 35px; left: 35px; right: 35px; z-index: 4; display: flex; flex-direction: row; align-items: flex-end; justify-content: space-between; text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.7); gap: 30px; transition: transform 2s ease-in-out; }
+            #bottom-left-events { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; flex-shrink: 0; }
+            .event-header { font-size: 1.1rem; color: #F4B41A; font-weight: 700; text-align: left; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; cursor: pointer; }
+            .event-item { font-size: 1.15rem; color: rgba(255, 255, 255, 0.95); font-weight: 600; text-align: left; padding: 4px 12px; border-radius: 4px; background: rgba(0, 0, 0, 0.4); margin-bottom: 2px; display: inline-block;}
+            .event-passed { opacity: 0.35; font-size: 1rem; }
+            .event-urgent { color: #F4B41A !important; font-weight: 700; background: rgba(0, 0, 0, 0.7); animation: pulseGlow 2s infinite; }
+            .event-today-birth { color: #2ecc71 !important; font-weight: 700; font-size: 1.25rem; background: rgba(0, 0, 0, 0.8); }
+            #bottom-right-text { flex: 1; display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; text-align: right; margin-left: 30px; cursor: pointer; }
+            #quote-row { font-size: 1.15rem; font-weight: 500; font-style: normal; color: #f5f5f7; line-height: 1.5; word-wrap: break-word; text-align: right; width: 100%; }
+            .countdown-highlight { color: #F4B41A; font-weight: 700; }
+            .death-highlight { color: #ff9500; font-weight: 700; }
+            .death-event-passed { color: #a1a1a1; font-weight: 500; opacity: 0.6; }
+            .modal-base { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(15px); padding: 25px; border-radius: 16px; border: 1px solid #F4B41A; z-index: 10001; display: none; flex-direction: column; gap: 15px; width: 340px; box-shadow: 0px 10px 40px rgba(0,0,0,0.8); }
+            .show-modal { display: flex !important; }
+            .modal-title { color: #F4B41A; font-weight: 700; font-size: 1.3rem; text-align: center; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+            .list-item { color: #fff; padding: 10px 5px; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 1.1rem; font-weight: 500; text-align: left;}
+            .list-item:last-child { border-bottom: none; }
+            #list-content { overflow-y: auto; max-height: 350px; padding-right: 10px; }
+            .loc-input { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 12px 15px; border-radius: 8px; font-size: 1.05rem; width: 100%; outline: none; font-family: inherit; font-weight: 500;}
+            .loc-input::placeholder { color: #aaa; font-weight: 400; }
+            .loc-input:focus { border-color: #F4B41A; background: rgba(255,255,255,0.15); }
+            .loc-btns { display: flex; gap: 10px; margin-top: 5px; }
+            .loc-btn { flex: 1; padding: 12px; font-weight: 700; border-radius: 8px; cursor: pointer; border: none; font-size: 1rem; transition: transform 0.1s;}
+            .btn-save { background: #F4B41A; color: #000; }
+            .btn-default { background: transparent; color: #fff; border: 1px solid #fff; }
+            .btn-close-modal { background: transparent; color: #aaa; font-weight: 400; border: none; font-size: 0.95rem; text-align: center; margin-top: -5px; padding: 5px; cursor: pointer; }
+            #toast-msg { position: absolute; top: 15%; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.85); color: #F4B41A; border: 1px solid #F4B41A; padding: 12px 24px; border-radius: 8px; font-size: 1.2rem; font-weight: 700; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; text-align: center; box-shadow: 0px 4px 15px rgba(0,0,0,0.5); }
+            #toast-msg.show { opacity: 1; }
+            #night-clock-box { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: none; z-index: 4; text-shadow: none; transition: transform 2s ease-in-out; }
+            .night-active #white-border-bg { background-color: #000000 !important; opacity: 1 !important; } 
+            .night-active #photo-container, .night-active #bottom-container, .night-active #top-right-wrapper, .night-active #info-container { display: none !important; }
+            .night-active #frame-wrapper { background-color: transparent !important; box-shadow: none !important; border-color: transparent !important; }
+            .night-active #night-clock-box { display: flex; align-items: center; justify-content: center; flex-direction: row; }
+            .night-hours, .night-minutes { font-family: 'Tourney', cursive !important; font-weight: 600 !important; color: #FF9500 !important; font-size: 46vmin; line-height: 0.9; margin: 0 1vmin; letter-spacing: -2vmin; }
+            @media (orientation: portrait) {
+                .hours-style, .minutes-style { font-size: 5rem; text-align: center; letter-spacing: -1px; } 
+                #date-solar-top { font-size: 1.3rem; text-align: center; } 
+                #date-lunar-top { font-size: 1.3rem; text-align: center; }
+                #info-container { top: 30px; left: 20px; align-items: center; }
+                #top-right-wrapper { top: 30px; right: 20px; gap: 4px; }
+                #weather-val { font-size: 2.6rem; }
+                .degree-symbol { font-size: 1.1rem; right: -12px; }
+                .env-rotating-item { font-size: 1rem; }
+                #bottom-container { flex-direction: column; align-items: stretch; gap: 15px; left: 20px; right: 20px; bottom: 30px; }
+                #bottom-left-events { align-items: flex-start; max-width: 100%; width: 100%; }
+                #bottom-right-text { text-align: right; align-items: flex-end; margin-left: 0; width: 100%; }
+                #quote-row { font-size: 1.05rem; line-height: 1.45; text-align: right; }
+                .night-active #night-clock-box { flex-direction: column; }
+                .night-hours, .night-minutes { font-size: 42vmin; margin: 0; line-height: 0.85; letter-spacing: -2vmin; }
+            }
+        `;
+        const styleEl = document.createElement('style'); styleEl.innerHTML = css; document.head.appendChild(styleEl);
 
-        <div id="info-container">
-            <div id="clock-flex-wrapper">
-                <span class="hours-style tap-target" id="hr-node" ontouchstart="handleAction(event, 'night')" onclick="handleAction(event, 'night')">00</span>
-                <span class="minutes-style tap-target" id="min-node" ontouchstart="handleAction(event, 'style')" onclick="handleAction(event, 'style')">00</span>
+        // 2. TỰ ĐỘNG BƠM HTML (GIẤU KHỎI SOURCE CODE VIEW)
+        document.body.innerHTML = `
+            <img id="outer-blur-bg" src="">
+            <div id="white-border-bg"></div>
+            <div id="frame-wrapper">
+                <div id="photo-container">
+                    <div id="group1" class="slide-group active"><img id="bg1" class="background-blur"><img id="fg1" class="foreground-image"></div>
+                    <div id="group2" class="slide-group"><img id="bg2" class="background-blur"><img id="fg2" class="foreground-image"></div>
+                </div>
+                <div class="overlay"></div>
+                <div id="brightness-overlay"></div>
+                <div id="toast-msg">Thông báo</div>
+
+                <div id="info-container">
+                    <div id="clock-flex-wrapper">
+                        <span class="hours-style tap-target" id="hr-node" ontouchstart="window.handleAction(event, 'night')" onclick="window.handleAction(event, 'night')">00</span>
+                        <span class="minutes-style tap-target" id="min-node" ontouchstart="window.handleAction(event, 'style')" onclick="window.handleAction(event, 'style')">00</span>
+                    </div>
+                    <div id="date-solar-top" class="tap-target" ontouchstart="window.handleAction(event, 'wakeup')" onclick="window.handleAction(event, 'wakeup')">Th 0 00/00</div>
+                    <div id="date-lunar-top" class="tap-target" ontouchstart="window.handleAction(event, 'interval')" onclick="window.handleAction(event, 'interval')"><span class="highlight-yellow">AL</span> 00/00</div>
+                </div>
+                
+                <div id="night-clock-box">
+                    <span class="night-hours tap-target" id="night-hr-node" ontouchstart="window.handleAction(event, 'night')" onclick="window.handleAction(event, 'night')">00:</span>
+                    <span class="night-minutes tap-target" id="night-min-node" ontouchstart="window.handleAction(event, 'night')" onclick="window.handleAction(event, 'night')">00</span>
+                </div>
+
+                <div id="top-right-wrapper">
+                    <div id="right-env-container" class="tap-target" ontouchstart="window.handleAction(event, 'open_location')" onclick="window.handleAction(event, 'open_location')"></div>
+                    <div id="temp-wrapper" class="tap-target" ontouchstart="window.handleAction(event, 'next')" onclick="window.handleAction(event, 'next')">
+                        <span id="weather-val">--</span><span class="degree-symbol">°</span>
+                    </div>
+                </div>
+                
+                <div id="bottom-container">
+                    <div id="bottom-left-events" class="tap-target" ontouchstart="window.handleAction(event, 'show_birth')" onclick="window.handleAction(event, 'show_birth')"></div>
+                    <div id="bottom-right-text" class="tap-target" ontouchstart="window.handleAction(event, 'show_death')" onclick="window.handleAction(event, 'show_death')">
+                        <span id="quote-row" style="color:#00E5FF; font-weight:700;">Đang khởi động hệ thống V114 Secure...</span>
+                    </div>
+                </div>
+                
+                <div id="location-modal" class="modal-base">
+                    <div class="modal-title">CÀI ĐẶT VỊ TRÍ</div>
+                    <input type="text" id="loc-name" class="loc-input" placeholder="Tên địa phương">
+                    <input type="text" inputmode="decimal" id="loc-lat" class="loc-input" placeholder="Vĩ độ">
+                    <input type="text" inputmode="decimal" id="loc-lon" class="loc-input" placeholder="Kinh độ">
+                    <div class="loc-btns">
+                        <button class="loc-btn btn-save" ontouchstart="window.saveLocation(); event.preventDefault();" onclick="window.saveLocation()">LƯU</button>
+                        <button class="loc-btn btn-default" ontouchstart="window.defaultLocation(); event.preventDefault();" onclick="window.defaultLocation()">MẶC ĐỊNH</button>
+                    </div>
+                    <button class="btn-close-modal" ontouchstart="window.closeLocationModal(); event.preventDefault();" onclick="window.closeLocationModal()">Đóng (Hủy)</button>
+                </div>
+
+                <div id="list-modal" class="modal-base">
+                    <div id="list-title" class="modal-title">DANH SÁCH</div>
+                    <div id="list-content"></div>
+                    <button class="btn-close-modal" style="margin-top:10px;" ontouchstart="window.closeListModal(); event.preventDefault();" onclick="window.closeListModal()">Đóng bảng</button>
+                </div>
             </div>
-            <div id="date-solar-top" class="tap-target" ontouchstart="handleAction(event, 'wakeup')" onclick="handleAction(event, 'wakeup')">Th 0 00/00</div>
-            <div id="date-lunar-top" class="tap-target" ontouchstart="handleAction(event, 'interval')" onclick="handleAction(event, 'interval')"><span class="highlight-yellow">AL</span> 00/00</div>
-        </div>
-        
-        <div id="night-clock-box">
-            <span class="night-hours tap-target" id="night-hr-node" ontouchstart="handleAction(event, 'night')" onclick="handleAction(event, 'night')">00:</span>
-            <span class="night-minutes tap-target" id="night-min-node" ontouchstart="handleAction(event, 'night')" onclick="handleAction(event, 'night')">00</span>
-        </div>
+        `;
 
-        <div id="top-right-wrapper">
-            <div id="right-env-container" class="tap-target" ontouchstart="handleAction(event, 'open_location')" onclick="handleAction(event, 'open_location')"></div>
-            <div id="temp-wrapper" class="tap-target" ontouchstart="handleAction(event, 'next')" onclick="handleAction(event, 'next')">
-                <span id="weather-val">--</span><span class="degree-symbol">°</span>
-            </div>
-        </div>
-        
-        <div id="bottom-container">
-            <div id="bottom-left-events" class="tap-target" ontouchstart="handleAction(event, 'show_birth')" onclick="handleAction(event, 'show_birth')"></div>
-            <div id="bottom-right-text" class="tap-target" ontouchstart="handleAction(event, 'show_death')" onclick="handleAction(event, 'show_death')">
-                <span id="quote-row" style="color:#00E5FF; font-weight:700;">[SaaS Secure Engine Active] Đang tải...</span>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // =========================================================================================
-        // 🔒 BIẾN MẢNG ĐÃ ĐƯỢC OBFUSCATE (MÃ HÓA HEX CHỐNG CTRL+U ĐỌC TRỘM)
-        // Dữ liệu khách hàng thật được ẩn giấu hoàn toàn trong chuỗi hệ thống này.
-        // Bạn muốn thêm khách mới? Chỉ cần báo tôi dịch sang chuỗi Hex tương tự để ném vào đây!
-        // =========================================================================================
-        var _0x5a1b = {
-            "khach01": "17YOn0tWO8-hzloHM57bLhRh7e9LALZZk"
-        };
-        // =========================================================================================
-
-        // 🛡️ HỆ THỐNG PHÒNG THỦ CHỐNG DEVTOLS / CTRL+U / F12 TOÀN DIỆN
-        (function() {
-            // Khóa chuột phải và phím tắt
-            window.addEventListener('contextmenu', function(e) { e.preventDefault(); });
-            window.addEventListener('keydown', function(e) {
-                if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || (e.ctrlKey && e.keyCode === 85)) {
-                    e.preventDefault(); return false;
-                }
-            });
-            // Bẫy đóng băng debugger vô hạn nếu cố ép mở DevTools qua cài đặt trình duyệt
-            setInterval(function() { (function(_0xdb) { if(_0xdb) { (function() { return true; }).constructor('debugger').call('action'); } })(true); }, 500);
-        })();
-
+        // 3. LOGIC HOẠT ĐỘNG TOÀN DIỆN
         var bX1 = 0, bY1 = 0, bX2 = 0, bY2 = 0, bX3 = 0, bY3 = 0;
-
-        function getQueryParam(param) {
-            var search = window.location.search.substring(1); if (!search) return null;
-            var vars = search.split('&');
-            for (var i = 0; i < vars.length; i++) { var pair = vars[i].split('='); if (decodeURIComponent(pair[0]) === param) { return decodeURIComponent(pair[1]); } }
-            return null;
-        }
-
-        function writeDebug(msg, color) {
-            if (isSystemError) return;
-            var el = document.getElementById('quote-row');
-            if (el) el.innerHTML = '<span style="color:' + (color || '#00E5FF') + '; font-weight:700;">' + msg + '</span>';
-        }
-
-        var clientAlias = getQueryParam('c') || 'khach01'; 
-        var FOLDER_ID = _0x5a1b[clientAlias];
-        var SECRET_ENCODED = 'QUl6YVN5REwyRm1VQzkxMUtBTnFwN3VPbnZKcU5xVHltb1R2SkxF'; 
-        var API_KEY = getQueryParam('k') ? getQueryParam('k').trim() : atob(SECRET_ENCODED); 
+        function writeDebug(msg, color) { if(isSystemError) return; var el=document.getElementById('quote-row'); if(el) el.innerHTML='<span style="color:'+(color||'#00E5FF')+'; font-weight:700;">'+msg+'</span>'; }
 
         var images = []; var currentIndex = 0; var slideInterval; var toastTimeout; var locationModalTimeout; var listModalTimeout;
         var audioCtx = null; var isGroup1Active = true; var audioUnlocked = false; var forceNightMode = null; 
@@ -195,32 +188,12 @@
         var wakeUpHour = localStorage.getItem('wakeUpHour') ? parseInt(localStorage.getItem('wakeUpHour')) : 6;
         var loadMorningMusicFlag = false; var clock8AMMusicFlag = false; var clock14PMMusicFlag = false; var clock18PMMusicFlag = false; var lastBirthdayCheckDate = null; var hourlyChimePlayed = false;
 
-        var clockStyles = [
-            { f: "'Montserrat', sans-serif", hc: "#F4B41A", mc: "#ffffff", fw: 700 }, { f: "'Montserrat', sans-serif", hc: "#ffffff", mc: "#F4B41A", fw: 700 },
-            { f: "'Tourney', cursive", hc: "#F4B41A", mc: "#ffffff", fw: 600 }, { f: "'Tourney', cursive", hc: "#ffffff", mc: "#F4B41A", fw: 600 },
-            { f: "'Playfair Display', serif", hc: "#F4B41A", mc: "#ffffff", fw: 700 }, { f: "'Playfair Display', serif", hc: "#ffffff", mc: "#F4B41A", fw: 700 },
-            { f: "'Oswald', sans-serif", hc: "#00E5FF", mc: "#ffffff", fw: 600 }, { f: "'Oswald', sans-serif", hc: "#F4B41A", mc: "#ffffff", fw: 600 },
-            { f: "'Righteous', cursive", hc: "#FF3366", mc: "#ffffff", fw: 400 }, { f: "'Righteous', cursive", hc: "#F4B41A", mc: "#ffffff", fw: 400 },
-            { f: "'Courier Prime', monospace", hc: "#B4E61D", mc: "#ffffff", fw: 700 }, { f: "'Courier Prime', monospace", hc: "#ffffff", mc: "#F4B41A", fw: 700 },
-            { f: "'Cinzel', serif", hc: "#F4B41A", mc: "#ffffff", fw: 700 }, { f: "'Cinzel', serif", hc: "#ffffff", mc: "#F4B41A", fw: 700 },
-            { f: "'Montserrat', sans-serif", hc: "#00E5FF", mc: "#FF3366", fw: 700 }, { f: "'Tourney', cursive", hc: "#B4E61D", mc: "#FF9100", fw: 600 },
-            { f: "'Playfair Display', serif", hc: "#E0E0E0", mc: "#E0E0E0", fw: 700 }, { f: "'Oswald', sans-serif", hc: "#FF9100", mc: "#ffffff", fw: 600 },
-            { f: "'Righteous', cursive", hc: "#00E5FF", mc: "#B4E61D", fw: 400 }, { f: "'Cinzel', serif", hc: "#E0E0E0", mc: "#F4B41A", fw: 700 },
-            { f: "'Montserrat', sans-serif", hc: "#FF9100", mc: "#F4B41A", fw: 700 }, { f: "'Courier Prime', monospace", hc: "#00E5FF", mc: "#00E5FF", fw: 700 },
-            { f: "'Tourney', cursive", hc: "#FF3366", mc: "#ffffff", fw: 600 }, { f: "'Playfair Display', serif", hc: "#ffffff", mc: "#ffffff", fw: 700 },
-            { f: "'Oswald', sans-serif", hc: "#B4E61D", mc: "#ffffff", fw: 600 }, { f: "'Righteous', cursive", hc: "#ffffff", mc: "#FF3366", fw: 400 },
-            { f: "'Cinzel', serif", hc: "#FF9100", mc: "#ffffff", fw: 700 }, { f: "'Montserrat', sans-serif", hc: "#E0E0E0", mc: "#FF3366", fw: 700 },
-            { f: "'Tourney', cursive", hc: "#00E5FF", mc: "#B4E61D", fw: 600 }, { f: "'Playfair Display', serif", hc: "#FF3366", mc: "#F4B41A", fw: 700 }
-        ];
+        var clockStyles = [ { f: "'Montserrat', sans-serif", hc: "#F4B41A", mc: "#ffffff", fw: 700 }, { f: "'Montserrat', sans-serif", hc: "#ffffff", mc: "#F4B41A", fw: 700 }, { f: "'Tourney', cursive", hc: "#F4B41A", mc: "#ffffff", fw: 600 }, { f: "'Tourney', cursive", hc: "#ffffff", mc: "#F4B41A", fw: 600 }, { f: "'Playfair Display', serif", hc: "#F4B41A", mc: "#ffffff", fw: 700 }, { f: "'Playfair Display', serif", hc: "#ffffff", mc: "#F4B41A", fw: 700 }, { f: "'Oswald', sans-serif", hc: "#00E5FF", mc: "#ffffff", fw: 600 }, { f: "'Oswald', sans-serif", hc: "#F4B41A", mc: "#ffffff", fw: 600 }, { f: "'Righteous', cursive", hc: "#FF3366", mc: "#ffffff", fw: 400 }, { f: "'Righteous', cursive", hc: "#F4B41A", mc: "#ffffff", fw: 400 }, { f: "'Courier Prime', monospace", hc: "#B4E61D", mc: "#ffffff", fw: 700 }, { f: "'Courier Prime', monospace", hc: "#ffffff", mc: "#F4B41A", fw: 700 }, { f: "'Cinzel', serif", hc: "#F4B41A", mc: "#ffffff", fw: 700 }, { f: "'Cinzel', serif", hc: "#ffffff", mc: "#F4B41A", fw: 700 }, { f: "'Montserrat', sans-serif", hc: "#00E5FF", mc: "#FF3366", fw: 700 }, { f: "'Tourney', cursive", hc: "#B4E61D", mc: "#FF9100", fw: 600 }, { f: "'Playfair Display', serif", hc: "#E0E0E0", mc: "#E0E0E0", fw: 700 }, { f: "'Oswald', sans-serif", hc: "#FF9100", mc: "#ffffff", fw: 600 }, { f: "'Righteous', cursive", hc: "#00E5FF", mc: "#B4E61D", fw: 400 }, { f: "'Cinzel', serif", hc: "#E0E0E0", mc: "#F4B41A", fw: 700 }, { f: "'Montserrat', sans-serif", hc: "#FF9100", mc: "#F4B41A", fw: 700 }, { f: "'Courier Prime', monospace", hc: "#00E5FF", mc: "#00E5FF", fw: 700 }, { f: "'Tourney', cursive", hc: "#FF3366", mc: "#ffffff", fw: 600 }, { f: "'Playfair Display', serif", hc: "#ffffff", mc: "#ffffff", fw: 700 }, { f: "'Oswald', sans-serif", hc: "#B4E61D", mc: "#ffffff", fw: 600 }, { f: "'Righteous', cursive", hc: "#ffffff", mc: "#FF3366", fw: 400 }, { f: "'Cinzel', serif", hc: "#FF9100", mc: "#ffffff", fw: 700 }, { f: "'Montserrat', sans-serif", hc: "#E0E0E0", mc: "#FF3366", fw: 700 }, { f: "'Tourney', cursive", hc: "#00E5FF", mc: "#B4E61D", fw: 600 }, { f: "'Playfair Display', serif", hc: "#FF3366", mc: "#F4B41A", fw: 700 } ];
         var currentStyleIdx = parseInt(localStorage.getItem('clockStyle')); if(isNaN(currentStyleIdx) || currentStyleIdx < 0 || currentStyleIdx >= clockStyles.length) currentStyleIdx = 0;
-
         var defaultLatitude = 12.6792; var defaultLongitude = 108.0694; var defaultLocalName = "Tân Lập";
-        var clientLatitude = localStorage.getItem('myLat') ? parseFloat(localStorage.getItem('myLat')) : defaultLatitude;
-        var clientLongitude = localStorage.getItem('myLon') ? parseFloat(localStorage.getItem('myLon')) : defaultLongitude;
-        var clientLocalName = localStorage.getItem('myName') ? localStorage.getItem('myName') : defaultLocalName;
+        var clientLatitude = localStorage.getItem('myLat') ? parseFloat(localStorage.getItem('myLat')) : defaultLatitude; var clientLongitude = localStorage.getItem('myLon') ? parseFloat(localStorage.getItem('myLon')) : defaultLongitude; var clientLocalName = localStorage.getItem('myName') ? localStorage.getItem('myName') : defaultLocalName;
 
         var birthdays = [], anniversaries = [], festivalsData = [], specialtiesData = [], quotePool = [];
-
         var phases = [
             [2025, 11, 20, 11, "Ất Tỵ"], [2026, 0, 19, 12, "Ất Tỵ"], [2026, 1, 17, 1, "Bính Ngọ"], [2026, 2, 19, 2, "Bính Ngọ"], [2026, 3, 17, 3, "Bính Ngọ"], [2026, 4, 16, 4, "Bính Ngọ"], [2026, 5, 15, 5, "Bính Ngọ"], [2026, 6, 14, 6, "Bính Ngọ"], [2026, 7, 13, 7, "Bính Ngọ"], [2026, 8, 11, 8, "Bính Ngọ"], [2026, 9, 11, 9, "Bính Ngọ"], [2026, 10, 10, 10, "Bính Ngọ"], [2026, 11, 9, 11, "Bính Ngọ"],
             [2027, 0, 8, 12, "Bính Ngọ"], [2027, 1, 6, 1, "Đinh Mùi"], [2027, 2, 8, 2, "Đinh Mùi"], [2027, 3, 7, 3, "Đinh Mùi"], [2027, 4, 6, 4, "Đinh Mùi"], [2027, 5, 5, 5, "Đinh Mùi"], [2027, 6, 4, 6, "Đinh Mùi"], [2027, 7, 2, 7, "Đinh Mùi"], [2027, 7, 31, 7, "Đinh Mùi"], [2027, 8, 29, 8, "Đinh Mùi"], [2027, 9, 29, 9, "Đinh Mùi"], [2027, 10, 28, 10, "Đinh Mùi"], [2027, 11, 27, 11, "Đinh Mùi"],
@@ -230,6 +203,7 @@
         ];
 
         function rotateWeatherDisplay() {
+            var getEnvColor = function(type, val) { var strVal = String(val).trim(); if (strVal === "--" || strVal.indexOf('--') !== -1) return "#ffffff"; var v = parseFloat(strVal); if (type === 'aqi') { if (v <= 50) return "#ffffff"; if (v <= 100) return "#F4B41A"; if (v <= 150) return "#FF9500"; return "#FF3366"; } if (type === 'uv') { if (v <= 2) return "#ffffff"; if (v <= 5) return "#F4B41A"; if (v <= 7) return "#FF9500"; return "#FF3366"; } if (type === 'rain') { if (v < 51) return "#ffffff"; if (v <= 75) return "#F4B41A"; return "#FF3366"; } return "#ffffff"; };
             var envPool = [ 'AQI <span style="color:' + getEnvColor('aqi', globalAQI) + '; font-weight:700;">' + globalAQI + '</span>', '☀️ <span style="color:' + getEnvColor('uv', globalUV) + '; font-weight:700;">' + globalUV + '</span>', '🌧️ <span style="color:' + getEnvColor('rain', parseFloat(globalRain)) + '; font-weight:700;">' + globalRain + '</span>', '💧 ' + globalHum, '🌅 ' + globalSunrise + '-' + globalSunset ];
             var currentEnv = envPool[envDisplayIndex % envPool.length]; envDisplayIndex++;
             var container = document.getElementById('right-env-container');
@@ -237,104 +211,68 @@
         }
         setInterval(rotateWeatherDisplay, 120000);
 
-        function syncEnvWidth() {
-            setTimeout(function() {
-                var tempVal = document.getElementById('weather-val'); var envItem = document.querySelector('.env-rotating-item');
-                if (tempVal && envItem) {
-                    var targetW = tempVal.getBoundingClientRect().width;
-                    if (targetW > 0) {
-                        envItem.style.width = targetW + 'px'; envItem.style.display = 'flex'; envItem.style.justifyContent = 'center'; envItem.style.alignItems = 'center';
-                        var fontSize = 1.1; envItem.style.fontSize = fontSize + 'rem';
-                        while (envItem.scrollWidth > envItem.clientWidth && fontSize > 0.4) { fontSize -= 0.05; envItem.style.fontSize = fontSize + 'rem'; }
-                    }
-                }
-            }, 50); 
+        function syncEnvWidth() { setTimeout(function() { var tempVal = document.getElementById('weather-val'); var envItem = document.querySelector('.env-rotating-item'); if (tempVal && envItem) { var targetW = tempVal.getBoundingClientRect().width; if (targetW > 0) { envItem.style.width = targetW + 'px'; envItem.style.display = 'flex'; envItem.style.justifyContent = 'center'; envItem.style.alignItems = 'center'; var fontSize = 1.1; envItem.style.fontSize = fontSize + 'rem'; while (envItem.scrollWidth > envItem.clientWidth && fontSize > 0.4) { fontSize -= 0.05; envItem.style.fontSize = fontSize + 'rem'; } } } }, 50); }
+
+        function fallbackInit(msg) { 
+            isSystemError = true; var el = document.getElementById('quote-row'); if(el) el.innerHTML = '<span style="color:#FF3366; font-weight:700; background:rgba(0,0,0,0.8); padding:10px; border-radius:8px;">' + msg + '</span>'; 
+            images = ['https://images.unsplash.com/photo-1506744626753-14002fa88301?q=80&w=2048']; 
+            var currentGroupId = isGroup1Active ? 'group1' : 'group2'; var nextGroupId = isGroup1Active ? 'group2' : 'group1';
+            var nextBg = document.getElementById(isGroup1Active ? 'bg2' : 'bg1'); var nextFg = document.getElementById(isGroup1Active ? 'fg2' : 'fg1');
+            nextFg.onload = function() {
+                var img = nextFg; var gp = document.getElementById(nextGroupId);
+                img.classList.remove('fit-cover', 'fit-contain'); gp.classList.add('show-blur'); if (window.innerWidth > window.innerHeight) { img.classList.add(img.naturalWidth > img.naturalHeight ? 'fit-cover' : 'fit-contain'); } else { img.classList.add(img.naturalWidth > img.naturalHeight ? 'fit-contain' : 'fit-cover'); }
+                document.getElementById(currentGroupId).classList.remove('active'); document.getElementById(nextGroupId).classList.add('active'); isGroup1Active = !isGroup1Active; 
+            }; nextBg.src = images[0]; nextFg.src = images[0];
         }
 
         function syncDriveData() {
-            if (!FOLDER_ID) { fallbackInit("Mã xác thực không hợp lệ."); return; }
+            writeDebug("[2/5] Checking Client License...");
+            if (!FOLDER_ID) { fallbackInit("LỖI: Mã Khách Hàng (Alias) không hợp lệ!"); return; }
+
             var query = encodeURIComponent("'" + FOLDER_ID + "' in parents and name = 'cauhinh.txt' and trashed = false");
             var xhrConfig = new XMLHttpRequest(); xhrConfig.open('GET', 'https://www.googleapis.com/drive/v3/files?q=' + query + '&key=' + API_KEY + '&fields=files(id)', true);
-            xhrConfig.onreadystatechange = function() { if (xhrConfig.readyState === 4 && xhrConfig.status === 200) { var data = JSON.parse(xhrConfig.responseText); if (data.files && data.files.length > 0) { downloadConfigFile(data.files[0].id); } } }; 
-            xhrConfig.send();
+            xhrConfig.onreadystatechange = function() { if (xhrConfig.readyState === 4 && xhrConfig.status === 200) { var data = JSON.parse(xhrConfig.responseText); if (data.files && data.files.length > 0) { downloadConfigFile(data.files[0].id); } } }; xhrConfig.send();
 
+            writeDebug("[3/5] Connecting to Google CDN Server...");
             var imgQuery = encodeURIComponent("'" + FOLDER_ID + "' in parents and mimeType contains 'image/'");
             var xhrDrive = new XMLHttpRequest(); 
-            xhrDrive.open('GET', 'https://www.googleapis.com/drive/v3/files?q=' + imgQuery + '&orderBy=createdTime desc&pageSize=1000&key=' + API_KEY + '&fields=files(id,createdTime)', true);
+            xhrDrive.open('GET', 'https://www.googleapis.com/drive/v3/files?q=' + imgQuery + '&orderBy=createdTime desc&pageSize=1000&key=' + API_KEY + '&fields=files(id,createdTime,thumbnailLink)', true);
             xhrDrive.onreadystatechange = function() {
-                if (xhrDrive.readyState === 4 && xhrDrive.status === 200) {
-                    var data = JSON.parse(xhrDrive.responseText);
-                    if (data.files && data.files.length > 0) {
-                        var allImgs = []; var recentImgs = []; var twoDaysAgo = new Date(Date.now() - 48 * 60 * 60 * 1000);
-                        for (var i = 0; i < data.files.length; i++) { 
-                            var fileId = data.files[i].id; allImgs.push(fileId);
-                            if (new Date(data.files[i].createdTime) >= twoDaysAgo) { recentImgs.push(fileId); }
-                        }
-                        function shuffle(arr) { var a = arr.slice(); for (var k = a.length - 1; k > 0; k--) { var j = Math.floor(Math.random() * (k + 1)); var t = a[k]; a[k] = a[j]; a[j] = t; } return a; }
-                        images = recentImgs.length > 0 ? shuffle(recentImgs).concat(shuffle(allImgs)) : shuffle(allImgs);
-                        currentIndex = 0; setTimeout(initSlideshow, 500);
-                    } else { fallbackInit("Thư mục trống."); }
+                if (xhrDrive.readyState === 4) {
+                    if (xhrDrive.status === 200) {
+                        var data = JSON.parse(xhrDrive.responseText);
+                        if (data.files && data.files.length > 0) {
+                            writeDebug("[4/5] " + data.files.length + " media objects found...", "#2ecc71");
+                            var allImgs = []; var recentImgs = []; var twoDaysAgo = new Date(Date.now() - 48 * 60 * 60 * 1000);
+                            for (var i = 0; i < data.files.length; i++) { 
+                                if (data.files[i].thumbnailLink) {
+                                    var imgPath = data.files[i].thumbnailLink.replace(/=s\d+/, '=s2048');
+                                    allImgs.push(imgPath); if (new Date(data.files[i].createdTime) >= twoDaysAgo) { recentImgs.push(imgPath); }
+                                }
+                            }
+                            function shuffle(arr) { var a = arr.slice(); for (var k = a.length - 1; k > 0; k--) { var j = Math.floor(Math.random() * (k + 1)); var t = a[k]; a[k] = a[j]; a[j] = t; } return a; }
+                            images = recentImgs.length > 0 ? shuffle(recentImgs).concat(shuffle(allImgs)) : shuffle(allImgs);
+                            if(images.length > 0) { currentIndex = 0; setTimeout(initSlideshow, 500); } else { fallbackInit("LỖI: Ảnh không hỗ trợ."); }
+                        } else { fallbackInit("LỖI: Drive trống!"); }
+                    } else { fallbackInit("Lỗi API Google (" + xhrDrive.status + ")."); }
                 }
             }; xhrDrive.send();
         }
 
-        function updateImageDisplayMechanism(img, gp) { img.classList.remove('fit-cover', 'fit-contain'); gp.classList.add('show-blur'); if (window.innerWidth > window.innerHeight) { img.classList.add(img.naturalWidth > img.naturalHeight ? 'fit-cover' : 'fit-contain'); } else { img.classList.add(img.naturalWidth > img.naturalHeight ? 'fit-contain' : 'fit-cover'); } }
-        
-        function loadAndDisplayImage(fileId) {
-            var currentGroupId = isGroup1Active ? 'group1' : 'group2'; var nextGroupId = isGroup1Active ? 'group2' : 'group1';
-            var nextBg = document.getElementById(isGroup1Active ? 'bg2' : 'bg1'); var nextFg = document.getElementById(isGroup1Active ? 'fg2' : 'fg1');
-            
-            // ĐỘNG CƠ AN TOÀN TRÁNH BỊ CHẶN BỞI GOOGLE VIRUS SCAN / MOBILE BROWSERS
-            var urlPrimary = 'https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media&key=' + API_KEY;
-            var urlFallback = 'https://drive.google.com/thumbnail?id=' + fileId + '&sz=w2048';
-            
-            clearTimeout(imgWatchdog);
-            imgWatchdog = setTimeout(function() { currentIndex = (currentIndex + 1) % images.length; goToNextSlide(); }, 12000);
-
-            nextFg.onload = function() { 
-                clearTimeout(imgWatchdog);
-                updateImageDisplayMechanism(nextFg, document.getElementById(nextGroupId)); 
-                document.getElementById(currentGroupId).classList.remove('active'); document.getElementById(nextGroupId).classList.add('active'); 
-                isGroup1Active = !isGroup1Active; currentIndex = (currentIndex + 1) % images.length; isSystemError = false; updateDynamicContentBySlide(); 
-            };
-            
-            nextFg.onerror = function() { 
-                if (nextFg.src === urlPrimary) {
-                    nextBg.src = urlFallback; nextFg.src = urlFallback;
-                } else {
-                    clearTimeout(imgWatchdog); currentIndex = (currentIndex + 1) % images.length; setTimeout(goToNextSlide, 1000); 
-                }
-            };
-            nextBg.src = urlPrimary; nextFg.src = urlPrimary;
-        }
-
-        function initSlideshow() { applyClockStyle(); loadAndDisplayImage(images[0]); changeIntervalMode(currentIntervalIdx + 1); }
-        function goToNextSlide() { if(images.length <= 1) return; loadAndDisplayImage(images[currentIndex]); }
-        function changeIntervalMode(modeVal) { currentIntervalIdx = modeVal - 1; var seconds = stepSeconds[currentIntervalIdx]; if (slideInterval) clearInterval(slideInterval); slideInterval = setInterval(goToNextSlide, seconds * 1000); }
-
         function downloadConfigFile(fileId) {
             var url = 'https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media&key=' + API_KEY;
-            var xhr = new XMLHttpRequest(); xhr.open('GET', url, true);
-            if (xhr.overrideMimeType) xhr.overrideMimeType('text/plain; charset=utf-8');
-            xhr.onreadystatechange = function() { if (xhr.readyState === 4 && xhr.status === 200) { parseConfigText(xhr.responseText); } };
-            xhr.send();
+            var xhr = new XMLHttpRequest(); xhr.open('GET', url, true); if (xhr.overrideMimeType) xhr.overrideMimeType('text/plain; charset=utf-8');
+            xhr.onreadystatechange = function() { if (xhr.readyState === 4 && xhr.status === 200) { parseConfigText(xhr.responseText); } }; xhr.send();
         }
 
         function parseConfigText(text) {
-            var lines = text.split('\n'); var section = "";
-            var tempB = [], tempA = [], tempF = [], tempS = [], tempQ = [];
+            var lines = text.split('\n'); var section = ""; var tempB = [], tempA = [], tempF = [], tempS = [], tempQ = [];
             for (var i = 0; i < lines.length; i++) {
-                var line = lines[i].replace('\r', '').trim();
-                if (!line || line.indexOf('#') === 0) continue;
+                var line = lines[i].replace('\r', '').trim(); if (!line || line.indexOf('#') === 0) continue;
                 if (line.indexOf('[') === 0) { section = line.toUpperCase(); continue; }
                 if (section === "[THONG TIN QUAN TRONG]") {
                     var parts = line.split('=');
-                    if(parts.length === 2) {
-                        var k = parts[0].trim().toUpperCase(); var v = parts[1].trim();
-                        if(k === "VI_DO") { if(!localStorage.getItem('myLat')) clientLatitude = parseFloat(v.replace(',', '.')); defaultLatitude = parseFloat(v.replace(',', '.')); }
-                        if(k === "KINH_DO") { if(!localStorage.getItem('myLon')) clientLongitude = parseFloat(v.replace(',', '.')); defaultLongitude = parseFloat(v.replace(',', '.')); }
-                        if(k === "TEN_DIA_PHUONG") { if(!localStorage.getItem('myName')) clientLocalName = v; defaultLocalName = v; }
-                    }
+                    if(parts.length === 2) { var k = parts[0].trim().toUpperCase(); var v = parts[1].trim(); if(k === "VI_DO") { if(!localStorage.getItem('myLat')) clientLatitude = parseFloat(v.replace(',', '.')); defaultLatitude = parseFloat(v.replace(',', '.')); } if(k === "KINH_DO") { if(!localStorage.getItem('myLon')) clientLongitude = parseFloat(v.replace(',', '.')); defaultLongitude = parseFloat(v.replace(',', '.')); } if(k === "TEN_DIA_PHUONG") { if(!localStorage.getItem('myName')) clientLocalName = v; defaultLocalName = v; } }
                 }
                 else if (section === "[DANH SACH SINH NHAT]") { var mB = line.match(/^(\d{1,2})\s*[\/]\s*(\d{1,2})\s+(.+)$/); if (mB) tempB.push({d: parseInt(mB[1],10), m: parseInt(mB[2],10), name: mB[3].trim()}); }
                 else if (section === "[DANH SACH NGAY GIO]") { var mA = line.match(/^(\d{1,2})\s*[\/]\s*(\d{1,2})\s+(.+)$/); if (mA) tempA.push({d: parseInt(mA[1],10), m: parseInt(mA[2],10), name: mA[3].trim()}); }
@@ -345,49 +283,35 @@
             if(tempB.length>0) birthdays = tempB; if(tempA.length>0) anniversaries = tempA; if(tempF.length>0) festivalsData = tempF; if(tempS.length>0) specialtiesData = tempS; if(tempQ.length>0) quotePool = tempQ;
         }
 
-        function showToast(msg) { var toast = document.getElementById('toast-msg'); toast.innerText = msg; toast.classList.add('show'); if(toastTimeout) clearTimeout(toastTimeout); toastTimeout = setTimeout(function() { toast.classList.remove('show'); }, 3000); }
+        window.showToast = function(msg) { var toast = document.getElementById('toast-msg'); toast.innerText = msg; toast.classList.add('show'); if(toastTimeout) clearTimeout(toastTimeout); toastTimeout = setTimeout(function() { toast.classList.remove('show'); }, 3000); };
         function applyClockStyle() { var s = clockStyles[currentStyleIdx]; var hrNode = document.getElementById('hr-node'); var minNode = document.getElementById('min-node'); hrNode.style.fontFamily = s.f; hrNode.style.color = s.hc; hrNode.style.fontWeight = s.fw; minNode.style.fontFamily = s.f; minNode.style.color = s.mc; minNode.style.fontWeight = s.fw; localStorage.setItem('clockStyle', currentStyleIdx); }
         function playNote(freq, startTime, duration, type) { if (!audioCtx) return; var osc = audioCtx.createOscillator(); var gainNode = audioCtx.createGain(); osc.type = type || 'sine'; osc.frequency.setValueAtTime(freq, startTime); gainNode.gain.setValueAtTime(0.2, startTime); gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration); osc.connect(gainNode); gainNode.connect(audioCtx.destination); osc.start(startTime); osc.stop(startTime + duration); }
         function playSolemnChime() { if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){} } if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); var t = audioCtx.currentTime; playNote(220.00, t, 3.5, 'sine'); playNote(440.00, t + 0.2, 3.0, 'sine'); playNote(554.37, t + 0.5, 3.0, 'sine'); playNote(659.25, t + 0.8, 3.0, 'sine'); playNote(880.00, t + 1.2, 4.0, 'sine'); }
         function playHappyBirthday() { if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){} } if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); var t = audioCtx.currentTime; var tempo = 0.45; function p(f, d) { playNote(f, t, d * tempo, 'triangle'); t += d * tempo; } p(261.63, 0.75); p(261.63, 0.25); p(293.66, 1); p(261.63, 1); p(349.23, 1); p(329.63, 2); p(261.63, 0.75); p(261.63, 0.25); p(293.66, 1); p(261.63, 1); p(392.00, 1); p(349.23, 2); p(261.63, 0.75); p(261.63, 0.25); p(523.25, 1); p(440.00, 1); p(349.23, 1); p(329.63, 1); p(293.66, 2); p(466.16, 0.75); p(466.16, 0.25); p(440.00, 1); p(349.23, 1); p(392.00, 1); p(349.23, 2); }
 
-        function openLocationModal() { var modal = document.getElementById('location-modal'); document.getElementById('loc-name').value = clientLocalName; document.getElementById('loc-lat').value = clientLatitude; document.getElementById('loc-lon').value = clientLongitude; modal.classList.add('show-modal'); if (locationModalTimeout) clearTimeout(locationModalTimeout); locationModalTimeout = setTimeout(closeLocationModal, 60000); }
-        function closeLocationModal() { document.getElementById('location-modal').classList.remove('show-modal'); if (locationModalTimeout) clearTimeout(locationModalTimeout); }
-        function saveLocation() { var n = document.getElementById('loc-name').value.trim(); var latStr = document.getElementById('loc-lat').value.replace(',', '.'); var lonStr = document.getElementById('loc-lon').value.replace(',', '.'); var lat = parseFloat(latStr); var lon = parseFloat(lonStr); if (n && !isNaN(lat) && !isNaN(lon)) { closeLocationModal(); clientLocalName = n; clientLatitude = lat; clientLongitude = lon; localStorage.setItem('myName', n); localStorage.setItem('myLat', lat); localStorage.setItem('myLon', lon); showToast("📍 Đã lưu vị trí: " + n); globalAQI = "--"; updateWeatherAndAQI(); updateDynamicContentBySlide(); } else { alert("Vui lòng nhập tọa độ bằng số!"); } }
-        function defaultLocation() { closeLocationModal(); localStorage.removeItem('myName'); localStorage.removeItem('myLat'); localStorage.removeItem('myLon'); clientLocalName = defaultLocalName; clientLatitude = defaultLatitude; clientLongitude = defaultLongitude; showToast("📍 Đã khôi phục vị trí mặc định"); globalAQI = "--"; updateWeatherAndAQI(); updateDynamicContentBySlide(); }
+        window.openLocationModal = function() { var modal = document.getElementById('location-modal'); document.getElementById('loc-name').value = clientLocalName; document.getElementById('loc-lat').value = clientLatitude; document.getElementById('loc-lon').value = clientLongitude; modal.classList.add('show-modal'); if (locationModalTimeout) clearTimeout(locationModalTimeout); locationModalTimeout = setTimeout(window.closeLocationModal, 60000); };
+        window.closeLocationModal = function() { document.getElementById('location-modal').classList.remove('show-modal'); if (locationModalTimeout) clearTimeout(locationModalTimeout); };
+        window.saveLocation = function() { var n = document.getElementById('loc-name').value.trim(); var latStr = document.getElementById('loc-lat').value.replace(',', '.'); var lonStr = document.getElementById('loc-lon').value.replace(',', '.'); var lat = parseFloat(latStr); var lon = parseFloat(lonStr); if (n && !isNaN(lat) && !isNaN(lon)) { window.closeLocationModal(); clientLocalName = n; clientLatitude = lat; clientLongitude = lon; localStorage.setItem('myName', n); localStorage.setItem('myLat', lat); localStorage.setItem('myLon', lon); window.showToast("📍 Đã lưu vị trí: " + n); globalAQI = "--"; updateWeatherAndAQI(); updateDynamicContentBySlide(); } else { alert("Vui lòng nhập tọa độ!"); } };
+        window.defaultLocation = function() { window.closeLocationModal(); localStorage.removeItem('myName'); localStorage.removeItem('myLat'); localStorage.removeItem('myLon'); clientLocalName = defaultLocalName; clientLatitude = defaultLatitude; clientLongitude = defaultLongitude; window.showToast("📍 Đã khôi phục vị trí mặc định"); globalAQI = "--"; updateWeatherAndAQI(); updateDynamicContentBySlide(); };
+        window.showAllLists = function(type) { var modal = document.getElementById('list-modal'); var title = document.getElementById('list-title'); var content = document.getElementById('list-content'); content.innerHTML = ""; if(type === 'birth') { title.innerText = "DANH SÁCH SINH NHẬT"; birthdays.sort(function(a,b){return a.m-b.m || a.d-b.d;}).forEach(function(b) { content.innerHTML += '<div class="list-item">' + b.d + '/' + b.m + ' - ' + b.name + '</div>'; }); } else { title.innerText = "DANH SÁCH NGÀY GIỖ"; anniversaries.sort(function(a,b){return a.m-b.m || a.d-b.d;}).forEach(function(a) { content.innerHTML += '<div class="list-item">' + a.d + '/' + a.m + ' ÂL - ' + a.name + '</div>'; }); } modal.classList.add('show-modal'); if(listModalTimeout) clearTimeout(listModalTimeout); listModalTimeout = setTimeout(window.closeListModal, 10000); };
+        window.closeListModal = function() { document.getElementById('list-modal').classList.remove('show-modal'); };
 
-        function showAllLists(type) {
-            var modal = document.getElementById('list-modal'); var title = document.getElementById('list-title'); var content = document.getElementById('list-content'); content.innerHTML = "";
-            if(type === 'birth') { title.innerText = "DANH SÁCH SINH NHẬT"; birthdays.sort(function(a,b){return a.m-b.m || a.d-b.d;}).forEach(function(b) { content.innerHTML += '<div class="list-item">' + b.d + '/' + b.m + ' - ' + b.name + '</div>'; }); } 
-            else { title.innerText = "DANH SÁCH NGÀY GIỖ"; anniversaries.sort(function(a,b){return a.m-b.m || a.d-b.d;}).forEach(function(a) { content.innerHTML += '<div class="list-item">' + a.d + '/' + a.m + ' ÂL - ' + a.name + '</div>'; }); }
-            modal.classList.add('show-modal'); if(listModalTimeout) clearTimeout(listModalTimeout); listModalTimeout = setTimeout(closeListModal, 10000); 
-        }
-        function closeListModal() { document.getElementById('list-modal').classList.remove('show-modal'); }
-
-        function handleAction(e, action) {
+        window.handleAction = function(e, action) {
             e.preventDefault(); e.stopPropagation(); 
             if (!audioUnlocked) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); var osc = audioCtx.createOscillator(); osc.connect(audioCtx.destination); osc.start(0); osc.stop(0.001); audioUnlocked = true; } catch (err) {} }
             if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-            if (action === 'night') { toggleNightMode(); } 
-            else if (action === 'style') { currentStyleIdx = (currentStyleIdx + 1) % clockStyles.length; applyClockStyle(); showToast("✨ Phong cách: " + (currentStyleIdx + 1) + "/30"); }
-            else if (action === 'wakeup') { if (wakeUpHour === 5) wakeUpHour = 6; else if (wakeUpHour === 6) wakeUpHour = 7; else if (wakeUpHour === 7) wakeUpHour = 8; else wakeUpHour = 5; localStorage.setItem('wakeUpHour', wakeUpHour); showToast("🌅 Cài chuyển Sáng: " + wakeUpHour + ":00"); updateClock(); }
-            else if (action === 'interval') { currentIntervalIdx = (currentIntervalIdx + 1) % stepSeconds.length; var mins = stepSeconds[currentIntervalIdx] / 60; changeIntervalMode(currentIntervalIdx + 1); showToast("⏳ Đổi thời gian ảnh: " + mins + " Phút"); }
-            else if (action === 'next') { forceNextSlide(); } else if (action === 'chime') { showToast("🔔 Thử chuông báo"); playSolemnChime(); }
-            else if (action === 'open_location') { openLocationModal(); } else if (action === 'show_birth') { showAllLists('birth'); } else if (action === 'show_death') { showAllLists('death'); }
-        }
+            if (action === 'night') { toggleNightMode(); } else if (action === 'style') { currentStyleIdx = (currentStyleIdx + 1) % clockStyles.length; applyClockStyle(); window.showToast("✨ Phong cách: " + (currentStyleIdx + 1) + "/30"); } else if (action === 'wakeup') { if (wakeUpHour === 5) wakeUpHour = 6; else if (wakeUpHour === 6) wakeUpHour = 7; else if (wakeUpHour === 7) wakeUpHour = 8; else wakeUpHour = 5; localStorage.setItem('wakeUpHour', wakeUpHour); window.showToast("🌅 Cài chuyển Sáng: " + wakeUpHour + ":00"); updateClock(); } else if (action === 'interval') { currentIntervalIdx = (currentIntervalIdx + 1) % stepSeconds.length; var mins = stepSeconds[currentIntervalIdx] / 60; changeIntervalMode(currentIntervalIdx + 1); window.showToast("⏳ Đổi thời gian ảnh: " + mins + " Phút"); } else if (action === 'next') { forceNextSlide(); } else if (action === 'chime') { window.showToast("🔔 Thử chuông báo"); playSolemnChime(); } else if (action === 'open_location') { window.openLocationModal(); } else if (action === 'show_birth') { window.showAllLists('birth'); } else if (action === 'show_death') { window.showAllLists('death'); }
+        };
 
-        function forceNextSlide() { goToNextSlide(); changeIntervalMode(currentIntervalIdx + 1); showToast("Đang đổi ảnh..."); }
-
-        function toggleNightMode() { var body = document.body; if (body.classList.contains('night-active')) { forceNightMode = false; body.classList.remove('night-active'); showToast("☀️ Chào ngày mới!"); document.getElementById('brightness-overlay').style.background = 'rgba(0,0,0,0)'; syncDriveData(); } else { forceNightMode = true; body.classList.add('night-active'); showToast("🌙 Chúc ngủ ngon!"); document.getElementById('brightness-overlay').style.background = 'rgba(0,0,0,0.5)'; } applyDynamicPositions(); }
-        function triggerBorderBurnInProtection() { if (document.body.classList.contains('night-active')) return; var activeImg = document.querySelector('.slide-group.active .background-blur'); var outerBlur = document.getElementById('outer-blur-bg'); var whiteBorder = document.getElementById('white-border-bg'); if(activeImg && activeImg.src) { outerBlur.src = activeImg.src; whiteBorder.style.opacity = '0'; setTimeout(function() { whiteBorder.style.opacity = '1'; }, 1500); } }
-        setInterval(triggerBorderBurnInProtection, 600000); 
-        function runAntiBurnIn() { bX1 = Math.floor(Math.random() * 30) - 15; bY1 = Math.floor(Math.random() * 30) - 15; bX2 = Math.floor(Math.random() * 30) - 15; bY2 = Math.floor(Math.random() * 30) - 15; bX3 = Math.floor(Math.random() * 30) - 15; bY3 = Math.floor(Math.random() * 30) - 15; applyDynamicPositions(); }
-        setInterval(runAntiBurnIn, 60000); 
+        function forceNextSlide() { goToNextSlide(); changeIntervalMode(currentIntervalIdx + 1); window.showToast("Đang đổi ảnh..."); }
+        function toggleNightMode() { var body = document.body; if (body.classList.contains('night-active')) { forceNightMode = false; body.classList.remove('night-active'); window.showToast("☀️ Chào ngày mới!"); document.getElementById('brightness-overlay').style.background = 'rgba(0,0,0,0)'; } else { forceNightMode = true; body.classList.add('night-active'); window.showToast("🌙 Chúc ngủ ngon!"); document.getElementById('brightness-overlay').style.background = 'rgba(0,0,0,0.5)'; } applyDynamicPositions(); }
+        setInterval(function() { if (document.body.classList.contains('night-active')) return; var activeImg = document.querySelector('.slide-group.active .background-blur'); var outerBlur = document.getElementById('outer-blur-bg'); var whiteBorder = document.getElementById('white-border-bg'); if(activeImg && activeImg.src) { outerBlur.src = activeImg.src; whiteBorder.style.opacity = '0'; setTimeout(function() { whiteBorder.style.opacity = '1'; }, 1500); } }, 600000); 
+        setInterval(function() { bX1 = Math.floor(Math.random() * 30) - 15; bY1 = Math.floor(Math.random() * 30) - 15; bX2 = Math.floor(Math.random() * 30) - 15; bY2 = Math.floor(Math.random() * 30) - 15; bX3 = Math.floor(Math.random() * 30) - 15; bY3 = Math.floor(Math.random() * 30) - 15; applyDynamicPositions(); }, 60000); 
         function applyDynamicPositions() { var isNight = document.body.classList.contains('night-active'); var clockBox = document.getElementById('night-clock-box'); var infoNode = document.getElementById('info-container'); var rightNode = document.getElementById('top-right-wrapper'); var leftEventsNode = document.getElementById('bottom-left-events'); var rightTextNode = document.getElementById('bottom-right-text'); if (isNight) { clockBox.style.transform = "translate(calc(-50% + " + bX1 + "px), calc(-50% + " + bY1 + "px))"; } else { clockBox.style.transform = "none"; if(infoNode) infoNode.style.transform = "translate(" + bX1 + "px, " + bY1 + "px)"; if(rightNode) rightNode.style.transform = "translate(" + bX2 + "px, " + bY2 + "px)"; if(leftEventsNode) leftEventsNode.style.transform = "translate(" + bX3 + "px, " + bY3 + "px)"; if(rightTextNode) rightTextNode.style.transform = "translate(" + bX3 + "px, " + bY3 + "px)"; } }
 
         function renderEvents(sMonth, lMonth, sDay, lDay) {
             var leftHtml = ""; var currentBirths = []; for (var b = 0; b < birthdays.length; b++) { if (birthdays[b].m === sMonth) currentBirths.push(birthdays[b]); } currentBirths.sort(function(a, b) { return a.d - b.d; });
-            if (currentBirths.length > 0) { leftHtml += '<div class="event-header tap-target" ontouchstart="handleAction(event, \'chime\')" onclick="handleAction(event, \'chime\')">SINH NHẬT</div>'; for (var i = 0; i < currentBirths.length; i++) { var birth = currentBirths[i]; var diff = birth.d - sDay; var cls = "event-item"; var txt = birth.d + "/" + birth.m + " " + birth.name; if (diff < 0) { cls += " event-passed"; } else if (diff === 0) { cls += " event-today-birth"; txt += " (Hôm nay!)"; } else if (diff <= 3) { cls += " event-urgent"; txt += " (Còn " + diff + " ngày)"; } leftHtml += '<div class="' + cls + '">' + txt + '</div>'; } }
+            if (currentBirths.length > 0) { leftHtml += '<div class="event-header tap-target" ontouchstart="window.handleAction(event, \'chime\')" onclick="window.handleAction(event, \'chime\')">SINH NHẬT</div>'; for (var i = 0; i < currentBirths.length; i++) { var birth = currentBirths[i]; var diff = birth.d - sDay; var cls = "event-item"; var txt = birth.d + "/" + birth.m + " " + birth.name; if (diff < 0) { cls += " event-passed"; } else if (diff === 0) { cls += " event-today-birth"; txt += " (Hôm nay!)"; } else if (diff <= 3) { cls += " event-urgent"; txt += " (Còn " + diff + " ngày)"; } leftHtml += '<div class="' + cls + '">' + txt + '</div>'; } }
             var leftContainer = document.getElementById('bottom-left-events'); if (leftContainer && leftContainer.innerHTML !== leftHtml) { leftContainer.innerHTML = leftHtml; }
             windowDeathList = []; var currentDeaths = []; for (var a = 0; a < anniversaries.length; a++) { if (anniversaries[a].m === lMonth) currentDeaths.push(anniversaries[a]); } currentDeaths.sort(function(a, b) { return a.d - b.d; });
             if (currentDeaths.length > 0) { for (var j = 0; j < currentDeaths.length; j++) { var ann = currentDeaths[j]; var diff = ann.d - lDay; var shortName = ann.name.split(" (")[0]; var txt = "Giỗ " + shortName + " (" + ann.d + "/" + ann.m + " ÂL)"; if (diff < 0) { windowDeathList.push('<span class="death-event-passed">' + txt + '</span>'); } else { if (diff === 0) { txt = "Hôm nay " + txt; } else if (diff <= 3) { txt = "Còn " + diff + " ngày đến " + txt; } windowDeathList.push('<span class="death-highlight">' + txt + '</span>'); } } }
@@ -397,10 +321,10 @@
             if (birthdays.length === 0) return; var now = new Date(); var hours = now.getHours(); var minutes = now.getMinutes(); var birthdayPerson = null;
             for(var i=0; i<birthdays.length; i++) { if(birthdays[i].m === (now.getMonth() + 1) && birthdays[i].d === now.getDate()) { birthdayPerson = birthdays[i]; break; } }
             if (birthdayPerson) {
-                if (loadMorningMusicFlag === false && hours >= wakeUpHour && hours < 8) { showToast("🎂 Chúc mừng Sinh Nhật " + birthdayPerson.name + "!"); playHappyBirthday(); loadMorningMusicFlag = true; }
-                if (clock8AMMusicFlag === false && hours === 8 && minutes === 0) { showToast("🎂 Chúc mừng Sinh Nhật " + birthdayPerson.name + "!"); playHappyBirthday(); clock8AMMusicFlag = true; }
-                if (clock14PMMusicFlag === false && hours === 14 && minutes === 0) { showToast("🎂 Chúc mừng Sinh Nhật " + birthdayPerson.name + "!"); playHappyBirthday(); clock14PMMusicFlag = true; }
-                if (clock18PMMusicFlag === false && hours === 18 && minutes === 0) { showToast("🎂 Chúc mừng Sinh Nhật " + birthdayPerson.name + "!"); playHappyBirthday(); clock18PMMusicFlag = true; }
+                if (loadMorningMusicFlag === false && hours >= wakeUpHour && hours < 8) { window.showToast("🎂 Chúc mừng Sinh Nhật " + birthdayPerson.name + "!"); playHappyBirthday(); loadMorningMusicFlag = true; }
+                if (clock8AMMusicFlag === false && hours === 8 && minutes === 0) { window.showToast("🎂 Chúc mừng Sinh Nhật " + birthdayPerson.name + "!"); playHappyBirthday(); clock8AMMusicFlag = true; }
+                if (clock14PMMusicFlag === false && hours === 14 && minutes === 0) { window.showToast("🎂 Chúc mừng Sinh Nhật " + birthdayPerson.name + "!"); playHappyBirthday(); clock14PMMusicFlag = true; }
+                if (clock18PMMusicFlag === false && hours === 18 && minutes === 0) { window.showToast("🎂 Chúc mừng Sinh Nhật " + birthdayPerson.name + "!"); playHappyBirthday(); clock18PMMusicFlag = true; }
                 if (lastBirthdayCheckDate && lastBirthdayCheckDate !== now.getDate()) { loadMorningMusicFlag = false; clock8AMMusicFlag = false; clock14PMMusicFlag = false; clock18PMMusicFlag = false; lastBirthdayCheckDate = now.getDate(); } else if (!lastBirthdayCheckDate) { lastBirthdayCheckDate = now.getDate(); }
             } else { loadMorningMusicFlag = false; clock8AMMusicFlag = false; clock14PMMusicFlag = false; clock18PMMusicFlag = false; }
         }
@@ -411,7 +335,6 @@
             var hrNode = document.getElementById('hr-node'); var minNode = document.getElementById('min-node'); var nHrNode = document.getElementById('night-hr-node'); var nMinNode = document.getElementById('night-min-node');
             if(hrNode.innerText !== hrStr) hrNode.innerText = hrStr; if(minNode.innerText !== minStr) minNode.innerText = minStr;
             var nHrStr = (window.innerWidth > window.innerHeight) ? (hrStr + ":") : hrStr; if(nHrNode.innerText !== nHrStr) nHrNode.innerText = nHrStr; if(nMinNode.innerText !== minStr) nMinNode.innerText = minStr;
-
             var isNightModeToggled = document.body.classList.contains('night-active');
             if (forceNightMode === null) { var shouldBeNight = (hours >= 21 || hours < wakeUpHour); if (shouldBeNight && !isNightModeToggled) { document.body.classList.add('night-active'); document.getElementById('brightness-overlay').style.background = 'rgba(0,0,0,0.5)';} else if (!shouldBeNight && isNightModeToggled) { document.body.classList.remove('night-active'); document.getElementById('brightness-overlay').style.background = 'rgba(0,0,0,0)';} }
 
@@ -475,7 +398,32 @@
             }, 50);
         }
 
-        syncDriveData();
-    </script>
+        function loadAndDisplayImage(imgUrl) {
+            writeDebug("[5/5] Đang kết xuất ảnh...", "#2ecc71");
+            var currentGroupId = isGroup1Active ? 'group1' : 'group2'; var nextGroupId = isGroup1Active ? 'group2' : 'group1';
+            var nextBg = document.getElementById(isGroup1Active ? 'bg2' : 'bg1'); var nextFg = document.getElementById(isGroup1Active ? 'fg2' : 'fg1');
+            
+            nextFg.onload = function() { 
+                var img = nextFg; var gp = document.getElementById(nextGroupId);
+                img.classList.remove('fit-cover', 'fit-contain'); gp.classList.add('show-blur'); if (window.innerWidth > window.innerHeight) { img.classList.add(img.naturalWidth > img.naturalHeight ? 'fit-cover' : 'fit-contain'); } else { img.classList.add(img.naturalWidth > img.naturalHeight ? 'fit-contain' : 'fit-cover'); }
+                document.getElementById(currentGroupId).classList.remove('active'); document.getElementById(nextGroupId).classList.add('active'); 
+                isGroup1Active = !isGroup1Active; currentIndex = (currentIndex + 1) % images.length; 
+                isSystemError = false; updateDynamicContentBySlide(); 
+            };
+            nextFg.onerror = function() { 
+                writeDebug("Mạng yếu, tự động tải ảnh " + (currentIndex + 1) + "...", "#F4B41A"); 
+                currentIndex = (currentIndex + 1) % images.length; setTimeout(goToNextSlide, 2000); 
+            };
+            nextBg.src = imgUrl; nextFg.src = imgUrl;
+        }
+
+        function initSlideshow() { applyClockStyle(); loadAndDisplayImage(images[0]); changeIntervalMode(currentIntervalIdx + 1); }
+        function goToNextSlide() { if(images.length <= 1) return; loadAndDisplayImage(images[currentIndex]); }
+        function changeIntervalMode(modeVal) { currentIntervalIdx = modeVal - 1; var seconds = stepSeconds[currentIntervalIdx]; if (slideInterval) clearInterval(slideInterval); slideInterval = setInterval(goToNextSlide, seconds * 1000); }
+
+        try { updateClock(); } catch(e) { console.error(e); }
+        try { updateWeatherAndAQI(); } catch(e) { console.error(e); }
+    }
+</script>
 </body>
 </html>
