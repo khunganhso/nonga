@@ -54,9 +54,13 @@
 const { useState, useEffect } = React;
 
 // =========================================================================
-// 1. KHO DỮ LIỆU BÀI HỌC (DATA)
+// 1. KHO DỮ LIỆU BÀI HỌC (ĐÃ CHIA NHỎ ĐỂ DỄ QUẢN LÝ)
 // =========================================================================
-const lessons = [
+
+// -------------------------------------------------------------------------
+// 🟢 PHẦN 1: BÀI HỌC THÁNG 1 - CƠ BẢN
+// -------------------------------------------------------------------------
+const dataThang1 = [
   { 
     id: "t1-1", 
     categoryId: "tuan-1", 
@@ -104,7 +108,13 @@ const lessons = [
         <li><strong>Sắt, Kẽm, Đồng, Bo, Mangan:</strong> Kích thích ra hoa, tăng tỉ lệ đậu trái, chống vàng lá sinh lý.</li>
       </ul>
     ` 
-  },
+  }
+];
+
+// -------------------------------------------------------------------------
+// 🟡 PHẦN 2: BÀI HỌC THÁNG 2 - NÂNG CAO
+// -------------------------------------------------------------------------
+const dataThang2 = [
   { 
     id: "hc-1", 
     categoryId: "hc-co-ban", 
@@ -121,6 +131,23 @@ const lessons = [
     ` 
   }
 ];
+
+// -------------------------------------------------------------------------
+// 🔵 PHẦN 3: BÀI THUỐC THEO CÂY
+// -------------------------------------------------------------------------
+const dataTheoCay = [
+  // Thêm các bài học về cây vào đây trong tương lai...
+];
+
+// -------------------------------------------------------------------------
+// 🔴 TỔNG HỢP DỮ LIỆU (Hệ thống sẽ tự động gộp các nhóm trên lại)
+// -------------------------------------------------------------------------
+const lessons = [
+  ...dataThang1,
+  ...dataThang2,
+  ...dataTheoCay
+];
+
 
 // =========================================================================
 // 2. CẤU TRÚC MENU
@@ -149,7 +176,7 @@ function LessonRow({ lesson }) {
   return (
     <div className="flex flex-col lg:flex-row gap-8 bg-white rounded-[24px] border border-google-border p-6 shadow-sm mb-8">
       
-      {/* CỘT TRÁI: NỘI DUNG VĂN BẢN (Chiếm 50% trên màn lớn) */}
+      {/* CỘT TRÁI: NỘI DUNG VĂN BẢN */}
       <div className="w-full lg:w-1/2 flex flex-col pt-2">
         <h2 className="text-[22px] font-bold text-google-text mb-6 uppercase tracking-tight leading-snug">
           {lesson.title}
@@ -160,7 +187,7 @@ function LessonRow({ lesson }) {
         />
       </div>
 
-      {/* CỘT PHẢI: KHUNG MEDIA NHÚNG YOUTUBE HOẶC CANVA (Chiếm 50% trên màn lớn) */}
+      {/* CỘT PHẢI: KHUNG MEDIA NHÚNG YOUTUBE HOẶC CANVA */}
       <div className="w-full lg:w-1/2 rounded-[16px] overflow-hidden bg-[#F8F9FA] border border-gray-100 flex items-center justify-center min-h-[300px] lg:min-h-[400px]">
         {lesson.canvaUrl ? (
           <iframe 
