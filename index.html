@@ -47,7 +47,6 @@
 .prose p { margin-bottom: 1rem; line-height: 1.6; color: #444746; }
 .prose ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; color: #444746; }
 .prose li { margin-bottom: 0.5rem; }
-.prose img { width: 100%; border-radius: 12px; margin: 16px 0; border: 1px solid #E3E3E3; }
 </style>
 </head>
 <body class="bg-google-bg text-google-text font-sans antialiased">
@@ -55,27 +54,23 @@
 <script type="text/babel" data-type="module">
 const { useState, useEffect } = React;
 
-// Link ảnh Drive trực tiếp
-const driveImageUrl = "https://drive.google.com/uc?export=view&id=1aUkdDUNnscsnwIW5TkTBTZKEvAdGvaxX";
-
 // =========================================================================
-// 1. KHO DỮ LIỆU BÀI HỌC (DATA) - ĐÃ TRÌNH BÀY LẠI ĐỂ DỄ CHỈNH SỬA
+// 1. KHO DỮ LIỆU BÀI HỌC (DATA)
 // =========================================================================
 const lessons = [
   { 
-    id: "t1-1", 
+    id: "t1-4", 
     categoryId: "tuan-1", 
     title: "HUMIC VÀ FULVIC?", 
-    description: "Hai hợp chất quan trọng trong nông nghiệp hiện đại: Humic và Fulvic.", 
+    description: "Hai hợp chất quan trọng trong nông nghiệp hiện đại.", 
     duration: "10 phút", 
     points: 100, 
     icon: "🌱", 
-    thumbnail: driveImageUrl, 
-    youtubeId: "nrJPTCENFdw", 
+    // DÁN LINK CANVA CỦA BẠN VÀO ĐÂY (Bắt buộc phải có chữ /view?embed ở cuối)
+    youtubeId: "", 
     content: `
       <h3>🌱 HUMIC VÀ FULVIC TRONG NÔNG NGHIỆP</h3>
-      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
-      <p>Hai hợp chất quan trọng: <strong>Humic</strong> và <strong>Fulvic</strong>. Từ cách chiết xuất đến tác dụng cụ thể với đất và cây trồng.</p>
+      <p>Hai hợp chất quan trọng: <strong>Humic</strong> và <strong>Fulvic</strong>. Bạn có thể xem chi tiết trong Slide bên cạnh.</p>
       <ul>
         <li>Giúp đất tơi xốp, giữ ẩm tốt.</li>
         <li>Kích thích bộ rễ phát triển cực mạnh.</li>
@@ -91,11 +86,10 @@ const lessons = [
     duration: "10 phút", 
     points: 100, 
     icon: "🦠", 
-    thumbnail: driveImageUrl, 
-    youtubeId: "8jWX4Vi7IZ8", 
+    canvaUrl: "", // Để trống nếu chưa có
+    youtubeId: "8jWX4Vi7IZ8", // Hoặc có thể dùng video Youtube
     content: `
       <h3>🦠 TỔNG QUAN VỀ NẤM TRICHODERMA</h3>
-      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
       <p>Nấm đối kháng Trichoderma là giải pháp sinh học an toàn giúp kiểm soát các bệnh về rễ.</p>
       <p>📞 <strong>Liên hệ tư vấn:</strong> 0935 620 820</p>
     ` 
@@ -108,43 +102,23 @@ const lessons = [
     duration: "10 phút", 
     points: 100, 
     icon: "🏷️", 
-    thumbnail: driveImageUrl, 
-    youtubeId: "N3i50C3Jb5k", 
     content: `
       <h3>TÁC DỤNG TRUNG VI LƯỢNG</h3>
-      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
       <p>Nguyên tố như Canxi, Magie, Lưu huỳnh, Sắt, Kẽm, Đồng, Bo, Mangan giữ vai trò rất quan trọng đối với cây trồng.</p>
     ` 
   },
   { 
-    id: "t1-4", 
+    id: "t1-1", 
     categoryId: "tuan-1", 
-    title: "THUỐC CÁT - BASUDIN - HẠT CẢI", 
-    description: "Thuốc rải gốc có quản lý được rệp và quy trình quản lý rệp sáp.", 
+    title: "NHƯNG KHÁI NIỆM CƠ BẢN?", 
+    description: "Thuốc nóng, thuốc mát, liều lượng pha...", 
     duration: "10 phút", 
     points: 100, 
     icon: "🏷️", 
-    thumbnail: driveImageUrl, 
-    youtubeId: "Ii6YgkqLvew", 
+    canvaUrl: "https://www.canva.com/design/DAGpFl2kwEc/vK2r4y7HP_A4ZRn5gruFGg/view", 
     content: `
-      <h3>🌱 QUẢN LÝ RỆP SÁP BẰNG THUỐC RẢI GỐC</h3>
-      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
-      <p>Chi tiết cách rải gốc.</p>
-    ` 
-  },
-  { 
-    id: "t1-5", 
-    categoryId: "kiem-tra-1", 
-    title: "Bài kiểm tra Tháng 1", 
-    description: "Kiểm tra kiến thức cơ bản tháng 1.", 
-    duration: "15 phút", 
-    points: 200, 
-    icon: "📝", 
-    thumbnail: driveImageUrl, 
-    content: `
-      <h3>📝 KIỂM TRA ĐÁNH GIÁ NĂNG LỰC</h3>
-      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
-      <p>Nhấp vào link bên dưới để làm bài kiểm tra trắc nghiệm.</p>
+      <h3>TÁC DỤNG TRUNG VI LƯỢNG</h3>
+      <p>Nguyên tố như Canxi, Magie, Lưu huỳnh, Sắt, Kẽm, Đồng, Bo, Mangan giữ vai trò rất quan trọng đối với cây trồng.</p>
     ` 
   },
   { 
@@ -155,89 +129,9 @@ const lessons = [
     duration: "15 phút", 
     points: 150, 
     icon: "🛡️", 
-    thumbnail: driveImageUrl, 
     content: `
       <h3>🛡️ HOẠT CHẤT CƠ BẢN</h3>
-      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
       <p>Mancozeb là thuốc trừ nấm phổ rộng, tiếp xúc. Azoxystrobin là hoạt chất nội hấp, lưu dẫn cực mạnh.</p>
-    ` 
-  },
-  { 
-    id: "hc-2", 
-    categoryId: "hc-chuyen-sau", 
-    title: "Phối hợp hoạt chất chống kháng thuốc", 
-    description: "Kỹ thuật đấu thuốc nâng cao.", 
-    duration: "20 phút", 
-    points: 250, 
-    icon: "🔬", 
-    thumbnail: driveImageUrl, 
-    content: `
-      <h3>🔬 HOẠT CHẤT CHUYÊN SÂU</h3>
-      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
-      <p>Cách phối hợp thuốc để trị dứt điểm nấm bệnh đã kháng thuốc.</p>
-    ` 
-  },
-  { 
-    id: "sr-1", 
-    categoryId: "cay-sau-rieng", 
-    title: "Bộ đậu trái, chống rụng Sầu Riêng", 
-    description: "Giới thiệu 5 bộ thuốc giúp đậu trái mạnh.", 
-    duration: "18 phút", 
-    points: 150, 
-    icon: "🌳", 
-    thumbnail: driveImageUrl, 
-    youtubeId: "Grdg2MuAiQc", 
-    content: `
-      <h3>🍈 Phân tích 5 bộ đậu trái đặc hiệu:</h3>
-      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
-      <p>Các bộ thuốc từ An Phát Nông, Việt Nông...</p>
-    ` 
-  },
-  { 
-    id: "th10-1", 
-    categoryId: "thang-10", 
-    title: "Tưới Lân + Kali nước tạo mầm gốc", 
-    description: "Giải pháp tưới VinoBloom và Kali hữu cơ.", 
-    duration: "19 phút", 
-    points: 200, 
-    icon: "💧", 
-    thumbnail: driveImageUrl, 
-    youtubeId: "bveaW_uJPh0", 
-    content: `
-      <h3>💦 Ưu điểm tuyệt đối:</h3>
-      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
-      <p>Hấp thu tức thì 100%, không bị chai hay làm chua đất.</p>
-    ` 
-  },
-  { 
-    id: "sp-1", 
-    categoryId: "san-pham-chung", 
-    title: "Danh mục sản phẩm Nông Á 2026", 
-    description: "Chi tiết các sản phẩm chủ lực.", 
-    duration: "30 phút", 
-    points: 100, 
-    icon: "📦", 
-    thumbnail: driveImageUrl, 
-    content: `
-      <h3>📦 TỔNG QUAN SẢN PHẨM</h3>
-      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
-      <p>Cập nhật danh sách hàng hóa và bảng giá mới nhất.</p>
-    ` 
-  },
-  { 
-    id: "kth-1", 
-    categoryId: "kien-thuc-chung", 
-    title: "Tham quan cửa hàng", 
-    description: "Khám phá các dòng phân bón dạng can nhập khẩu.", 
-    duration: "32 phút", 
-    points: 100, 
-    icon: "🏪", 
-    thumbnail: driveImageUrl, 
-    youtubeId: "Orx026YsZhE", 
-    content: `
-      <h3>🏪 TỔNG QUAN CÁC MẶT HÀNG:</h3>
-      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
-      <p>Dòng can tưới nhập khẩu nguyên đai nguyên kiện.</p>
     ` 
   }
 ];
@@ -263,27 +157,19 @@ const mainMenus = [
 ];
 
 // =========================================================================
-// 3. GIAO DIỆN THẺ BÀI HỌC (LESSON CARD) MỚI TỐI GIẢN
+// 3. GIAO DIỆN THẺ BÀI HỌC (LESSON CARD) 
 // =========================================================================
 function LessonCard({ lesson, onClick }) {
-const hasImage = lesson.thumbnail || lesson.youtubeId;
-const imageUrl = lesson.thumbnail ? lesson.thumbnail : (lesson.youtubeId ? `https://img.youtube.com/vi/${lesson.youtubeId}/maxresdefault.jpg` : null);
+const hasMedia = lesson.youtubeId || lesson.canvaUrl;
 return (
 <div onClick={onClick} className="group flex cursor-pointer flex-col overflow-hidden rounded-[20px] border border-google-border bg-white transition-all duration-300 hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1">
-  <div className="relative aspect-[16/9] w-full overflow-hidden bg-gray-100 flex items-center justify-center">
-    {hasImage ? (
-      <React.Fragment>
-        <img src={imageUrl} alt={lesson.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" onError={(e) => { e.currentTarget.src = `https://img.youtube.com/vi/${lesson.youtubeId}/0.jpg`; }} />
-        {lesson.youtubeId && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/10 transition-colors group-hover:bg-transparent">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 shadow-sm backdrop-blur-sm transition-transform group-hover:scale-110 text-google-blue">
-              <svg className="h-6 w-6 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-            </div>
-          </div>
-        )}
-      </React.Fragment>
+  <div className="relative aspect-[16/9] w-full overflow-hidden bg-gray-50 flex items-center justify-center border-b border-gray-100">
+    {hasMedia ? (
+       <div className="absolute inset-0 flex items-center justify-center bg-[#E8F0FE] text-google-blue">
+          <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" /></svg>
+       </div>
     ) : (
-      <span className="text-5xl">{lesson.icon || "📚"}</span>
+      <span className="text-6xl group-hover:scale-110 transition-transform duration-300">{lesson.icon || "📚"}</span>
     )}
   </div>
   <div className="flex flex-1 flex-col p-5">
@@ -302,12 +188,11 @@ return (
 }
 
 // =========================================================================
-// 4. MENU CHÍNH BÊN TRÁI (SIDEBAR) GIAO DIỆN LIGHT/MODERN
+// 4. MENU CHÍNH BÊN TRÁI (SIDEBAR)
 // =========================================================================
 function Sidebar({ activeMenuId, onSelectMenu }) {
 return (
 <aside className="flex h-screen w-[280px] flex-shrink-0 flex-col bg-google-bg border-r border-google-border">
-  {/* Logo Section */}
   <div className="flex items-center gap-3 px-6 py-8">
     <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-google-blue shadow-sm">
       <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -320,7 +205,6 @@ return (
     </div>
   </div>
   
-  {/* Navigation */}
   <nav className="flex-1 overflow-y-auto px-3 pb-6">
     <div className="space-y-1.5">
       {mainMenus.map((item) => {
@@ -329,16 +213,16 @@ return (
           <button
             key={item.id}
             onClick={() => onSelectMenu(item.id)}
-            className={`group flex w-full items-center gap-3 rounded-full px-4 py-3.5 text-[14.5px] font-medium transition-all duration-200 
+            className={`group flex w-full items-center gap-3 rounded-full px-4 py-3.5 text-[14px] font-semibold uppercase tracking-wide transition-all duration-200 
             ${isActive 
               ? "bg-google-lightBlue text-google-blue" 
               : "text-google-textSecondary hover:bg-black/5 hover:text-google-text"
             }`}
           >
-            <div className={`${isActive ? "text-google-blue" : "text-gray-500 group-hover:text-gray-700"}`}>
+            <div className={`flex items-center justify-center ${isActive ? "text-google-blue" : "text-gray-500 group-hover:text-gray-700"}`}>
               <item.icon />
             </div>
-            <span>{item.name}</span>
+            <span className="text-left leading-none">{item.name}</span>
           </button>
         );
       })}
@@ -396,8 +280,6 @@ return (
     {/* KHU VỰC NỘI DUNG CHÍNH */}
     <div className="flex-1 overflow-y-auto p-8 pt-6">
       <div className="mx-auto max-w-[1400px]">
-        
-        {/* Lưới bài học */}
         {filteredLessons.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredLessons.map(lesson => (
@@ -417,25 +299,24 @@ return (
     </div>
   </main>
 
-  {/* POPUP CHI TIẾT BÀI HỌC (Modal) */}
+  {/* POPUP CHI TIẾT BÀI HỌC CÓ HỖ TRỢ CANVA */}
   {selectedLesson && (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 sm:p-6 backdrop-blur-sm transition-opacity">
-      <div className="relative flex max-h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-[24px] bg-white shadow-2xl lg:flex-row">
+      <div className="relative flex max-h-[90vh] w-full max-w-6xl flex-col overflow-hidden rounded-[24px] bg-white shadow-2xl lg:flex-row">
         
-        {/* Nút Đóng Modal */}
         <button onClick={() => setSelectedLesson(null)} className="absolute right-4 top-4 z-[60] flex h-10 w-10 items-center justify-center rounded-full bg-black/10 text-gray-500 hover:bg-black/20 hover:text-gray-800 backdrop-blur-md transition-all lg:bg-gray-100 lg:hover:bg-gray-200">
           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
         </button>
 
-        {/* Khung Trái - Media */}
-        <div className="w-full bg-gray-50 lg:w-3/5 flex flex-col relative border-b lg:border-b-0 lg:border-r border-google-border">
-          {selectedLesson.youtubeId ? (
-            <div className="relative h-64 lg:h-full w-full bg-black">
-              <iframe className="absolute inset-0 h-full w-full" src={`https://www.youtube-nocookie.com/embed/${selectedLesson.youtubeId}?autoplay=1&modestbranding=1&rel=0&fs=0`} title={selectedLesson.title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
+        {/* Khung Trái - Hỗ trợ Canva và Video */}
+        <div className="w-full bg-gray-50 lg:w-[65%] flex flex-col relative border-b lg:border-b-0 lg:border-r border-google-border">
+          {selectedLesson.canvaUrl ? (
+            <div className="relative h-[400px] lg:h-full w-full bg-gray-100">
+              <iframe className="absolute inset-0 h-full w-full" src={selectedLesson.canvaUrl} allowFullScreen="allowFullScreen" allow="fullscreen" style={{border: 'none'}}></iframe>
             </div>
-          ) : selectedLesson.thumbnail ? (
-            <div className="h-64 lg:h-full w-full p-8 flex items-center justify-center">
-               <img src={selectedLesson.thumbnail} alt={selectedLesson.title} className="max-h-full w-auto object-contain rounded-xl shadow-sm" />
+          ) : selectedLesson.youtubeId ? (
+            <div className="relative h-[400px] lg:h-full w-full bg-black">
+              <iframe className="absolute inset-0 h-full w-full" src={`https://www.youtube-nocookie.com/embed/${selectedLesson.youtubeId}?autoplay=1&modestbranding=1&rel=0&fs=0`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
             </div>
           ) : (
             <div className="flex h-64 lg:h-full flex-col items-center justify-center text-gray-300">
@@ -444,8 +325,8 @@ return (
           )}
         </div>
 
-        {/* Khung Phải - Nội dung */}
-        <div className="flex w-full flex-col bg-white lg:w-2/5 max-h-[50vh] lg:max-h-none overflow-y-auto">
+        {/* Khung Phải - Nội dung chữ */}
+        <div className="flex w-full flex-col bg-white lg:w-[35%] max-h-[50vh] lg:max-h-none overflow-y-auto">
           <div className="px-8 pt-8 pb-4">
             <div className="mb-3 flex items-center gap-3 text-[13px] font-medium">
               <span className="flex items-center gap-1 text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-100">
