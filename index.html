@@ -237,10 +237,10 @@ return (
           </div>
           <div>
             <h2 className="text-xl font-semibold text-google-text mb-1">
-              Hiển thị nội dung: <span className="text-google-blue">{currentMenu.name}</span>
+              *: <span className="text-google-blue">{currentMenu.name}</span>
             </h2>
             <p className="text-google-textSecondary text-sm">
-              Bạn đang xem phân mục <strong>{currentMenu.subItems.find(s=>s.id===activeSubMenuId)?.name}</strong>. Chọn thẻ bài học bên dưới để bắt đầu.
+             * <strong>{currentMenu.subItems.find(s=>s.id===activeSubMenuId)?.name}</strong>. Chọn thẻ bài học bên dưới để bắt đầu.
             </p>
           </div>
         </div>
