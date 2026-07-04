@@ -59,23 +59,19 @@ const { useState, useEffect } = React;
 // =========================================================================
 const lessons = [
   { 
-    id: "t1-4", 
+    id: "t1-1", 
     categoryId: "tuan-1", 
-    title: "HUMIC VÀ FULVIC?", 
-    description: "Hai hợp chất quan trọng trong nông nghiệp hiện đại.", 
+    title: "NHỮNG KHÁI NIỆM CƠ BẢN?", 
+    description: "Thuốc nóng, thuốc mát, liều lượng pha...", 
     duration: "10 phút", 
     points: 100, 
-    icon: "🌱", 
-    // DÁN LINK CANVA CỦA BẠN VÀO ĐÂY (Bắt buộc phải có chữ /view?embed ở cuối)
-    youtubeId: "", 
+    icon: "🏷️", 
+    // Link Canva đã được thêm đuôi ?embed để hiển thị đúng
+    canvaUrl: "https://www.canva.com/design/DAGpFl2kwEc/vK2r4y7HP_A4ZRn5gruFGg/view?embed", 
+    youtubeId: "",
     content: `
-      <h3>🌱 HUMIC VÀ FULVIC TRONG NÔNG NGHIỆP</h3>
-      <p>Hai hợp chất quan trọng: <strong>Humic</strong> và <strong>Fulvic</strong>. Bạn có thể xem chi tiết trong Slide bên cạnh.</p>
-      <ul>
-        <li>Giúp đất tơi xốp, giữ ẩm tốt.</li>
-        <li>Kích thích bộ rễ phát triển cực mạnh.</li>
-      </ul>
-      <p>📞 <strong>Liên hệ tư vấn:</strong> 0935 620 820</p>
+      <h3>TÁC DỤNG TRUNG VI LƯỢNG</h3>
+      <p>Nguyên tố như Canxi, Magie, Lưu huỳnh, Sắt, Kẽm, Đồng, Bo, Mangan giữ vai trò rất quan trọng đối với cây trồng.</p>
     ` 
   },
   { 
@@ -86,8 +82,8 @@ const lessons = [
     duration: "10 phút", 
     points: 100, 
     icon: "🦠", 
-    canvaUrl: "", // Để trống nếu chưa có
-    youtubeId: "8jWX4Vi7IZ8", // Hoặc có thể dùng video Youtube
+    canvaUrl: "", 
+    youtubeId: "8jWX4Vi7IZ8", 
     content: `
       <h3>🦠 TỔNG QUAN VỀ NẤM TRICHODERMA</h3>
       <p>Nấm đối kháng Trichoderma là giải pháp sinh học an toàn giúp kiểm soát các bệnh về rễ.</p>
@@ -102,23 +98,31 @@ const lessons = [
     duration: "10 phút", 
     points: 100, 
     icon: "🏷️", 
+    canvaUrl: "",
+    youtubeId: "",
     content: `
       <h3>TÁC DỤNG TRUNG VI LƯỢNG</h3>
       <p>Nguyên tố như Canxi, Magie, Lưu huỳnh, Sắt, Kẽm, Đồng, Bo, Mangan giữ vai trò rất quan trọng đối với cây trồng.</p>
     ` 
   },
   { 
-    id: "t1-1", 
+    id: "t1-4", 
     categoryId: "tuan-1", 
-    title: "NHƯNG KHÁI NIỆM CƠ BẢN?", 
-    description: "Thuốc nóng, thuốc mát, liều lượng pha...", 
+    title: "HUMIC VÀ FULVIC?", 
+    description: "Hai hợp chất quan trọng trong nông nghiệp hiện đại.", 
     duration: "10 phút", 
     points: 100, 
-    icon: "🏷️", 
-    canvaUrl: "https://www.canva.com/design/DAGpFl2kwEc/vK2r4y7HP_A4ZRn5gruFGg/view", 
+    icon: "🌱", 
+    canvaUrl: "",
+    youtubeId: "", 
     content: `
-      <h3>TÁC DỤNG TRUNG VI LƯỢNG</h3>
-      <p>Nguyên tố như Canxi, Magie, Lưu huỳnh, Sắt, Kẽm, Đồng, Bo, Mangan giữ vai trò rất quan trọng đối với cây trồng.</p>
+      <h3>🌱 HUMIC VÀ FULVIC TRONG NÔNG NGHIỆP</h3>
+      <p>Hai hợp chất quan trọng: <strong>Humic</strong> và <strong>Fulvic</strong>. Bạn có thể xem chi tiết trong Slide bên cạnh.</p>
+      <ul>
+        <li>Giúp đất tơi xốp, giữ ẩm tốt.</li>
+        <li>Kích thích bộ rễ phát triển cực mạnh.</li>
+      </ul>
+      <p>📞 <strong>Liên hệ tư vấn:</strong> 0935 620 820</p>
     ` 
   },
   { 
@@ -129,6 +133,8 @@ const lessons = [
     duration: "15 phút", 
     points: 150, 
     icon: "🛡️", 
+    canvaUrl: "",
+    youtubeId: "",
     content: `
       <h3>🛡️ HOẠT CHẤT CƠ BẢN</h3>
       <p>Mancozeb là thuốc trừ nấm phổ rộng, tiếp xúc. Azoxystrobin là hoạt chất nội hấp, lưu dẫn cực mạnh.</p>
@@ -312,7 +318,7 @@ return (
         <div className="w-full bg-gray-50 lg:w-[65%] flex flex-col relative border-b lg:border-b-0 lg:border-r border-google-border">
           {selectedLesson.canvaUrl ? (
             <div className="relative h-[400px] lg:h-full w-full bg-gray-100">
-              <iframe className="absolute inset-0 h-full w-full" src={selectedLesson.canvaUrl} allowFullScreen="allowFullScreen" allow="fullscreen" style={{border: 'none'}}></iframe>
+              <iframe className="absolute inset-0 h-full w-full" src={selectedLesson.canvaUrl} allowFullScreen allow="fullscreen" style={{border: 'none'}}></iframe>
             </div>
           ) : selectedLesson.youtubeId ? (
             <div className="relative h-[400px] lg:h-full w-full bg-black">
