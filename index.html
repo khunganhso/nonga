@@ -59,20 +59,187 @@ const { useState, useEffect } = React;
 const driveImageUrl = "https://drive.google.com/uc?export=view&id=1aUkdDUNnscsnwIW5TkTBTZKEvAdGvaxX";
 
 // =========================================================================
-// 1. KHO DỮ LIỆU BÀI HỌC (DATA)
+// 1. KHO DỮ LIỆU BÀI HỌC (DATA) - ĐÃ TRÌNH BÀY LẠI ĐỂ DỄ CHỈNH SỬA
 // =========================================================================
 const lessons = [
-{ id: "t1-1", categoryId: "tuan-1", title: "HUMIC VÀ FULVIC?", description: "Hai hợp chất quan trọng trong nông nghiệp hiện đại: Humic và Fulvic.", duration: "10 phút", points: 100, icon: "🌱", thumbnail: driveImageUrl, youtubeId: "nrJPTCENFdw", content: `<h3>🌱 HUMIC VÀ FULVIC TRONG NÔNG NGHIỆP</h3><img src="${driveImageUrl}" alt="Ảnh minh họa" /><p>Hai hợp chất quan trọng: <strong>Humic</strong> và <strong>Fulvic</strong>. Từ cách chiết xuất đến tác dụng cụ thể với đất và cây trồng.</p><ul><li>Giúp đất tơi xốp, giữ ẩm tốt.</li><li>Kích thích bộ rễ phát triển cực mạnh.</li></ul><p>📞 <strong>Liên hệ tư vấn:</strong> 0935 620 820</p>` },
-{ id: "t1-2", categoryId: "tuan-1", title: "Trichoderma là gì?", description: "TẤT TẦN TẬT VỀ NẤM ĐỐI KHÁNG TRICHODERMA", duration: "10 phút", points: 100, icon: "🦠", thumbnail: driveImageUrl, youtubeId: "8jWX4Vi7IZ8", content: `<h3>🦠 TỔNG QUAN VỀ NẤM TRICHODERMA</h3><img src="${driveImageUrl}" alt="Ảnh minh họa" /><p>Nấm đối kháng Trichoderma là giải pháp sinh học an toàn giúp kiểm soát các bệnh về rễ.</p><p>📞 <strong>Liên hệ tư vấn:</strong> 0935 620 820</p>` },
-{ id: "t1-3", categoryId: "tuan-1", title: "TÁC DỤNG TRUNG VI LƯỢNG (COMBI)?", description: "Trung vi lượng là gì - tác dụng của TVL đối với cây trồng", duration: "10 phút", points: 100, icon: "🏷️", thumbnail: driveImageUrl, youtubeId: "N3i50C3Jb5k", content: `<h3>TÁC DỤNG TRUNG VI LƯỢNG</h3><img src="${driveImageUrl}" alt="Ảnh minh họa" /><p>Nguyên tố như Canxi, Magie, Lưu huỳnh, Sắt, Kẽm, Đồng, Bo, Mangan giữ vai trò rất quan trọng đối với cây trồng.</p>` },
-{ id: "t1-4", categoryId: "tuan-1", title: "THUỐC CÁT - BASUDIN - HẠT CẢI", description: "Thuốc rải gốc có quản lý được rệp và quy trình quản lý rệp sáp.", duration: "10 phút", points: 100, icon: "🏷️", thumbnail: driveImageUrl, youtubeId: "Ii6YgkqLvew", content: `<h3>🌱 QUẢN LÝ RỆP SÁP BẰNG THUỐC RẢI GỐC</h3><img src="${driveImageUrl}" alt="Ảnh minh họa" /><p>Chi tiết cách rải gốc.</p>` },
-{ id: "t1-5", categoryId: "kiem-tra-1", title: "Bài kiểm tra Tháng 1", description: "Kiểm tra kiến thức cơ bản tháng 1.", duration: "15 phút", points: 200, icon: "📝", thumbnail: driveImageUrl, content: `<h3>📝 KIỂM TRA ĐÁNH GIÁ NĂNG LỰC</h3><img src="${driveImageUrl}" alt="Ảnh minh họa" /><p>Nhấp vào link bên dưới để làm bài kiểm tra trắc nghiệm.</p>` },
-{ id: "hc-1", categoryId: "hc-co-ban", title: "Hoạt chất Mancozeb & Azoxystrobin", description: "Tìm hiểu các hoạt chất phòng trị nấm cơ bản.", duration: "15 phút", points: 150, icon: "🛡️", thumbnail: driveImageUrl, content: `<h3>🛡️ HOẠT CHẤT CƠ BẢN</h3><img src="${driveImageUrl}" alt="Ảnh minh họa" /><p>Mancozeb là thuốc trừ nấm phổ rộng, tiếp xúc. Azoxystrobin là hoạt chất nội hấp, lưu dẫn cực mạnh.</p>` },
-{ id: "hc-2", categoryId: "hc-chuyen-sau", title: "Phối hợp hoạt chất chống kháng thuốc", description: "Kỹ thuật đấu thuốc nâng cao.", duration: "20 phút", points: 250, icon: "🔬", thumbnail: driveImageUrl, content: `<h3>🔬 HOẠT CHẤT CHUYÊN SÂU</h3><img src="${driveImageUrl}" alt="Ảnh minh họa" /><p>Cách phối hợp thuốc để trị dứt điểm nấm bệnh đã kháng thuốc.</p>` },
-{ id: "sr-1", categoryId: "cay-sau-rieng", title: "Bộ đậu trái, chống rụng Sầu Riêng", description: "Giới thiệu 5 bộ thuốc giúp đậu trái mạnh.", duration: "18 phút", points: 150, icon: "🌳", thumbnail: driveImageUrl, youtubeId: "Grdg2MuAiQc", content: `<h3>🍈 Phân tích 5 bộ đậu trái đặc hiệu:</h3><img src="${driveImageUrl}" alt="Ảnh minh họa" /><p>Các bộ thuốc từ An Phát Nông, Việt Nông...</p>` },
-{ id: "th10-1", categoryId: "thang-10", title: "Tưới Lân + Kali nước tạo mầm gốc", description: "Giải pháp tưới VinoBloom và Kali hữu cơ.", duration: "19 phút", points: 200, icon: "💧", thumbnail: driveImageUrl, youtubeId: "bveaW_uJPh0", content: `<h3>💦 Ưu điểm tuyệt đối:</h3><img src="${driveImageUrl}" alt="Ảnh minh họa" /><p>Hấp thu tức thì 100%, không bị chai hay làm chua đất.</p>` },
-{ id: "sp-1", categoryId: "san-pham-chung", title: "Danh mục sản phẩm Nông Á 2026", description: "Chi tiết các sản phẩm chủ lực.", duration: "30 phút", points: 100, icon: "📦", thumbnail: driveImageUrl, content: `<h3>📦 TỔNG QUAN SẢN PHẨM</h3><img src="${driveImageUrl}" alt="Ảnh minh họa" /><p>Cập nhật danh sách hàng hóa và bảng giá mới nhất.</p>` },
-{ id: "kth-1", categoryId: "kien-thuc-chung", title: "Tham quan cửa hàng", description: "Khám phá các dòng phân bón dạng can nhập khẩu.", duration: "32 phút", points: 100, icon: "🏪", thumbnail: driveImageUrl, youtubeId: "Orx026YsZhE", content: `<h3>🏪 TỔNG QUAN CÁC MẶT HÀNG:</h3><img src="${driveImageUrl}" alt="Ảnh minh họa" /><p>Dòng can tưới nhập khẩu nguyên đai nguyên kiện.</p>` }
+  { 
+    id: "t1-1", 
+    categoryId: "tuan-1", 
+    title: "HUMIC VÀ FULVIC?", 
+    description: "Hai hợp chất quan trọng trong nông nghiệp hiện đại: Humic và Fulvic.", 
+    duration: "10 phút", 
+    points: 100, 
+    icon: "🌱", 
+    thumbnail: driveImageUrl, 
+    youtubeId: "nrJPTCENFdw", 
+    content: `
+      <h3>🌱 HUMIC VÀ FULVIC TRONG NÔNG NGHIỆP</h3>
+      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
+      <p>Hai hợp chất quan trọng: <strong>Humic</strong> và <strong>Fulvic</strong>. Từ cách chiết xuất đến tác dụng cụ thể với đất và cây trồng.</p>
+      <ul>
+        <li>Giúp đất tơi xốp, giữ ẩm tốt.</li>
+        <li>Kích thích bộ rễ phát triển cực mạnh.</li>
+      </ul>
+      <p>📞 <strong>Liên hệ tư vấn:</strong> 0935 620 820</p>
+    ` 
+  },
+  { 
+    id: "t1-2", 
+    categoryId: "tuan-1", 
+    title: "Trichoderma là gì?", 
+    description: "TẤT TẦN TẬT VỀ NẤM ĐỐI KHÁNG TRICHODERMA", 
+    duration: "10 phút", 
+    points: 100, 
+    icon: "🦠", 
+    thumbnail: driveImageUrl, 
+    youtubeId: "8jWX4Vi7IZ8", 
+    content: `
+      <h3>🦠 TỔNG QUAN VỀ NẤM TRICHODERMA</h3>
+      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
+      <p>Nấm đối kháng Trichoderma là giải pháp sinh học an toàn giúp kiểm soát các bệnh về rễ.</p>
+      <p>📞 <strong>Liên hệ tư vấn:</strong> 0935 620 820</p>
+    ` 
+  },
+  { 
+    id: "t1-3", 
+    categoryId: "tuan-1", 
+    title: "TÁC DỤNG TRUNG VI LƯỢNG (COMBI)?", 
+    description: "Trung vi lượng là gì - tác dụng của TVL đối với cây trồng", 
+    duration: "10 phút", 
+    points: 100, 
+    icon: "🏷️", 
+    thumbnail: driveImageUrl, 
+    youtubeId: "N3i50C3Jb5k", 
+    content: `
+      <h3>TÁC DỤNG TRUNG VI LƯỢNG</h3>
+      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
+      <p>Nguyên tố như Canxi, Magie, Lưu huỳnh, Sắt, Kẽm, Đồng, Bo, Mangan giữ vai trò rất quan trọng đối với cây trồng.</p>
+    ` 
+  },
+  { 
+    id: "t1-4", 
+    categoryId: "tuan-1", 
+    title: "THUỐC CÁT - BASUDIN - HẠT CẢI", 
+    description: "Thuốc rải gốc có quản lý được rệp và quy trình quản lý rệp sáp.", 
+    duration: "10 phút", 
+    points: 100, 
+    icon: "🏷️", 
+    thumbnail: driveImageUrl, 
+    youtubeId: "Ii6YgkqLvew", 
+    content: `
+      <h3>🌱 QUẢN LÝ RỆP SÁP BẰNG THUỐC RẢI GỐC</h3>
+      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
+      <p>Chi tiết cách rải gốc.</p>
+    ` 
+  },
+  { 
+    id: "t1-5", 
+    categoryId: "kiem-tra-1", 
+    title: "Bài kiểm tra Tháng 1", 
+    description: "Kiểm tra kiến thức cơ bản tháng 1.", 
+    duration: "15 phút", 
+    points: 200, 
+    icon: "📝", 
+    thumbnail: driveImageUrl, 
+    content: `
+      <h3>📝 KIỂM TRA ĐÁNH GIÁ NĂNG LỰC</h3>
+      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
+      <p>Nhấp vào link bên dưới để làm bài kiểm tra trắc nghiệm.</p>
+    ` 
+  },
+  { 
+    id: "hc-1", 
+    categoryId: "hc-co-ban", 
+    title: "Hoạt chất Mancozeb & Azoxystrobin", 
+    description: "Tìm hiểu các hoạt chất phòng trị nấm cơ bản.", 
+    duration: "15 phút", 
+    points: 150, 
+    icon: "🛡️", 
+    thumbnail: driveImageUrl, 
+    content: `
+      <h3>🛡️ HOẠT CHẤT CƠ BẢN</h3>
+      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
+      <p>Mancozeb là thuốc trừ nấm phổ rộng, tiếp xúc. Azoxystrobin là hoạt chất nội hấp, lưu dẫn cực mạnh.</p>
+    ` 
+  },
+  { 
+    id: "hc-2", 
+    categoryId: "hc-chuyen-sau", 
+    title: "Phối hợp hoạt chất chống kháng thuốc", 
+    description: "Kỹ thuật đấu thuốc nâng cao.", 
+    duration: "20 phút", 
+    points: 250, 
+    icon: "🔬", 
+    thumbnail: driveImageUrl, 
+    content: `
+      <h3>🔬 HOẠT CHẤT CHUYÊN SÂU</h3>
+      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
+      <p>Cách phối hợp thuốc để trị dứt điểm nấm bệnh đã kháng thuốc.</p>
+    ` 
+  },
+  { 
+    id: "sr-1", 
+    categoryId: "cay-sau-rieng", 
+    title: "Bộ đậu trái, chống rụng Sầu Riêng", 
+    description: "Giới thiệu 5 bộ thuốc giúp đậu trái mạnh.", 
+    duration: "18 phút", 
+    points: 150, 
+    icon: "🌳", 
+    thumbnail: driveImageUrl, 
+    youtubeId: "Grdg2MuAiQc", 
+    content: `
+      <h3>🍈 Phân tích 5 bộ đậu trái đặc hiệu:</h3>
+      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
+      <p>Các bộ thuốc từ An Phát Nông, Việt Nông...</p>
+    ` 
+  },
+  { 
+    id: "th10-1", 
+    categoryId: "thang-10", 
+    title: "Tưới Lân + Kali nước tạo mầm gốc", 
+    description: "Giải pháp tưới VinoBloom và Kali hữu cơ.", 
+    duration: "19 phút", 
+    points: 200, 
+    icon: "💧", 
+    thumbnail: driveImageUrl, 
+    youtubeId: "bveaW_uJPh0", 
+    content: `
+      <h3>💦 Ưu điểm tuyệt đối:</h3>
+      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
+      <p>Hấp thu tức thì 100%, không bị chai hay làm chua đất.</p>
+    ` 
+  },
+  { 
+    id: "sp-1", 
+    categoryId: "san-pham-chung", 
+    title: "Danh mục sản phẩm Nông Á 2026", 
+    description: "Chi tiết các sản phẩm chủ lực.", 
+    duration: "30 phút", 
+    points: 100, 
+    icon: "📦", 
+    thumbnail: driveImageUrl, 
+    content: `
+      <h3>📦 TỔNG QUAN SẢN PHẨM</h3>
+      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
+      <p>Cập nhật danh sách hàng hóa và bảng giá mới nhất.</p>
+    ` 
+  },
+  { 
+    id: "kth-1", 
+    categoryId: "kien-thuc-chung", 
+    title: "Tham quan cửa hàng", 
+    description: "Khám phá các dòng phân bón dạng can nhập khẩu.", 
+    duration: "32 phút", 
+    points: 100, 
+    icon: "🏪", 
+    thumbnail: driveImageUrl, 
+    youtubeId: "Orx026YsZhE", 
+    content: `
+      <h3>🏪 TỔNG QUAN CÁC MẶT HÀNG:</h3>
+      <img src="${driveImageUrl}" alt="Ảnh minh họa" />
+      <p>Dòng can tưới nhập khẩu nguyên đai nguyên kiện.</p>
+    ` 
+  }
 ];
 
 // =========================================================================
@@ -227,24 +394,9 @@ return (
     </div>
 
     {/* KHU VỰC NỘI DUNG CHÍNH */}
-    <div className="flex-1 overflow-y-auto p-8">
+    <div className="flex-1 overflow-y-auto p-8 pt-6">
       <div className="mx-auto max-w-[1400px]">
         
-        {/* Lời chào phong cách tinh tế */}
-        <div className="mb-10 flex items-start gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-google-lightBlue text-google-blue flex-shrink-0">
-             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          </div>
-          <div>
-            <h2 className="text-xl font-semibold text-google-text mb-1">
-              *: <span className="text-google-blue">{currentMenu.name}</span>
-            </h2>
-            <p className="text-google-textSecondary text-sm">
-             * <strong>{currentMenu.subItems.find(s=>s.id===activeSubMenuId)?.name}</strong>. Chọn thẻ bài học bên dưới để bắt đầu.
-            </p>
-          </div>
-        </div>
-
         {/* Lưới bài học */}
         {filteredLessons.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -253,7 +405,7 @@ return (
             ))}
           </div>
         ) : (
-          <div className="mt-12 flex flex-col items-center justify-center rounded-3xl border border-dashed border-gray-300 bg-gray-50/50 p-16 text-center">
+          <div className="mt-6 flex flex-col items-center justify-center rounded-3xl border border-dashed border-gray-300 bg-gray-50/50 p-16 text-center">
             <div className="h-16 w-16 mb-4 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
             </div>
