@@ -180,30 +180,50 @@ function BookOpenIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="no
 function PhoneIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.496-4.196-7.092-7.092l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>; }
 
 const mainMenus = [
-  { id: "hoc-co-ban", name: "Học Cơ Bản", icon: BookOpenIcon, subItems: [ { name: "Lưu Ý Quan Trọng", id: "luu-y" }, { name: "Thuật Ngữ Cần Nhớ", id: "thuat-ngu" }, { name: "Thuốc Cỏ", id: "thuoc-co" } ] },
-  { id: "hoc-nang-cao", name: "Học Nâng Cao", icon: StarIcon, subItems: [ { name: "Tất cả bài học", id: "nang-cao-chung" } ] },
-  { id: "hoat-chat", name: "Hoạt Chất", icon: LeafIcon, subItems: [ { name: "Tất cả hoạt chất", id: "hoat-chat-chung" } ] },
-  { id: "sau-rieng", name: "Sầu Riêng", icon: LeafIcon, subItems: [ { name: "Trồng Cây", id: "sr-trong" }, { name: "Sau Trồng", id: "sr-sau-trong" }, { name: "Cơi Đọt", id: "sr-coi-dot" }, { name: "Làm Bông", id: "sr-lam-bong" }, { name: "Dưỡng Trái Non", id: "sr-trai-non" }, { name: "30 Ngày", id: "sr-30-ngay" }, { name: "60 Ngày", id: "sr-60-ngay" }, { name: "90 Ngày", id: "sr-90-ngay" } ] },
+  { id: "hoc-co-ban", name: "Học Cơ Bản", icon: BookOpenIcon, subItems: [ 
+    { name: "Lưu Ý Quan Trọng", id: "luu-y" }, 
+    { name: "Thuật Ngữ Cần Nhớ", id: "thuat-ngu" }, 
+    { name: "Thuốc Cỏ", id: "thuoc-co" } ] },
+  // -------------------------------------------------------------------------
+  { id: "hoc-nang-cao", name: "Học Nâng Cao", icon: StarIcon, subItems: [ 
+    { name: "Tất cả bài học", id: "nang-cao-chung" } ] },
+  { id: "hoat-chat", name: "Hoạt Chất", icon: LeafIcon, subItems: [ 
+    { name: "Tất cả hoạt chất", id: "hoat-chat-chung" } ] },
+  // -------------------------------------------------------------------------
+  { id: "sau-rieng", name: "Sầu Riêng", icon: LeafIcon, subItems: [ 
+    { name: "Trồng Cây", id: "sr-trong" }, 
+    { name: "Sau Trồng", id: "sr-sau-trong" }, 
+    { name: "Cơi Đọt", id: "sr-coi-dot" }, 
+    { name: "Làm Bông", id: "sr-lam-bong" }, 
+    { name: "Dưỡng Trái Non", id: "sr-trai-non" }, 
+    { name: "30 Ngày", id: "sr-30-ngay" }, 
+    { name: "60 Ngày", id: "sr-60-ngay" }, 
+    { name: "90 Ngày", id: "sr-90-ngay" } ] },
+  // -------------------------------------------------------------------------
   { id: "ca-phe", name: "Cà Phê", icon: LeafIcon, subItems: [ 
     { name: "Trồng Cây", id: "cp-trong" }, 
     { name: "Sau Trồng", id: "cp-sau-trong" }, 
     { name: "Bông Trái", id: "cp-bong-trai" }, 
     { name: "Côn Trùng", id: "cp-con-trung" }, 
     { name: "Nấm Bệnh", id: "cp-nam-benh" } ] },
+  // -------------------------------------------------------------------------
   { id: "tieu", name: "Tiêu", icon: LeafIcon, subItems: [ 
     { name: "Trồng Cây", id: "tieu-trong" }, 
     { name: "Sau Trồng", id: "tieu-sau-trong" }, 
     { name: "Bông Trái", id: "tieu-bong-trai" }, 
     { name: "Côn Trùng", id: "tieu-con-trung" }, 
     { name: "Lở Cổ Rễ", id: "tieu-lcr" } ] },
+  // -------------------------------------------------------------------------
   { id: "cay-khac", name: "Cây Khác", icon: LeafIcon, subItems: [ 
     { name: "Bắp", id: "ck-bap" }, 
     { name: "Nhãn", id: "ck-nhan" }, 
     { name: "Vải", id: "ck-vai" }, 
     { name: "Mai", id: "ck-mai" }, 
     { name: "Rau Màu", id: "ck-rau-mau" } ] },
+  // -------------------------------------------------------------------------
   { id: "phan-bon", name: "Phân Bón", icon: LeafIcon, subItems: [ 
     { name: "Tất cả phân bón", id: "phan-bon-chung" } ] },
+  // -------------------------------------------------------------------------
   { id: "bai-thuoc", name: "Bài Thuốc 12 Tháng", icon: ClockIcon, subItems: [ 
     { name: "Tháng 1", id: "thang-1" }, 
     { name: "Tháng 2", id: "thang-2" }, 
@@ -217,8 +237,10 @@ const mainMenus = [
     { name: "Tháng 10", id: "thang-10" }, 
     { name: "Tháng 11", id: "thang-11" }, 
     { name: "Tháng 12", id: "thang-12" } ] },
+  // -------------------------------------------------------------------------
   { id: "kien-thuc", name: "Kiến Thức - Kinh Nghiệm", icon: BookOpenIcon, subItems: [ 
     { name: "Tất cả kiến thức", id: "kien-thuc-chung" } ] },
+  // -------------------------------------------------------------------------
   { id: "san-pham", name: "Sản Phẩm", icon: BookOpenIcon, subItems: [ 
     { name: "Cỏ", id: "sp-co" }, 
     { name: "Cỏ Lúa", id: "sp-co-lua" }, 
@@ -230,6 +252,7 @@ const mainMenus = [
     { name: "Nhện Đỏ", id: "sp-nhen-do" }, 
     { name: "Nấm", id: "sp-nam" }, 
     { name: "Dinh Dưỡng", id: "sp-dinh-duong" } ] },
+  // -------------------------------------------------------------------------
   { id: "danh-ba", name: "Danh Bạ", icon: PhoneIcon, subItems: [ 
     { name: "Liên Hệ", id: "lien-he" } ] }
 ];
