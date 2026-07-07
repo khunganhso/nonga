@@ -132,7 +132,6 @@ const lessons = [
 
 // =========================================================================
 // 2. CẤU TRÚC MENU (MENU BÊN TRÁI VÀ TAB TRÊN CÙNG)
-// Bạn có thể thêm { name: "Tab Mới", id: "tab-moi" } thoải mái vào subItems
 // =========================================================================
 function CalendarIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>; }
 function StarIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>; }
@@ -157,7 +156,7 @@ const mainMenus = [
 ];
 
 // =========================================================================
-// 3. GIAO DIỆN HIỂN THỊ TỪNG BÀI (THÔNG MINH TỰ ĐỘNG CHIA CỘT)
+// 3. GIAO DIỆN HIỂN THỊ TỪNG BÀI (THÔNG MINH TỰ ĐỘNG CHIA CỘT HOẶC TRÀN VIỀN)
 // =========================================================================
 function LessonRow({ lesson }) {
   const containerRef = useRef(null);
@@ -177,24 +176,25 @@ function LessonRow({ lesson }) {
 
   const hasContent = lesson.content && lesson.content.trim() !== "";
 
-  const renderMedia = () => {
-    if (lesson.canvaUrl) {
-      return <iframe className="absolute inset-0 w-full h-full" src={lesson.canvaUrl} allowFullScreen allow="fullscreen" style={{border: 'none'}} title={`Canva - ${lesson.title}`}></iframe>;
-    } else if (lesson.youtubeId) {
-      return <iframe className="absolute inset-0 w-full h-full" src={`https://www.youtube-nocookie.com/embed/${lesson.youtubeId}?modestbranding=1&rel=0`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title={`Youtube - ${lesson.title}`}></iframe>;
-    } else if (lesson.thumbnail) {
-      return <img src={lesson.thumbnail} alt={lesson.title} className="absolute inset-0 w-full h-full object-contain bg-gray-100" />;
-    } else {
-      return (
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 p-10 text-center bg-gray-50">
-          <svg className="w-16 h-16 mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-          <p className="text-[15px] font-medium">Chưa có Slide/Video.</p>
-        </div>
-      );
-    }
-  };
-
+  // TRƯỜNG HỢP 1: CÓ CHỮ TRONG CONTENT -> HIỂN THỊ 2 CỘT (NHƯ CŨ)
   if (hasContent) {
+    const renderMediaCol = () => {
+      if (lesson.canvaUrl) {
+        return <iframe className="absolute inset-0 w-full h-full" src={lesson.canvaUrl} allowFullScreen allow="fullscreen" style={{border: 'none'}} title={`Canva - ${lesson.title}`}></iframe>;
+      } else if (lesson.youtubeId) {
+        return <iframe className="absolute inset-0 w-full h-full" src={`https://www.youtube-nocookie.com/embed/${lesson.youtubeId}?modestbranding=1&rel=0`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title={`Youtube - ${lesson.title}`}></iframe>;
+      } else if (lesson.thumbnail) {
+        return <img src={lesson.thumbnail} alt={lesson.title} className="absolute inset-0 w-full h-full object-contain bg-gray-50" />;
+      } else {
+        return (
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 p-10 text-center bg-gray-50">
+            <svg className="w-16 h-16 mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            <p className="text-[15px] font-medium">Chưa có Slide/Video.</p>
+          </div>
+        );
+      }
+    };
+
     return (
       <div className="flex flex-col lg:flex-row gap-8 bg-white rounded-[24px] border border-google-border p-6 shadow-sm mb-8">
         <div className="w-full lg:w-1/2 flex flex-col pt-2">
@@ -202,17 +202,39 @@ function LessonRow({ lesson }) {
           <div className="prose max-w-none flex-1" dangerouslySetInnerHTML={{ __html: lesson.content }} />
         </div>
         <div className="w-full lg:w-1/2 rounded-[16px] overflow-hidden bg-black border border-gray-100 relative min-h-[300px] lg:min-h-[400px]">
-          {renderMedia()}
+          {renderMediaCol()}
         </div>
       </div>
     );
   }
 
+  // TRƯỜNG HỢP 2: KHÔNG CÓ CHỮ TRONG CONTENT -> HIỂN THỊ FULL CHIỀU NGANG (TRÀN XUỐNG DƯỚI)
+  const renderFullMedia = () => {
+    if (lesson.canvaUrl) {
+      // Canva được thả tự do chiều cao (min 700px để chống cắt viền dọc)
+      return <iframe className="w-full min-h-[70vh] md:min-h-[900px] bg-gray-50" src={lesson.canvaUrl} allowFullScreen allow="fullscreen" style={{border: 'none'}} title={`Canva - ${lesson.title}`}></iframe>;
+    } else if (lesson.youtubeId) {
+      // Youtube vẫn cần tỷ lệ 16:9 chuẩn
+      return <iframe className="w-full aspect-video" src={`https://www.youtube-nocookie.com/embed/${lesson.youtubeId}?modestbranding=1&rel=0`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title={`Youtube - ${lesson.title}`}></iframe>;
+    } else if (lesson.thumbnail) {
+      // Ảnh tĩnh được thả h-auto để cuộn thoải mái không bị cắt xén
+      return <img src={lesson.thumbnail} alt={lesson.title} className="w-full h-auto object-contain block bg-gray-50" />;
+    } else {
+      return (
+        <div className="w-full h-[300px] flex flex-col items-center justify-center text-gray-400 p-10 text-center bg-gray-50">
+          <svg className="w-16 h-16 mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          <p className="text-[15px] font-medium">Chưa có Slide/Video.</p>
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="flex flex-col bg-white rounded-[24px] border border-google-border p-6 sm:p-8 shadow-sm mb-8">
       <h2 className="text-[24px] font-bold text-google-text mb-6 uppercase tracking-tight leading-snug text-center">{lesson.title}</h2>
-      <div ref={containerRef} className="w-full rounded-[16px] overflow-hidden bg-black border border-gray-100 relative aspect-video group">
-        {renderMedia()}
+      {/* Khung chứa Media: Bỏ khóa tỷ lệ aspect-video, cho phép chiều cao tự do */}
+      <div ref={containerRef} className="w-full rounded-[16px] overflow-hidden border border-gray-100 relative group">
+        {renderFullMedia()}
         {!isFullscreen && (
           <div className="absolute inset-0 z-10 cursor-pointer" onClick={handleFullScreen}>
              <div className="absolute top-4 right-4 bg-black/70 text-white px-3.5 py-2 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2 backdrop-blur-md">
