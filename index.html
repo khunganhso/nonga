@@ -92,14 +92,17 @@ const dataCaPhe = [];
 
 // -------------------------------------------------------------------------
 // ⚫ 6. TIÊU
-// -------------------------------------------------------------------------
+// ----------------------------lở cổ rễ Quảng---------------------------------------------
 const dataTieu = [
 { id: "tieu-lo-co-re", 
-    categoryId: "tieu-nam-benh", // Chạy vào tab "Nấm Bệnh" của menu "Tiêu"
+    categoryId: "tieu-lcr", // Chạy vào tab "Nấm Bệnh" của menu "Tiêu"
     title: "BỆNH LỞ CỔ RỄ TIÊU", 
     canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
     youtubeId: "", 
     content: `
+    <li><strong> BÀI THUỐC 1:</strong></li>
+    <li><strong>Lần 1:</strong> Vali + Matalxy + Vua Phytop. Sau 7 ngày tiến hành đổ lần 2.</li>
+          <li><strong>Lần 2:</strong> Herofos + Matalxy + Vali.</li>
       <h3>1. Dấu hiệu nhận biết</h3>
       <ul>
         <li>Cổ rễ và phần gốc thân bị thối đen, vỏ bong tróc, phần rễ mềm nhũn và có mùi hôi khó chịu.</li>
@@ -112,9 +115,7 @@ const dataTieu = [
         <li><strong>Vệ sinh:</strong> Bới nhẹ đất xung quanh gốc, cắt bỏ những rễ, thân bị thối đem tiêu hủy.</li>
         <li><strong>Phun và tưới gốc:</strong></li>
         <ul>
-          <li><strong>Lần 1:</strong> Vali + Matalxy + Vua Phytop. Sau 7 ngày tiến hành đổ lần 2.</li>
-          <li><strong>Lần 2:</strong> Herofos + Matalxy + Vali.</li>
-        </ul>
+                  </ul>
         <li><strong>LƯU Ý:</strong> Nếu có điều kiện thì nên đổ toàn vườn, cây nào bị nặng cần đổ đậm hơn. Sau 5 - 7 ngày xử lý, tiến hành rải vôi toàn vườn.</li>
       </ul>
 
@@ -183,14 +184,54 @@ const mainMenus = [
   { id: "hoc-nang-cao", name: "Học Nâng Cao", icon: StarIcon, subItems: [ { name: "Tất cả bài học", id: "nang-cao-chung" } ] },
   { id: "hoat-chat", name: "Hoạt Chất", icon: LeafIcon, subItems: [ { name: "Tất cả hoạt chất", id: "hoat-chat-chung" } ] },
   { id: "sau-rieng", name: "Sầu Riêng", icon: LeafIcon, subItems: [ { name: "Trồng Cây", id: "sr-trong" }, { name: "Sau Trồng", id: "sr-sau-trong" }, { name: "Cơi Đọt", id: "sr-coi-dot" }, { name: "Làm Bông", id: "sr-lam-bong" }, { name: "Dưỡng Trái Non", id: "sr-trai-non" }, { name: "30 Ngày", id: "sr-30-ngay" }, { name: "60 Ngày", id: "sr-60-ngay" }, { name: "90 Ngày", id: "sr-90-ngay" } ] },
-  { id: "ca-phe", name: "Cà Phê", icon: LeafIcon, subItems: [ { name: "Trồng Cây", id: "cp-trong" }, { name: "Sau Trồng", id: "cp-sau-trong" }, { name: "Bông Trái", id: "cp-bong-trai" }, { name: "Côn Trùng", id: "cp-con-trung" }, { name: "Nấm Bệnh", id: "cp-nam-benh" } ] },
-  { id: "tieu", name: "Tiêu", icon: LeafIcon, subItems: [ { name: "Trồng Cây", id: "tieu-trong" }, { name: "Sau Trồng", id: "tieu-sau-trong" }, { name: "Bông Trái", id: "tieu-bong-trai" }, { name: "Côn Trùng", id: "tieu-con-trung" }, { name: "Nấm Bệnh", id: "tieu-nam-benh" } ] },
-  { id: "cay-khac", name: "Cây Khác", icon: LeafIcon, subItems: [ { name: "Bắp", id: "ck-bap" }, { name: "Nhãn", id: "ck-nhan" }, { name: "Vải", id: "ck-vai" }, { name: "Mai", id: "ck-mai" }, { name: "Rau Màu", id: "ck-rau-mau" } ] },
-  { id: "phan-bon", name: "Phân Bón", icon: LeafIcon, subItems: [ { name: "Tất cả phân bón", id: "phan-bon-chung" } ] },
-  { id: "bai-thuoc", name: "Bài Thuốc 12 Tháng", icon: ClockIcon, subItems: [ { name: "Tháng 1", id: "thang-1" }, { name: "Tháng 2", id: "thang-2" }, { name: "Tháng 3", id: "thang-3" }, { name: "Tháng 4", id: "thang-4" }, { name: "Tháng 5", id: "thang-5" }, { name: "Tháng 6", id: "thang-6" }, { name: "Tháng 7", id: "thang-7" }, { name: "Tháng 8", id: "thang-8" }, { name: "Tháng 9", id: "thang-9" }, { name: "Tháng 10", id: "thang-10" }, { name: "Tháng 11", id: "thang-11" }, { name: "Tháng 12", id: "thang-12" } ] },
-  { id: "kien-thuc", name: "Kiến Thức - Kinh Nghiệm", icon: BookOpenIcon, subItems: [ { name: "Tất cả kiến thức", id: "kien-thuc-chung" } ] },
-  { id: "san-pham", name: "Sản Phẩm", icon: BookOpenIcon, subItems: [ { name: "Cỏ", id: "sp-co" }, { name: "Cỏ Lúa", id: "sp-co-lua" }, { name: "Rệp", id: "sp-rep" }, { name: "Sâu", id: "sp-sau" }, { name: "Rầy", id: "sp-ray" }, { name: "Bọ Trĩ", id: "sp-bo-tri" }, { name: "Tuyến Trùng", id: "sp-tuyen-trung" }, { name: "Nhện Đỏ", id: "sp-nhen-do" }, { name: "Nấm", id: "sp-nam" }, { name: "Dinh Dưỡng", id: "sp-dinh-duong" } ] },
-  { id: "danh-ba", name: "Danh Bạ", icon: PhoneIcon, subItems: [ { name: "Liên Hệ", id: "lien-he" } ] }
+  { id: "ca-phe", name: "Cà Phê", icon: LeafIcon, subItems: [ 
+    { name: "Trồng Cây", id: "cp-trong" }, 
+    { name: "Sau Trồng", id: "cp-sau-trong" }, 
+    { name: "Bông Trái", id: "cp-bong-trai" }, 
+    { name: "Côn Trùng", id: "cp-con-trung" }, 
+    { name: "Nấm Bệnh", id: "cp-nam-benh" } ] },
+  { id: "tieu", name: "Tiêu", icon: LeafIcon, subItems: [ 
+    { name: "Trồng Cây", id: "tieu-trong" }, 
+    { name: "Sau Trồng", id: "tieu-sau-trong" }, 
+    { name: "Bông Trái", id: "tieu-bong-trai" }, 
+    { name: "Côn Trùng", id: "tieu-con-trung" }, 
+    { name: "Lở Cổ Rễ", id: "tieu-lcr" } ] },
+  { id: "cay-khac", name: "Cây Khác", icon: LeafIcon, subItems: [ 
+    { name: "Bắp", id: "ck-bap" }, 
+    { name: "Nhãn", id: "ck-nhan" }, 
+    { name: "Vải", id: "ck-vai" }, 
+    { name: "Mai", id: "ck-mai" }, 
+    { name: "Rau Màu", id: "ck-rau-mau" } ] },
+  { id: "phan-bon", name: "Phân Bón", icon: LeafIcon, subItems: [ 
+    { name: "Tất cả phân bón", id: "phan-bon-chung" } ] },
+  { id: "bai-thuoc", name: "Bài Thuốc 12 Tháng", icon: ClockIcon, subItems: [ 
+    { name: "Tháng 1", id: "thang-1" }, 
+    { name: "Tháng 2", id: "thang-2" }, 
+    { name: "Tháng 3", id: "thang-3" }, 
+    { name: "Tháng 4", id: "thang-4" }, 
+    { name: "Tháng 5", id: "thang-5" }, 
+    { name: "Tháng 6", id: "thang-6" }, 
+    { name: "Tháng 7", id: "thang-7" }, 
+    { name: "Tháng 8", id: "thang-8" }, 
+    { name: "Tháng 9", id: "thang-9" }, 
+    { name: "Tháng 10", id: "thang-10" }, 
+    { name: "Tháng 11", id: "thang-11" }, 
+    { name: "Tháng 12", id: "thang-12" } ] },
+  { id: "kien-thuc", name: "Kiến Thức - Kinh Nghiệm", icon: BookOpenIcon, subItems: [ 
+    { name: "Tất cả kiến thức", id: "kien-thuc-chung" } ] },
+  { id: "san-pham", name: "Sản Phẩm", icon: BookOpenIcon, subItems: [ 
+    { name: "Cỏ", id: "sp-co" }, 
+    { name: "Cỏ Lúa", id: "sp-co-lua" }, 
+    { name: "Rệp", id: "sp-rep" }, 
+    { name: "Sâu", id: "sp-sau" }, 
+    { name: "Rầy", id: "sp-ray" }, 
+    { name: "Bọ Trĩ", id: "sp-bo-tri" }, 
+    { name: "Tuyến Trùng", id: "sp-tuyen-trung" }, 
+    { name: "Nhện Đỏ", id: "sp-nhen-do" }, 
+    { name: "Nấm", id: "sp-nam" }, 
+    { name: "Dinh Dưỡng", id: "sp-dinh-duong" } ] },
+  { id: "danh-ba", name: "Danh Bạ", icon: PhoneIcon, subItems: [ 
+    { name: "Liên Hệ", id: "lien-he" } ] }
 ];
 
 // =========================================================================
