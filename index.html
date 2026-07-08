@@ -181,6 +181,7 @@ function LessonRow({ lesson }) {
 
   const hasContent = lesson.content ? lesson.content.trim() !== "" : false;
 
+  // TRƯỜNG HỢP 1: CÓ CHỮ TRONG CONTENT -> HIỂN THỊ 2 CỘT (GIỮ NGUYÊN)
   if (hasContent) {
     const renderMediaCol = () => {
       if (lesson.canvaUrl) {
@@ -212,16 +213,18 @@ function LessonRow({ lesson }) {
     );
   }
 
+  // TRƯỜNG HỢP 2: KHÔNG CÓ CHỮ TRONG CONTENT -> ĐÃ KHẮC PHỤC: KÉO DÃN FULL CHIỀU NGANG TRANG WEB, TRIỆT TIÊU VIỀN ĐEN
   const renderFullMedia = () => {
     if (lesson.canvaUrl) {
-      return <iframe className="w-full min-h-[70vh] md:min-h-[900px] bg-gray-50" src={lesson.canvaUrl} allowFullScreen allow="fullscreen" style={{border: 'none'}} title={`Canva - ${lesson.title}`}></iframe>;
+      // Đổi nền iframe thành white để tệp tiệp với màu thẻ bài viết, không bị lộ viền đen
+      return <iframe className="w-full min-h-[85vh] md:min-h-[960px] bg-white" src={lesson.canvaUrl} allowFullScreen allow="fullscreen" style={{border: 'none'}} title={`Canva - ${lesson.title}`}></iframe>;
     } else if (lesson.youtubeId) {
       return <iframe className="w-full aspect-video" src={`https://www.youtube-nocookie.com/embed/${lesson.youtubeId}?modestbranding=1&rel=0`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title={`Youtube - ${lesson.title}`}></iframe>;
     } else if (lesson.thumbnail) {
-      return <img src={lesson.thumbnail} alt={lesson.title} className="w-full h-auto object-contain block bg-gray-50" />;
+      return <img src={lesson.thumbnail} alt={lesson.title} className="w-full h-auto object-contain block bg-white" />;
     } else {
       return (
-        <div className="w-full h-[300px] flex flex-col items-center justify-center text-gray-400 p-10 text-center bg-gray-50">
+        <div className="w-full h-[300px] flex flex-col items-center justify-center text-gray-400 p-10 text-center bg-white">
           <svg className="w-16 h-16 mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
           <p className="text-[15px] font-medium">Chưa có Slide/Video.</p>
         </div>
@@ -230,13 +233,15 @@ function LessonRow({ lesson }) {
   };
 
   return (
-    <div className="flex flex-col bg-white rounded-[24px] border border-google-border p-6 sm:p-8 shadow-sm mb-8">
-      <h2 className="text-[24px] font-bold text-google-text mb-6 uppercase tracking-tight leading-snug text-center">{lesson.title}</h2>
-      <div ref={containerRef} className="w-full rounded-[16px] overflow-hidden border border-gray-100 relative group">
+    // Sửa p-6 thành p-2 đối với bản full để Slide bám biên ra sát lề tối đa, tạo cảm giác liền mạch
+    <div className="flex flex-col bg-white rounded-[24px] border border-google-border p-2 sm:p-4 shadow-sm mb-8 overflow-hidden">
+      <h2 className="text-[24px] font-bold text-google-text mt-4 mb-4 uppercase tracking-tight leading-snug text-center">{lesson.title}</h2>
+      {/* Khung ngoài loại bỏ hoàn toàn thuộc tính nền đen (bg-black), thay thế bằng bg-white để slide hiển thị sạch đẹp */}
+      <div ref={containerRef} className="w-full rounded-[16px] overflow-hidden bg-white relative group">
         {renderFullMedia()}
         {!isFullscreen && (
-          <div className="absolute inset-0 z-10 cursor-pointer" onClick={handleFullScreen}>
-             <div className="absolute top-4 right-4 bg-black/70 text-white px-3.5 py-2 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2 backdrop-blur-md">
+          <div className="absolute inset-0 z-10 cursor-pointer pointer-events-none" onClick={handleFullScreen}>
+             <div className="absolute top-4 right-4 bg-black/70 text-white px-3.5 py-2 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2 backdrop-blur-md pointer-events-auto">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
                 Bấm xem toàn màn hình
              </div>
@@ -379,7 +384,6 @@ function Dashboard() {
 function App() {
   const CORRECT_PASSWORD = "nonganewgen2026";
   const [password, setPassword] = useState("");
-  // Tính năng mật khẩu đã bị tắt tạm thời để tiện kiểm tra
   const [isAuthorized, setIsAuthorized] = useState(true); 
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -415,7 +419,9 @@ function App() {
     <div className="w-full max-w-[400px] overflow-hidden rounded-[24px] border border-google-border bg-white shadow-xl p-8 sm:p-10">
       <div className="text-center mb-8">
         <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-google-blue shadow-md shadow-blue-500/20">
-          <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.315 48.315 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" /></svg>
+          <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.315 48.315 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+          </svg>
         </div>
         <h1 className="text-2xl font-bold tracking-tight text-google-text mb-2">Đăng nhập hệ thống</h1>
         <p className="text-sm text-google-textSecondary">Đào tạo kỹ thuật nông nghiệp Newgen</p>
