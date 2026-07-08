@@ -78,33 +78,20 @@ const dataHocNangCao = [];
 // -------------------------------------------------------------------------
 // 🔵 3. HOẠT CHẤT
 // -------------------------------------------------------------------------
-const dataHoatChat = [
-  
-];
+const dataHoatChat = [];
 
 // -------------------------------------------------------------------------
 // 🟠 4. SẦU RIÊNG
-// --------------------------------Sau thu hoạch-----------------------------------------
+// -------------------------------------------------------------------------
 const dataSauRieng = [
-{ id: "sr-coi-dot", 
-    categoryId: "sr-coi-dot", // Chạy vào tab "Nấm Bệnh" của menu "Tiêu"
+  { 
+    id: "sr-coi-dot", 
+    categoryId: "sr-coi-dot", 
     title: "BỆNH LỞ CỔ RỄ TIÊU", 
     canvaUrl: "https://www.canva.com/design/DAHOvwLqTKE/--rWSffYhLAQ0xylxPLceA/view?embed", 
     youtubeId: "", 
-    content: `
-// -------------------------------------------------------------------------
-
-// -------------------------------------------------------------------------
-
-// -------------------------------------------------------------------------
-
-// -------------------------------------------------------------------------
-
-// -------------------------------------------------------------------------
-
-// -------------------------------------------------------------------------
-
-  
+    content: ``
+  }
 ];
 
 // -------------------------------------------------------------------------
@@ -114,20 +101,21 @@ const dataCaPhe = [];
 
 // -------------------------------------------------------------------------
 // ⚫ 6. TIÊU
-// ----------------------------lở cổ rễ Quảng---------------------------------------------
+// -------------------------------------------------------------------------
 const dataTieu = [
-{ id: "tieu-lo-co-re", 
-    categoryId: "tieu-lcr", // Chạy vào tab "Nấm Bệnh" của menu "Tiêu"
+  { 
+    id: "tieu-lo-co-re", 
+    categoryId: "tieu-lcr", 
     title: "BỆNH LỞ CỔ RỄ TIÊU", 
     canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
     youtubeId: "", 
     content: `
-    <li><strong> BÀI THUỐC 1:</strong></li>
-    <li><strong>Lần 1:</strong> Vali + Matalxy + Vua Phytop. Sau 7 ngày tiến hành đổ lần 2.</li>
-          <li><strong>Lần 2:</strong> Herofos + Matalxy + Vali.</li>
+      <li><strong> BÀI THUỐC 1:</strong></li>
+      <li><strong>Lần 1:</strong> Vali + Matalxy + Vua Phytop. Sau 7 ngày tiến hành đổ lần 2.</li>
+      <li><strong>Lần 2:</strong> Herofos + Matalxy + Vali.</li>
       <h3>1. Dấu hiệu nhận biết</h3>
       <ul>
-        <li>Cổ rễ và phần gốc thân bị thối đen, vỏ bong tróc, phần rễ mềm nhũn và có mùi hôi khó chịu.</li>
+        <li>Cổ rễ và phần gốc thân bị thối đen, vỏ bong tróc, phần rễ mềm nhũn and có mùi hôi khó chịu.</li>
         <li>Lá bắt đầu vàng úa, rụng dần từ chân lên đến ngọn.</li>
         <li>Cây có thể bị héo rũ nhanh chóng và dễ đổ ngã.</li>
       </ul>
@@ -136,8 +124,7 @@ const dataTieu = [
       <ul>
         <li><strong>Vệ sinh:</strong> Bới nhẹ đất xung quanh gốc, cắt bỏ những rễ, thân bị thối đem tiêu hủy.</li>
         <li><strong>Phun và tưới gốc:</strong></li>
-        <ul>
-                  </ul>
+        <ul></ul>
         <li><strong>LƯU Ý:</strong> Nếu có điều kiện thì nên đổ toàn vườn, cây nào bị nặng cần đổ đậm hơn. Sau 5 - 7 ngày xử lý, tiến hành rải vôi toàn vườn.</li>
       </ul>
 
@@ -149,11 +136,6 @@ const dataTieu = [
       </ul>
     ` 
   },
-  // -------------------------------------------------------------------------
-  
-  // -------------------------------------------------------------------------
-  
-  // -------------------------------------------------------------------------
 ];
 
 // -------------------------------------------------------------------------
@@ -194,89 +176,19 @@ const lessons = [
 // =========================================================================
 // 2. CẤU TRÚC MENU (MENU BÊN TRÁI VÀ TAB TRÊN CÙNG)
 // =========================================================================
-function CalendarIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>; }
-function StarIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>; }
-function LeafIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" /></svg>; }
-function ClockIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>; }
-function BookOpenIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>; }
-function PhoneIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.496-4.196-7.092-7.092l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>; }
-
 const mainMenus = [
-  { id: "hoc-co-ban", name: "Học Cơ Bản", icon: BookOpenIcon, subItems: [ 
-    { name: "Lưu Ý Quan Trọng", id: "luu-y" }, 
-    { name: "Thuật Ngữ Cần Nhớ", id: "thuat-ngu" }, 
-    { name: "Thuốc Cỏ", id: "thuoc-co" } ] },
-  // -------------------------------------------------------------------------
-  { id: "hoc-nang-cao", name: "Học Nâng Cao", icon: StarIcon, subItems: [ 
-    { name: "Tất cả bài học", id: "nang-cao-chung" } ] },
-  { id: "hoat-chat", name: "Hoạt Chất", icon: LeafIcon, subItems: [ 
-    { name: "Tất cả hoạt chất", id: "hoat-chat-chung" } ] },
-  // -------------------------------------------------------------------------
-  { id: "sau-rieng", name: "Sầu Riêng", icon: LeafIcon, subItems: [ 
-    { name: "Trồng Cây", id: "sr-trong" }, 
-    { name: "Sau Trồng", id: "sr-sau-trong" }, 
-    { name: "Cơi Đọt", id: "sr-coi-dot" }, 
-    { name: "Làm Bông", id: "sr-lam-bong" }, 
-    { name: "Dưỡng Trái Non", id: "sr-trai-non" }, 
-    { name: "30 Ngày", id: "sr-30-ngay" }, 
-    { name: "60 Ngày", id: "sr-60-ngay" }, 
-    { name: "90 Ngày", id: "sr-90-ngay" } ] },
-  // -------------------------------------------------------------------------
-  { id: "ca-phe", name: "Cà Phê", icon: LeafIcon, subItems: [ 
-    { name: "Trồng Cây", id: "cp-trong" }, 
-    { name: "Sau Trồng", id: "cp-sau-trong" }, 
-    { name: "Bông Trái", id: "cp-bong-trai" }, 
-    { name: "Côn Trùng", id: "cp-con-trung" }, 
-    { name: "Nấm Bệnh", id: "cp-nam-benh" } ] },
-  // -------------------------------------------------------------------------
-  { id: "tieu", name: "Tiêu", icon: LeafIcon, subItems: [ 
-    { name: "Trồng Cây", id: "tieu-trong" }, 
-    { name: "Sau Trồng", id: "tieu-sau-trong" }, 
-    { name: "Bông Trái", id: "tieu-bong-trai" }, 
-    { name: "Côn Trùng", id: "tieu-con-trung" }, 
-    { name: "Lở Cổ Rễ", id: "tieu-lcr" } ] },
-  // -------------------------------------------------------------------------
-  { id: "cay-khac", name: "Cây Khác", icon: LeafIcon, subItems: [ 
-    { name: "Bắp", id: "ck-bap" }, 
-    { name: "Nhãn", id: "ck-nhan" }, 
-    { name: "Vải", id: "ck-vai" }, 
-    { name: "Mai", id: "ck-mai" }, 
-    { name: "Rau Màu", id: "ck-rau-mau" } ] },
-  // -------------------------------------------------------------------------
-  { id: "phan-bon", name: "Phân Bón", icon: LeafIcon, subItems: [ 
-    { name: "Tất cả phân bón", id: "phan-bon-chung" } ] },
-  // -------------------------------------------------------------------------
-  { id: "bai-thuoc", name: "Bài Thuốc 12 Tháng", icon: ClockIcon, subItems: [ 
-    { name: "Tháng 1", id: "thang-1" }, 
-    { name: "Tháng 2", id: "thang-2" }, 
-    { name: "Tháng 3", id: "thang-3" }, 
-    { name: "Tháng 4", id: "thang-4" }, 
-    { name: "Tháng 5", id: "thang-5" }, 
-    { name: "Tháng 6", id: "thang-6" }, 
-    { name: "Tháng 7", id: "thang-7" }, 
-    { name: "Tháng 8", id: "thang-8" }, 
-    { name: "Tháng 9", id: "thang-9" }, 
-    { name: "Tháng 10", id: "thang-10" }, 
-    { name: "Tháng 11", id: "thang-11" }, 
-    { name: "Tháng 12", id: "thang-12" } ] },
-  // -------------------------------------------------------------------------
-  { id: "kien-thuc", name: "Kiến Thức - Kinh Nghiệm", icon: BookOpenIcon, subItems: [ 
-    { name: "Tất cả kiến thức", id: "kien-thuc-chung" } ] },
-  // -------------------------------------------------------------------------
-  { id: "san-pham", name: "Sản Phẩm", icon: BookOpenIcon, subItems: [ 
-    { name: "Cỏ", id: "sp-co" }, 
-    { name: "Cỏ Lúa", id: "sp-co-lua" }, 
-    { name: "Rệp", id: "sp-rep" }, 
-    { name: "Sâu", id: "sp-sau" }, 
-    { name: "Rầy", id: "sp-ray" }, 
-    { name: "Bọ Trĩ", id: "sp-bo-tri" }, 
-    { name: "Tuyến Trùng", id: "sp-tuyen-trung" }, 
-    { name: "Nhện Đỏ", id: "sp-nhen-do" }, 
-    { name: "Nấm", id: "sp-nam" }, 
-    { name: "Dinh Dưỡng", id: "sp-dinh-duong" } ] },
-  // -------------------------------------------------------------------------
-  { id: "danh-ba", name: "Danh Bạ", icon: PhoneIcon, subItems: [ 
-    { name: "Liên Hệ", id: "lien-he" } ] }
+  { id: "hoc-co-ban", name: "Học Cơ Bản", icon: BookOpenIcon, subItems: [ { name: "Lưu Ý Quan Trọng", id: "luu-y" }, { name: "Thuật Ngữ Cần Nhớ", id: "thuat-ngu" }, { name: "Thuốc Cỏ", id: "thuoc-co" } ] },
+  { id: "hoc-nang-cao", name: "Học Nâng Cao", icon: StarIcon, subItems: [ { name: "Tất cả bài học", id: "nang-cao-chung" } ] },
+  { id: "hoat-chat", name: "Hoạt Chất", icon: LeafIcon, subItems: [ { name: "Tất cả hoạt chất", id: "hoat-chat-chung" } ] },
+  { id: "sau-rieng", name: "Sầu Riêng", icon: LeafIcon, subItems: [ { name: "Trồng Cây", id: "sr-trong" }, { name: "Sau Trồng", id: "sr-sau-trong" }, { name: "Cơi Đọt", id: "sr-coi-dot" }, { name: "Làm Bông", id: "sr-lam-bong" }, { name: "Dưỡng Trái Non", id: "sr-trai-non" }, { name: "30 Ngày", id: "sr-30-ngay" }, { name: "60 Ngày", id: "sr-60-ngay" }, { name: "90 Ngày", id: "sr-90-ngay" } ] },
+  { id: "ca-phe", name: "Cà Phê", icon: LeafIcon, subItems: [ { name: "Trồng Cây", id: "cp-trong" }, { name: "Sau Trồng", id: "cp-sau-trong" }, { name: "Bông Trái", id: "cp-bong-trai" }, { name: "Côn Trùng", id: "cp-con-trung" }, { name: "Nấm Bệnh", id: "cp-nam-benh" } ] },
+  { id: "tieu", name: "Tiêu", icon: LeafIcon, subItems: [ { name: "Trồng Cây", id: "tieu-trong" }, { name: "Sau Trồng", id: "tieu-sau-trong" }, { name: "Bông Trái", id: "tieu-bong-trai" }, { name: "Côn Trùng", id: "tieu-con-trung" }, { name: "Lở Cổ Rễ", id: "tieu-lcr" } ] },
+  { id: "cay-khac", name: "Cây Khác", icon: LeafIcon, subItems: [ { name: "Bắp", id: "ck-bap" }, { name: "Nhãn", id: "ck-nhan" }, { name: "Vải", id: "ck-vai" }, { name: "Mai", id: "ck-mai" }, { name: "Rau Màu", id: "ck-rau-mau" } ] },
+  { id: "phan-bon", name: "Phân Bón", icon: LeafIcon, subItems: [ { name: "Tất cả phân bón", id: "phan-bon-chung" } ] },
+  { id: "bai-thuoc", name: "Bài Thuốc 12 Tháng", icon: ClockIcon, subItems: [ { name: "Tháng 1", id: "thang-1" }, { name: "Tháng 2", id: "thang-2" }, { name: "Tháng 3", id: "thang-3" }, { name: "Tháng 4", id: "thang-4" }, { name: "Tháng 5", id: "thang-5" }, { name: "Tháng 6", id: "thang-6" }, { name: "Tháng 7", id: "thang-7" }, { name: "Tháng 8", id: "thang-8" }, { name: "Tháng 9", id: "thang-9" }, { name: "Tháng 10", id: "thang-10" }, { name: "Tháng 11", id: "thang-11" }, { name: "Tháng 12", id: "thang-12" } ] },
+  { id: "kien-thuc", name: "Kiến Thức - Kinh Nghiệm", icon: BookOpenIcon, subItems: [ { name: "Tất cả kiến thức", id: "kien-thuc-chung" } ] },
+  { id: "san-pham", name: "Sản Phẩm", icon: BookOpenIcon, subItems: [ { name: "Cỏ", id: "sp-co" }, { name: "Cỏ Lúa", id: "sp-co-lua" }, { name: "Rệp", id: "sp-rep" }, { name: "Sâu", id: "sp-sau" }, { name: "Rầy", id: "sp-ray" }, { name: "Bọ Trĩ", id: "sp-bo-tri" }, { name: "Tuyến Trùng", id: "sp-tuyen-trung" }, { name: "Nhện Đỏ", id: "sp-nhen-do" }, { name: "Nấm", id: "sp-nam" }, { name: "Dinh Dưỡng", id: "sp-dinh-duong" } ] },
+  { id: "danh-ba", name: "Danh Bạ", icon: PhoneIcon, subItems: [ { name: "Liên Hệ", id: "lien-he" } ] }
 ];
 
 // =========================================================================
@@ -300,25 +212,24 @@ function LessonRow({ lesson }) {
 
   const hasContent = lesson.content && lesson.content.trim() !== "";
 
-  // TRƯỜNG HỢP 1: CÓ CHỮ TRONG CONTENT -> HIỂN THỊ 2 CỘT (NHƯ CŨ)
-  if (hasContent) {
-    const renderMediaCol = () => {
-      if (lesson.canvaUrl) {
-        return <iframe className="absolute inset-0 w-full h-full" src={lesson.canvaUrl} allowFullScreen allow="fullscreen" style={{border: 'none'}} title={`Canva - ${lesson.title}`}></iframe>;
-      } else if (lesson.youtubeId) {
-        return <iframe className="absolute inset-0 w-full h-full" src={`https://www.youtube-nocookie.com/embed/${lesson.youtubeId}?modestbranding=1&rel=0`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title={`Youtube - ${lesson.title}`}></iframe>;
-      } else if (lesson.thumbnail) {
-        return <img src={lesson.thumbnail} alt={lesson.title} className="absolute inset-0 w-full h-full object-contain bg-gray-50" />;
-      } else {
-        return (
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 p-10 text-center bg-gray-50">
-            <svg className="w-16 h-16 mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-            <p className="text-[15px] font-medium">Chưa có Slide/Video.</p>
-          </div>
-        );
-      }
-    };
+  const renderMediaCol = () => {
+    if (lesson.canvaUrl) {
+      return <iframe className="absolute inset-0 w-full h-full" src={lesson.canvaUrl} allowFullScreen allow="fullscreen" style={{border: 'none'}} title={`Canva - ${lesson.title}`}></iframe>;
+    } else if (lesson.youtubeId) {
+      return <iframe className="absolute inset-0 w-full h-full" src={`https://www.youtube-nocookie.com/embed/${lesson.youtubeId}?modestbranding=1&rel=0`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title={`Youtube - ${lesson.title}`}></iframe>;
+    } else if (lesson.thumbnail) {
+      return <img src={lesson.thumbnail} alt={lesson.title} className="absolute inset-0 w-full h-full object-contain bg-gray-50" />;
+    } else {
+      return (
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 p-10 text-center bg-gray-50">
+          <svg className="w-16 h-16 mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          <p className="text-[15px] font-medium">Chưa có Slide/Video.</p>
+        </div>
+      );
+    }
+  };
 
+  if (hasContent) {
     return (
       <div className="flex flex-col lg:flex-row gap-8 bg-white rounded-[24px] border border-google-border p-6 shadow-sm mb-8">
         <div className="w-full lg:w-1/2 flex flex-col pt-2">
@@ -332,21 +243,17 @@ function LessonRow({ lesson }) {
     );
   }
 
-  // TRƯỜNG HỢP 2: KHÔNG CÓ CHỮ TRONG CONTENT -> HIỂN THỊ FULL CHIỀU NGANG (TRÀN XUỐNG DƯỚI)
   const renderFullMedia = () => {
     if (lesson.canvaUrl) {
-      // Canva được thả tự do chiều cao (min 700px để chống cắt viền dọc)
       return <iframe className="w-full min-h-[70vh] md:min-h-[900px] bg-gray-50" src={lesson.canvaUrl} allowFullScreen allow="fullscreen" style={{border: 'none'}} title={`Canva - ${lesson.title}`}></iframe>;
     } else if (lesson.youtubeId) {
-      // Youtube vẫn cần tỷ lệ 16:9 chuẩn
       return <iframe className="w-full aspect-video" src={`https://www.youtube-nocookie.com/embed/${lesson.youtubeId}?modestbranding=1&rel=0`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title={`Youtube - ${lesson.title}`}></iframe>;
     } else if (lesson.thumbnail) {
-      // Ảnh tĩnh được thả h-auto để cuộn thoải mái không bị cắt xén
       return <img src={lesson.thumbnail} alt={lesson.title} className="w-full h-auto object-contain block bg-gray-50" />;
     } else {
       return (
         <div className="w-full h-[300px] flex flex-col items-center justify-center text-gray-400 p-10 text-center bg-gray-50">
-          <svg className="w-16 h-16 mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          <svg className="w-16 h-16 mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
           <p className="text-[15px] font-medium">Chưa có Slide/Video.</p>
         </div>
       );
@@ -356,7 +263,6 @@ function LessonRow({ lesson }) {
   return (
     <div className="flex flex-col bg-white rounded-[24px] border border-google-border p-6 sm:p-8 shadow-sm mb-8">
       <h2 className="text-[24px] font-bold text-google-text mb-6 uppercase tracking-tight leading-snug text-center">{lesson.title}</h2>
-      {/* Khung chứa Media: Bỏ khóa tỷ lệ aspect-video, cho phép chiều cao tự do */}
       <div ref={containerRef} className="w-full rounded-[16px] overflow-hidden border border-gray-100 relative group">
         {renderFullMedia()}
         {!isFullscreen && (
@@ -421,138 +327,149 @@ return (
 // 5. GIAO DIỆN CHÍNH (DASHBOARD)
 // =========================================================================
 function Dashboard() {
-const [activeMenuId, setActiveMenuId] = useState(mainMenus[0].id);
-const [activeSubMenuId, setActiveSubMenuId] = useState(mainMenus[0].subItems[0].id);
+  const [activeMenuId, setActiveMenuId] = useState(mainMenus[0].id);
+  // Khi activeSubMenuId là "ALL", hệ thống hiển thị toàn bộ bài viết trong menu đó
+  const [activeSubMenuId, setActiveSubMenuId] = useState("ALL");
 
-const currentMenu = mainMenus.find(m => m.id === activeMenuId);
-const filteredLessons = lessons.filter(lesson => lesson.categoryId === activeSubMenuId);
+  const currentMenu = mainMenus.find(m => m.id === activeMenuId);
 
-const handleMenuChange = (menuId) => {
-  setActiveMenuId(menuId);
-  const menu = mainMenus.find(m => m.id === menuId);
-  if (menu && menu.subItems && menu.subItems.length > 0) {
-    setActiveSubMenuId(menu.subItems[0].id);
-  }
-};
+  // LOGIC HIỂN THỊ MỚI: Nếu chọn "ALL" thì hiện tất cả bài viết của các subItem thuộc menu hiện tại
+  const filteredLessons = lessons.filter(lesson => {
+    if (activeSubMenuId === "ALL") {
+      return currentMenu.subItems.some(sub => sub.id === lesson.categoryId);
+    }
+    return lesson.categoryId === activeSubMenuId;
+  });
 
-return (
-<div className="flex h-screen w-full overflow-hidden bg-google-surface">
-  <Sidebar activeMenuId={activeMenuId} onSelectMenu={handleMenuChange} />
+  const handleMenuChange = (menuId) => {
+    setActiveMenuId(menuId);
+    // Khi đổi Menu chính, mặc định đặt trạng thái hiển thị là tất cả ("ALL")
+    setActiveSubMenuId("ALL");
+  };
 
-  <main className="flex flex-1 flex-col overflow-hidden relative">
-    
-    <div className="bg-google-surface/80 backdrop-blur-md sticky top-0 z-10 px-8 py-5 flex items-center gap-2 overflow-x-auto border-b border-google-border">
-      {currentMenu.subItems.map(sub => {
-        const isSubActive = activeSubMenuId === sub.id;
-        return (
+  return (
+    <div className="flex h-screen w-full overflow-hidden bg-google-surface">
+      <Sidebar activeMenuId={activeMenuId} onSelectMenu={handleMenuChange} />
+
+      <main className="flex flex-1 flex-col overflow-hidden relative">
+        
+        {/* THANH MENU PHỤ NẰM NGANG (PILLS) */}
+        <div className="bg-google-surface/80 backdrop-blur-md sticky top-0 z-10 px-8 py-5 flex items-center gap-2 overflow-x-auto border-b border-google-border">
+          {/* Thêm nút hiển thị tất cả bài học */}
           <button
-            key={sub.id}
-            onClick={() => setActiveSubMenuId(sub.id)}
+            onClick={() => setActiveSubMenuId("ALL")}
             className={`flex-shrink-0 px-4 py-2 rounded-full text-[14px] font-medium transition-all duration-200 border 
-              ${isSubActive 
+              ${activeSubMenuId === "ALL" 
               ? "bg-google-blue text-white border-google-blue shadow-sm" 
               : "bg-white text-google-textSecondary border-gray-200 hover:bg-gray-50 hover:text-google-text"
             }`}
           >
-            {sub.name}
+            Tất Cả Mục
           </button>
-        )
-      })}
-    </div>
+          
+          {currentMenu.subItems.map(sub => {
+            const isSubActive = activeSubMenuId === sub.id;
+            return (
+              <button
+                key={sub.id}
+                onClick={() => setActiveSubMenuId(sub.id)}
+                className={`flex-shrink-0 px-4 py-2 rounded-full text-[14px] font-medium transition-all duration-200 border 
+                  ${isSubActive 
+                  ? "bg-google-blue text-white border-google-blue shadow-sm" 
+                  : "bg-white text-google-textSecondary border-gray-200 hover:bg-gray-50 hover:text-google-text"
+                }`}
+              >
+                {sub.name}
+              </button>
+            )
+          })}
+        </div>
 
-    <div className="flex-1 overflow-y-auto p-8 bg-[#F3F4F6]">
-      <div className="mx-auto max-w-[1400px]">
-        {filteredLessons.length > 0 ? (
-          <div className="flex flex-col">
-            {filteredLessons.map(lesson => (
-              <LessonRow key={lesson.id} lesson={lesson} />
-            ))}
+        {/* KHU VỰC DANH SÁCH BÀI HỌC THEO HÀNG DỌC */}
+        <div className="flex-1 overflow-y-auto p-8 bg-[#F3F4F6]">
+          <div className="mx-auto max-w-[1400px]">
+            {filteredLessons.length > 0 ? (
+              <div className="flex flex-col">
+                {filteredLessons.map(lesson => (
+                  <LessonRow key={lesson.id} lesson={lesson} />
+                ))}
+              </div>
+            ) : (
+              <div className="mt-6 flex flex-col items-center justify-center rounded-3xl border border-dashed border-gray-300 bg-white p-16 text-center shadow-sm">
+                <div className="h-16 w-16 mb-4 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
+                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                </div>
+                <h3 className="text-[17px] font-semibold text-google-text mb-1">Chưa có bài học nào</h3>
+                <p className="text-google-textSecondary text-sm">Quản trị viên đang cập nhật tài liệu cho phần này.</p>
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="mt-6 flex flex-col items-center justify-center rounded-3xl border border-dashed border-gray-300 bg-white p-16 text-center shadow-sm">
-            <div className="h-16 w-16 mb-4 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
-               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-            </div>
-            <h3 className="text-[17px] font-semibold text-google-text mb-1">Chưa có bài học nào</h3>
-            <p className="text-google-textSecondary text-sm">Quản trị viên đang cập nhật tài liệu cho phần này.</p>
-          </div>
-        )}
-      </div>
+        </div>
+      </main>
     </div>
-  </main>
-</div>
-);
+  );
 }
 
 // =========================================================================
-// 6. ỨNG DỤNG CHÍNH (XỬ LÝ ĐĂNG NHẬP)
+// 6. ỨNG DỤNG CHÍNH (ĐÃ TẮT KHÓA MẬT KHẨU TẠM THỜI)
 // =========================================================================
 function App() {
-const CORRECT_PASSWORD = "nonganewgen2026";
-const [password, setPassword] = useState("");
-const [isAuthorized, setIsAuthorized] = useState(false);
-const [error, setError] = useState("");
-const [isLoading, setIsLoading] = useState(true);
+  // Thay đổi trạng thái mặc định thành true để mở thẳng hệ thống, bỏ qua mật khẩu
+  const [isAuthorized, setIsAuthorized] = useState(true);
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // Đặt thành false để vào ngay
 
-useEffect(() => {
-const authStatus = sessionStorage.getItem("web_authorized");
-if (authStatus === "true") setIsAuthorized(true);
-setIsLoading(false);
-}, []);
+  if (isAuthorized) return <Dashboard />;
 
-const handleLogin = (e) => {
-e.preventDefault();
-if (password === CORRECT_PASSWORD) {
-sessionStorage.setItem("web_authorized", "true");
-setIsAuthorized(true);
-setError("");
-} else {
-setError("Mật khẩu không chính xác. Vui lòng thử lại.");
-}
-};
+  // Khi nào hoàn thiện web, bạn chỉ cần sửa dòng 445 thành: useState(false); để kích hoạt lại khung nhập mật khẩu dưới đây.
+  const CORRECT_PASSWORD = "nonganewgen2026";
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (password === CORRECT_PASSWORD) {
+      setIsAuthorized(true);
+      setError("");
+    } else {
+      setError("Mật khẩu không chính xác. Vui lòng thử lại.");
+    }
+  };
 
-if (isLoading) return <div className="min-h-screen bg-google-surface"></div>;
-if (isAuthorized) return <Dashboard />;
-
-return (
-<div className="flex min-h-screen items-center justify-center bg-google-bg p-4">
-  <div className="w-full max-w-[400px] overflow-hidden rounded-[24px] border border-google-border bg-white shadow-xl p-8 sm:p-10">
-    <div className="text-center mb-8">
-      <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-google-blue shadow-md shadow-blue-500/20">
-        <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.315 48.315 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" /></svg>
-      </div>
-      <h1 className="text-2xl font-bold tracking-tight text-google-text mb-2">Đăng nhập hệ thống</h1>
-      <p className="text-sm text-google-textSecondary">Đào tạo kỹ thuật nông nghiệp Newgen</p>
-    </div>
-
-    <form onSubmit={handleLogin} className="space-y-5">
-      <div>
-        <input 
-          type="password" 
-          placeholder="Nhập mã khóa truy cập..." 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-          className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3.5 text-[15px] transition-all focus:border-google-blue focus:bg-white focus:outline-none focus:ring-4 focus:ring-google-lightBlue" 
-          required 
-        />
-      </div>
-      {error && (
-        <div className="flex items-center gap-2 text-[13px] font-medium text-red-600 bg-red-50 p-3 rounded-xl border border-red-100">
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"></path></svg>
-          {error}
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-google-bg p-4">
+      <div className="w-full max-w-[400px] overflow-hidden rounded-[24px] border border-google-border bg-white shadow-xl p-8 sm:p-10">
+        <div className="text-center mb-8">
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-google-blue shadow-md shadow-blue-500/20">
+            <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.315 48.315 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" /></svg>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-google-text mb-2">Đăng nhập hệ thống</h1>
+          <p className="text-sm text-google-textSecondary">Đào tạo kỹ thuật nông nghiệp Newgen</p>
         </div>
-      )}
-      <button type="submit" className="w-full rounded-xl bg-google-blue py-3.5 text-center text-[15px] font-semibold text-white shadow-sm transition-all hover:bg-[#0842A0] focus:outline-none focus:ring-4 focus:ring-google-lightBlue">
-        Mở khóa hệ thống
-      </button>
-    </form>
-    
-    <p className="mt-8 text-center text-[12px] text-gray-400">
-      Mọi hành vi truy cập trái phép sẽ bị ghi lại.
-    </p>
-  </div>
-</div>
-);
+
+        <form onSubmit={handleLogin} className="space-y-5">
+          <div>
+            <input 
+              type="password" 
+              placeholder="Nhập mã khóa truy cập..." 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3.5 text-[15px] transition-all focus:border-google-blue focus:bg-white focus:outline-none focus:ring-4 focus:ring-google-lightBlue" 
+              required 
+            />
+          </div>
+          {error && (
+            <div className="flex items-center gap-2 text-[13px] font-medium text-red-600 bg-red-50 p-3 rounded-xl border border-red-100">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"></path></svg>
+              {error}
+            </div>
+          )}
+          <button type="submit" className="w-full rounded-xl bg-google-blue py-3.5 text-center text-[15px] font-semibold text-white shadow-sm transition-all hover:bg-[#0842A0] focus:outline-none focus:ring-4 focus:ring-google-lightBlue">
+            Mở khóa hệ thống
+          </button>
+        </form>
+        <p className="mt-8 text-center text-[12px] text-gray-400">Mọi hành vi truy cập trái phép sẽ bị ghi lại.</p>
+      </div>
+    </div>
+  );
 }
 
 // =========================================================================
