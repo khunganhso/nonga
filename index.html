@@ -70,12 +70,12 @@ const DUMMY_RATIO = "1200 / 3600";
 
 // ★★★★★ 1. CẢNH BÁO ★★★★★
 const dataCanhBao = [
-  { id: "cb-01", categoryId: "cb-chung", title: "LƯU Ý QUAN TRỌNG", canvaUrl: https://www.canva.com/design/DAHQA26JkJA/s4rv3YO3CnXz6Ax43WuZkg/view?embed, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "cb-01", categoryId: "cb-chung", title: "LƯU Ý QUAN TRỌNG", canvaUrl: "https://www.canva.com/design/DAHQA26JkJA/s4rv3YO3CnXz6Ax43WuZkg/view?embed", canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
 ];
 
 // ★★★★★ 2. LÍNH MỚI TÒ TE ★★★★★
 const dataLinhMoi = [
-  { id: "lm-01", categoryId: "lm-chung", title: "SẢN PHẨM KHÁCH THƯỜNG HỎI", canvaUrl: https://www.canva.com/design/DAHP_pVJPTE/1r_SWXk89pdIzx6V5Dc7pQ/view?embed, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "lm-01", categoryId: "lm-chung", title: "SẢN PHẨM KHÁCH THƯỜNG HỎI", canvaUrl: "https://www.canva.com/design/DAHP_pVJPTE/1r_SWXk89pdIzx6V5Dc7pQ/view?embed", canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
 ];
 
 // ★★★★★ 3. HOẠT CHẤT ★★★★★
@@ -183,7 +183,7 @@ const mainMenus = [
 ];
 
 // =========================================================================
-// GIAO DIỆN HIỂN THỊ TỪNG BÀI (ĐÃ LÀM TINH TẾ HƠN, BỎ BO VIỀN THÔ)
+// GIAO DIỆN HIỂN THỊ TỪNG BÀI 
 // =========================================================================
 function LessonRow({ lesson }) {
   const containerRef = useRef(null);
@@ -203,7 +203,6 @@ function LessonRow({ lesson }) {
 
   const hasContent = lesson.content ? lesson.content.trim() !== "" : false;
   
-  // Khớp tỷ lệ Canva chính xác để xóa dải viền đen (mặc định đã đổi thành 1200 / 3600)
   const defaultRatio = hasContent ? '1 / 1.414' : '1200 / 3600';
   const ratioStyle = lesson.canvaUrl ? { aspectRatio: lesson.canvaRatio || defaultRatio } : (lesson.youtubeId ? { aspectRatio: '16 / 9' } : { minHeight: '300px' });
 
@@ -224,7 +223,6 @@ function LessonRow({ lesson }) {
     }
   };
 
-  // Kiểu hiển thị 1: CÓ CHỮ KÈM THEO
   if (hasContent) {
     return (
       <div className="flex flex-col lg:flex-row gap-6 bg-white rounded-2xl border border-gray-100 p-5 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.08)] mb-8 transition-all hover:shadow-md">
@@ -232,7 +230,6 @@ function LessonRow({ lesson }) {
           <h2 className="text-[18px] sm:text-[20px] font-bold text-gray-800 mb-4 tracking-tight leading-snug">{lesson.title}</h2>
           <div className="prose max-w-none flex-1" dangerouslySetInnerHTML={{ __html: lesson.content || "" }} />
         </div>
-        {/* Phần Media tràn sát viền góc */}
         <div className="w-full lg:w-[60%] rounded-xl overflow-hidden bg-gray-50 border border-gray-100 relative" style={ratioStyle}>
           {renderMedia()}
         </div>
@@ -240,10 +237,8 @@ function LessonRow({ lesson }) {
     );
   }
 
-  // Kiểu hiển thị 2: FULL MÀN HÌNH (GỌN GÀNG, KHÔNG THÔ)
   return (
     <div className="flex flex-col bg-white rounded-[20px] border border-gray-100 shadow-[0_2px_16px_-6px_rgba(0,0,0,0.08)] mb-10 overflow-hidden">
-      {/* Thanh Tiêu đề mỏng, thanh lịch */}
       <div className="px-6 py-4 border-b border-gray-50 flex items-center justify-between">
          <h2 className="text-[17px] sm:text-[19px] font-bold text-gray-800 tracking-tight">{lesson.title}</h2>
          {!isFullscreen && (lesson.canvaUrl || lesson.youtubeId) && (
@@ -254,7 +249,6 @@ function LessonRow({ lesson }) {
          )}
       </div>
       
-      {/* Khung ảnh tràn mép màn hình, cắt bỏ lề padding */}
       <div ref={containerRef} className="w-full bg-[#f4f6f8] relative" style={ratioStyle}>
         {renderMedia()}
       </div>
