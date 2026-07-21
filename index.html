@@ -60,59 +60,96 @@ const { useState, useEffect, useRef } = React;
 // HƯỚNG DẪN THÊM BÀI VIẾT 
 // =========================================================================
 /*
-LƯU Ý QUAN TRỌNG ĐỂ XÓA VIỀN ĐEN:
-Bạn hãy nhìn lên thanh tiêu đề tab Canva của bạn (Ví dụ: "Canh bao - 1080x 3000 px").
-Sau đó điền chính xác hai con số đó vào mục canvaRatio theo cú pháp: "1080 / 3000"
+TẤT CẢ FILE CANVA ĐÃ ĐƯỢC QUY CHUẨN VỀ KÍCH THƯỚC: 1200 x 3600
+Bạn chỉ cần thay thế đường link trong phần canvaUrl: "..." bằng link của bạn là xong!
+Giữ nguyên canvaRatio: "1200 / 3600" để xóa viền đen.
 */
+
+const DUMMY_CANVA_LINK = "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed";
+const DUMMY_RATIO = "1200 / 3600";
 
 // ★★★★★ 1. CẢNH BÁO ★★★★★
 const dataCanhBao = [
-  { 
-    id: "canh-bao-01", 
-    categoryId: "cb-chung", 
-    title: "LƯU Ý QUAN TRỌNG", 
-    canvaUrl: "https://www.canva.com/design/DAHQA26JkJA/s4rv3YO3CnXz6Ax43WuZkg/view?embed", 
-    canvaRatio: "1080 / 3000", 
-    thumbnail: "", youtubeId: "", content: "" 
-  },
+  { id: "cb-01", categoryId: "cb-chung", title: "BÀI MẪU: CẢNH BÁO CHUNG", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
 ];
 
 // ★★★★★ 2. LÍNH MỚI TÒ TE ★★★★★
 const dataLinhMoi = [
-  { 
-    id: "linh-moi-01", 
-    categoryId: "lm-chung", 
-    title: "SẢN PHẨM KHÁCH THƯỜNG HỎI", 
-    canvaUrl: "https://www.canva.com/design/DAHP_pVJPTE/1r_SWXk89pdIzx6V5Dc7pQ/view?embed", 
-    canvaRatio: "1080 / 3000",
-    thumbnail: "", youtubeId: "", content: "" 
-  },
+  { id: "lm-01", categoryId: "lm-chung", title: "BÀI MẪU: KIẾN THỨC LÍNH MỚI", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
 ];
 
 // ★★★★★ 3. HOẠT CHẤT ★★★★★
 const dataHoatChat = [
-  { 
-    id: "hoat-chat-01", 
-    categoryId: "hc-chung", 
-    title: "TỔNG HỢP CÁC HOẠT CHẤT TRỪ NẤM", 
-    canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
-    canvaRatio: "1536 / 2048",
-    thumbnail: "", youtubeId: "", content: "" 
-  },
+  { id: "hc-01", categoryId: "hc-chung", title: "BÀI MẪU: TỔNG HỢP HOẠT CHẤT", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
 ];
 
-const dataCaPhe = [];
-const dataSauRieng = [];
-const dataTieu = [];
-const dataLua = [];
-const dataCayKhac = [];
-const dataPhanBon = [];
+// ★★★★★ 4. CÀ PHÊ ★★★★★
+const dataCaPhe = [
+  { id: "cp-01", categoryId: "cp-luu-y", title: "BÀI MẪU: CÀ PHÊ - LƯU Ý", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "cp-02", categoryId: "cp-trong", title: "BÀI MẪU: CÀ PHÊ - TRỒNG VÀ CHĂM SÓC", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "cp-03", categoryId: "cp-ra-hoa", title: "BÀI MẪU: CÀ PHÊ - RA HOA DƯỠNG TRÁI", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "cp-04", categoryId: "cp-sau-thu-hoach", title: "BÀI MẪU: CÀ PHÊ - SAU THU HOẠCH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+];
 
-// ★ BƯỚC CUỐI: TỔNG HỢP ★
+// ★★★★★ 5. SẦU RIÊNG ★★★★★
+const dataSauRieng = [
+  { id: "sr-01", categoryId: "sr-luu-y", title: "BÀI MẪU: SẦU RIÊNG - LƯU Ý", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "sr-02", categoryId: "sr-trong", title: "BÀI MẪU: SẦU RIÊNG - TRỒNG VÀ CHĂM SÓC", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "sr-03", categoryId: "sr-ra-hoa", title: "BÀI MẪU: SẦU RIÊNG - RA HOA DƯỠNG TRÁI", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "sr-04", categoryId: "sr-sau-thu-hoach", title: "BÀI MẪU: SẦU RIÊNG - SAU THU HOẠCH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "sr-05", categoryId: "sr-keo-coi-1", title: "BÀI MẪU: SẦU RIÊNG - KÉO CƠI 1", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "sr-06", categoryId: "sr-keo-coi-2", title: "BÀI MẪU: SẦU RIÊNG - KÉO CƠI 2", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+];
+
+// ★★★★★ 6. TIÊU ★★★★★
+const dataTieu = [
+  { id: "tieu-01", categoryId: "tieu-luu-y", title: "BÀI MẪU: TIÊU - LƯU Ý", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "tieu-02", categoryId: "tieu-trong", title: "BÀI MẪU: TIÊU - TRỒNG VÀ CHĂM SÓC", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "tieu-03", categoryId: "tieu-ra-hoa", title: "BÀI MẪU: TIÊU - RA HOA DƯỠNG TRÁI", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "tieu-04", categoryId: "tieu-sau-thu-hoach", title: "BÀI MẪU: TIÊU - SAU THU HOẠCH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+];
+
+// ★★★★★ 7. LÚA ★★★★★
+const dataLua = [
+  { id: "lua-01", categoryId: "lua-luu-y", title: "BÀI MẪU: LÚA - LƯU Ý", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "lua-02", categoryId: "lua-gieo-sa", title: "BÀI MẪU: LÚA - GIEO SẠ & LÀM ĐẤT", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "lua-03", categoryId: "lua-lam-dong", title: "BÀI MẪU: LÚA - LÀM ĐÒNG & TRỔ", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "lua-04", categoryId: "lua-sau-benh", title: "BÀI MẪU: LÚA - PHÒNG TRỪ SÂU BỆNH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+];
+
+// ★★★★★ 8. CÂY KHÁC ★★★★★
+const dataCayKhac = [
+  { id: "ck-01", categoryId: "ck-ot", title: "BÀI MẪU: ỚT", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "ck-02", categoryId: "ck-nhan", title: "BÀI MẪU: NHÃN", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "ck-03", categoryId: "ck-vai", title: "BÀI MẪU: VẢI", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "ck-04", categoryId: "ck-xoai", title: "BÀI MẪU: XOÀI", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "ck-05", categoryId: "ck-dua-leo", title: "BÀI MẪU: DƯA LEO", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "ck-06", categoryId: "ck-hoa-mai", title: "BÀI MẪU: HOA MAI", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "ck-07", categoryId: "ck-rau", title: "BÀI MẪU: RAU", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+];
+
+// ★★★★★ 9. PHÂN BÓN ★★★★★
+const dataPhanBon = [
+  { id: "pb-01", categoryId: "pb-npk", title: "BÀI MẪU: PHÂN NPK", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "pb-02", categoryId: "pb-phan-no", title: "BÀI MẪU: PHÂN NỞ", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "pb-03", categoryId: "pb-phan-nuoc", title: "BÀI MẪU: PHÂN NƯỚC", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "pb-04", categoryId: "pb-huu-co", title: "BÀI MẪU: PHÂN HỮU CƠ", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "pb-05", categoryId: "pb-trung-vi-luong", title: "BÀI MẪU: TRUNG VI LƯỢNG", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "pb-06", categoryId: "pb-humic", title: "BÀI MẪU: HUMIC", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+  { id: "pb-07", categoryId: "pb-raikac-a", title: "BÀI MẪU: RAIKAC A", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+];
+
+// ★★★★★ 10. DANH BẠ ★★★★★
+const dataDanhBa = [
+  { id: "db-01", categoryId: "lien-he", title: "BÀI MẪU: THÔNG TIN LIÊN HỆ", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO, thumbnail: "", youtubeId: "", content: "" },
+];
+
+
+// ★ BƯỚC CUỐI: TỔNG HỢP VÀO HỆ THỐNG ★
 const lessons = [
   ...dataCanhBao, ...dataLinhMoi, ...dataHoatChat, 
   ...dataCaPhe, ...dataSauRieng, ...dataTieu, ...dataLua, 
-  ...dataCayKhac, ...dataPhanBon
+  ...dataCayKhac, ...dataPhanBon, ...dataDanhBa
 ];
 
 // =========================================================================
@@ -166,8 +203,8 @@ function LessonRow({ lesson }) {
 
   const hasContent = lesson.content ? lesson.content.trim() !== "" : false;
   
-  // Khớp tỷ lệ Canva chính xác để xóa dải viền đen
-  const defaultRatio = hasContent ? '1 / 1.414' : '1536 / 2048';
+  // Khớp tỷ lệ Canva chính xác để xóa dải viền đen (mặc định đã đổi thành 1200 / 3600)
+  const defaultRatio = hasContent ? '1 / 1.414' : '1200 / 3600';
   const ratioStyle = lesson.canvaUrl ? { aspectRatio: lesson.canvaRatio || defaultRatio } : (lesson.youtubeId ? { aspectRatio: '16 / 9' } : { minHeight: '300px' });
 
   const renderMedia = () => {
