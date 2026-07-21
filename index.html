@@ -80,6 +80,7 @@ CÚ PHÁP THÊM 1 BÀI VIẾT VÀO GIỮA 2 DẤU NGOẶC VUÔNG [ ... ]:
     categoryId: "MÃ-TAG-Ở-TRÊN", 
     title: "TÊN BÀI VIẾT", 
     canvaUrl: "link-canva-chứa-chữ-embed", 
+    canvaRatio: "1080 / 3000",   <-- ĐIỀN ĐÚNG CHIỀU NGANG / CHIỀU DỌC CỦA CANVA ĐỂ XÓA VIỀN ĐEN
     thumbnail: "", 
     youtubeId: "", 
     content: "" 
@@ -95,6 +96,7 @@ const dataCanhBao = [
     categoryId: "cb-chung", 
     title: "LƯU Ý QUAN TRỌNG KHI PHA THUỐC", 
     canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
+    canvaRatio: "1080 / 3000",
     thumbnail: "", youtubeId: "", content: "" 
   },
 ];
@@ -106,8 +108,9 @@ const dataLinhMoi = [
   { 
     id: "linh-moi-01", 
     categoryId: "lm-chung", 
-    title: "KIẾN THỨC CƠ BẢN KHÁCH THƯỜNG HỎI", 
+    title: "SẢN PHẨM KHÁCH THƯỜNG HỎI", 
     canvaUrl: "https://www.canva.com/design/DAHP_pVJPTE/1r_SWXk89pdIzx6V5Dc7pQ/view?embed", 
+    canvaRatio: "1080 / 3000",
     thumbnail: "", youtubeId: "", content: "" 
   },
 ];
@@ -121,6 +124,7 @@ const dataHoatChat = [
     categoryId: "hc-chung", 
     title: "TỔNG HỢP CÁC HOẠT CHẤT TRỪ NẤM", 
     canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
+    canvaRatio: "1080 / 3000",
     thumbnail: "", youtubeId: "", content: "" 
   },
 ];
@@ -134,6 +138,7 @@ const dataCaPhe = [
     categoryId: "cp-ra-hoa", 
     title: "QUY TRÌNH LÀM BÔNG CÀ PHÊ HIỆU QUẢ", 
     canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
+    canvaRatio: "1080 / 3000",
     thumbnail: "", youtubeId: "", content: "" 
   },
 ];
@@ -147,6 +152,7 @@ const dataSauRieng = [
     categoryId: "sr-keo-coi-1", 
     title: "KỸ THUẬT KÉO CƠI ĐỌT 1 SẦU RIÊNG", 
     canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
+    canvaRatio: "1080 / 3000",
     thumbnail: "", youtubeId: "", content: "" 
   },
 ];
@@ -160,6 +166,7 @@ const dataTieu = [
     categoryId: "tieu-luu-y", 
     title: "PHÁC ĐỒ TRỊ BỆNH LỞ CỔ RỄ TIÊU", 
     canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
+    canvaRatio: "1080 / 3000",
     thumbnail: "", youtubeId: "", content: "" 
   }
 ];
@@ -173,6 +180,7 @@ const dataLua = [
     categoryId: "lua-lam-dong", 
     title: "LƯU Ý KHI LÚA GIAI ĐOẠN LÀM ĐÒNG", 
     canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
+    canvaRatio: "1080 / 3000",
     thumbnail: "", youtubeId: "", content: "" 
   },
 ];
@@ -186,6 +194,7 @@ const dataCayKhac = [
     categoryId: "ck-ot", 
     title: "QUY TRÌNH CHĂM SÓC ỚT MÙA MƯA", 
     canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
+    canvaRatio: "1080 / 3000",
     thumbnail: "", youtubeId: "", content: "" 
   },
 ];
@@ -199,6 +208,7 @@ const dataPhanBon = [
     categoryId: "pb-npk", 
     title: "BẢNG PHÂN LOẠI NPK VÀ CÔNG DỤNG", 
     canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
+    canvaRatio: "1080 / 3000",
     thumbnail: "", youtubeId: "", content: "" 
   },
 ];
@@ -225,7 +235,7 @@ function FertilizerIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="
 function PhoneIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.496-4.196-7.092-7.092l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>; }
 
 // =========================================================================
-// CẤU TRÚC MENU (ĐÃ CHÈN ICON)
+// CẤU TRÚC MENU
 // =========================================================================
 const mainMenus = [
   { id: "canh-bao", name: "Cảnh Báo", icon: WarningIcon, subItems: [ { name: "Tất cả bài viết", id: "cb-chung" } ] },
@@ -239,6 +249,7 @@ const mainMenus = [
   { id: "phan-bon", name: "Phân Bón", icon: FertilizerIcon, subItems: [ { name: "NPK", id: "pb-npk" }, { name: "Phân Nở", id: "pb-phan-no" }, { name: "Phân Nước", id: "pb-phan-nuoc" }, { name: "Phân Hữu Cơ", id: "pb-huu-co" }, { name: "Trung Vi Lượng", id: "pb-trung-vi-luong" }, { name: "Humic", id: "pb-humic" }, { name: "Raikac A", id: "pb-raikac-a" } ] },
   { id: "danh-ba", name: "Danh Bạ", icon: PhoneIcon, subItems: [ { name: "Liên Hệ", id: "lien-he" } ] }
 ];
+
 
 // =========================================================================
 // GIAO DIỆN HIỂN THỊ TỪNG BÀI
@@ -260,23 +271,21 @@ function LessonRow({ lesson }) {
   };
 
   const hasContent = lesson.content ? lesson.content.trim() !== "" : false;
+  
+  // XỬ LÝ KHỬ VIỀN ĐEN: Lấy tỷ lệ gốc từ dữ liệu hoặc mặc định 1080/3000
+  const defaultRatio = hasContent ? '1 / 1.414' : '1080 / 3000';
+  const ratioStyle = lesson.canvaUrl ? { aspectRatio: lesson.canvaRatio || defaultRatio } : (lesson.youtubeId ? { aspectRatio: '16 / 9' } : { minHeight: '300px' });
 
   const renderMedia = () => {
     if (lesson.canvaUrl) {
-      return (
-        <iframe className="w-full min-h-[75vh] md:min-h-[800px] bg-white block" src={lesson.canvaUrl} allowFullScreen allow="fullscreen" style={{border: 'none'}} title={`Canva - ${lesson.title}`}></iframe>
-      );
+      return <iframe className="absolute inset-0 w-full h-full bg-white block" src={lesson.canvaUrl} allowFullScreen allow="fullscreen" style={{border: 'none'}} title={`Canva - ${lesson.title}`}></iframe>;
     } else if (lesson.youtubeId) {
-      return (
-        <div className="relative w-full aspect-video bg-white">
-          <iframe className="absolute inset-0 w-full h-full" src={`https://www.youtube-nocookie.com/embed/${lesson.youtubeId}?modestbranding=1&rel=0`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title={`Youtube - ${lesson.title}`}></iframe>
-        </div>
-      );
+      return <iframe className="absolute inset-0 w-full h-full bg-black block" src={`https://www.youtube-nocookie.com/embed/${lesson.youtubeId}?modestbranding=1&rel=0`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title={`Youtube - ${lesson.title}`}></iframe>;
     } else if (lesson.thumbnail) {
-      return <img src={lesson.thumbnail} alt={lesson.title} className="w-full h-auto block bg-white" />;
+      return <img src={lesson.thumbnail} alt={lesson.title} className="absolute inset-0 w-full h-full object-contain bg-white" />;
     } else {
       return (
-        <div className="w-full aspect-video flex flex-col items-center justify-center text-gray-400 p-10 text-center bg-gray-50">
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 p-10 text-center bg-gray-50">
           <svg className="w-16 h-16 mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
           <p className="text-[15px] font-medium">Chưa có Slide/Video.</p>
         </div>
@@ -291,7 +300,7 @@ function LessonRow({ lesson }) {
           <h2 className="text-[20px] sm:text-[22px] font-bold text-google-text mb-4 uppercase tracking-tight leading-snug">{lesson.title}</h2>
           <div className="prose max-w-none flex-1" dangerouslySetInnerHTML={{ __html: lesson.content || "" }} />
         </div>
-        <div className="w-full lg:w-1/2 rounded-[16px] overflow-hidden bg-white border border-gray-100 relative shadow-sm">
+        <div className="w-full lg:w-1/2 rounded-[16px] overflow-hidden bg-white border border-gray-100 relative shadow-sm" style={ratioStyle}>
           {renderMedia()}
         </div>
       </div>
@@ -301,7 +310,7 @@ function LessonRow({ lesson }) {
   return (
     <div className="flex flex-col bg-white rounded-[24px] border border-google-border p-2 sm:p-4 shadow-sm mb-8 overflow-hidden">
       <h2 className="text-[22px] sm:text-[24px] font-bold text-google-text mt-2 mb-4 uppercase tracking-tight leading-snug text-center">{lesson.title}</h2>
-      <div ref={containerRef} className="w-full rounded-[16px] overflow-hidden bg-white relative group border border-gray-100 shadow-sm">
+      <div ref={containerRef} className="w-full rounded-[16px] overflow-hidden bg-white relative group border border-gray-100 shadow-sm" style={ratioStyle}>
         {renderMedia()}
         {!isFullscreen && (lesson.canvaUrl || lesson.youtubeId) && (
           <div className="absolute inset-0 z-10 cursor-pointer pointer-events-none" onClick={handleFullScreen}>
@@ -317,7 +326,7 @@ function LessonRow({ lesson }) {
 }
 
 // =========================================================================
-// GIAO DIỆN HIỂN THỊ CHÍNH (Đã xóa Header Trailhead)
+// GIAO DIỆN HIỂN THỊ CHÍNH
 // =========================================================================
 function Dashboard() {
   const [activeMenuId, setActiveMenuId] = useState(mainMenus[0].id);
@@ -340,7 +349,6 @@ function Dashboard() {
   return (
   <div className="flex flex-col h-screen w-full overflow-hidden bg-google-surface">
     
-    {/* MENU CHÍNH NẰM SÁT ĐỈNH TRANG */}
     <div className="bg-white px-4 sm:px-6 py-2.5 flex items-center overflow-x-auto border-b border-google-border flex-shrink-0 gap-2 scrollbar-hide shadow-sm z-20 relative">
       {mainMenus.map((item) => {
         const isActive = activeMenuId === item.id;
@@ -363,7 +371,6 @@ function Dashboard() {
       })}
     </div>
 
-    {/* TAG CON */}
     <div className="bg-google-surface/90 backdrop-blur-md px-4 sm:px-6 py-3 flex items-center overflow-x-auto border-b border-google-border flex-shrink-0 gap-2 scrollbar-hide z-10 relative">
       <button
         onClick={() => setActiveSubMenuId("ALL")}
@@ -393,7 +400,6 @@ function Dashboard() {
       })}
     </div>
 
-    {/* NỘI DUNG */}
     <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-[#F3F4F6]">
       <div className="mx-auto max-w-[1400px]">
         {filteredLessons.length > 0 ? (
