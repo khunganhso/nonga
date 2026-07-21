@@ -37,7 +37,7 @@
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
-::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #DADCE0; border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: #BDC1C6; }
@@ -45,175 +45,70 @@
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-.prose h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: #1F1F1F; }
 .prose p { margin-bottom: 1rem; line-height: 1.7; color: #444746; font-size: 15px;}
-.prose ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; color: #444746; font-size: 15px;}
+.prose ul { padding-left: 1.5rem; margin-bottom: 1rem; color: #444746; font-size: 15px;}
 .prose li { margin-bottom: 0.5rem; }
 </style>
 </head>
-<body class="bg-google-bg text-google-text font-sans antialiased">
+<body class="bg-[#F4F6F8] text-google-text font-sans antialiased">
 <div id="root"></div>
 
 <script type="text/babel" data-type="module">
 const { useState, useEffect, useRef } = React;
 
 // =========================================================================
-// HƯỚNG DẪN THÊM BÀI VIẾT (BẢNG TRA CỨU TAG CATEGORY)
+// HƯỚNG DẪN THÊM BÀI VIẾT 
 // =========================================================================
 /*
-ĐỂ BÀI VIẾT HIỂN THỊ ĐÚNG MỤC, BẠN CẦN ĐIỀN ĐÚNG MÃ "categoryId" BÊN DƯỚI:
-
-1. Cảnh Báo:       "cb-chung"
-2. Lính Mới:       "lm-chung"
-3. Hoạt Chất:      "hc-chung"
-4. Cà Phê:         "cp-luu-y", "cp-trong", "cp-ra-hoa", "cp-sau-thu-hoach"
-5. Sầu Riêng:      "sr-luu-y", "sr-trong", "sr-ra-hoa", "sr-sau-thu-hoach", "sr-keo-coi-1", "sr-keo-coi-2"
-6. Tiêu:           "tieu-luu-y", "tieu-trong", "tieu-ra-hoa", "tieu-sau-thu-hoach"
-7. Lúa:            "lua-luu-y", "lua-gieo-sa", "lua-lam-dong", "lua-sau-benh"
-8. Cây Khác:       "ck-ot", "ck-nhan", "ck-vai", "ck-xoai", "ck-dua-leo", "ck-hoa-mai", "ck-rau"
-9. Phân Bón:       "pb-npk", "pb-phan-no", "pb-phan-nuoc", "pb-huu-co", "pb-trung-vi-luong", "pb-humic", "pb-raikac-a"
-10. Danh Bạ:       "lien-he"
-
-CÚ PHÁP THÊM 1 BÀI VIẾT VÀO GIỮA 2 DẤU NGOẶC VUÔNG [ ... ]:
-  { 
-    id: "gõ-tên-id-tùy-ý-không-dấu", 
-    categoryId: "MÃ-TAG-Ở-TRÊN", 
-    title: "TÊN BÀI VIẾT", 
-    canvaUrl: "link-canva-chứa-chữ-embed", 
-    canvaRatio: "1080 / 3000",   <-- ĐIỀN ĐÚNG CHIỀU NGANG / CHIỀU DỌC CỦA CANVA ĐỂ XÓA VIỀN ĐEN
-    thumbnail: "", 
-    youtubeId: "", 
-    content: "" 
-  },
+LƯU Ý QUAN TRỌNG ĐỂ XÓA VIỀN ĐEN:
+Bạn hãy nhìn lên thanh tiêu đề tab Canva của bạn (Ví dụ: "Canh bao - 1536 x 2048 px").
+Sau đó điền chính xác hai con số đó vào mục canvaRatio theo cú pháp: "1536 / 2048"
 */
 
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-// 1. CẢNH BÁO
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+// ★★★★★ 1. CẢNH BÁO ★★★★★
 const dataCanhBao = [
   { 
     id: "canh-bao-01", 
     categoryId: "cb-chung", 
     title: "LƯU Ý QUAN TRỌNG KHI PHA THUỐC", 
     canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
-    canvaRatio: "1080 / 3000",
+    canvaRatio: "1536 / 2048", 
     thumbnail: "", youtubeId: "", content: "" 
   },
 ];
 
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-// 2. LÍNH MỚI TÒ TE
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+// ★★★★★ 2. LÍNH MỚI TÒ TE ★★★★★
 const dataLinhMoi = [
   { 
     id: "linh-moi-01", 
     categoryId: "lm-chung", 
-    title: "SẢN PHẨM KHÁCH THƯỜNG HỎI", 
-    canvaUrl: "https://www.canva.com/design/DAHP_pVJPTE/1r_SWXk89pdIzx6V5Dc7pQ/view?embed", 
-    canvaRatio: "1080 / 3000",
+    title: "NHỮNG KIẾN THỨC VỠ LÒNG CẦN NẮM RÕ", 
+    canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
+    canvaRatio: "1536 / 2048",
     thumbnail: "", youtubeId: "", content: "" 
   },
 ];
 
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-// 3. HOẠT CHẤT
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+// ★★★★★ 3. HOẠT CHẤT ★★★★★
 const dataHoatChat = [
   { 
     id: "hoat-chat-01", 
     categoryId: "hc-chung", 
     title: "TỔNG HỢP CÁC HOẠT CHẤT TRỪ NẤM", 
     canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
-    canvaRatio: "1080 / 3000",
+    canvaRatio: "1536 / 2048",
     thumbnail: "", youtubeId: "", content: "" 
   },
 ];
 
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-// 4. CÀ PHÊ
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-const dataCaPhe = [
-  { 
-    id: "ca-phe-01", 
-    categoryId: "cp-ra-hoa", 
-    title: "QUY TRÌNH LÀM BÔNG CÀ PHÊ HIỆU QUẢ", 
-    canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
-    canvaRatio: "1080 / 3000",
-    thumbnail: "", youtubeId: "", content: "" 
-  },
-];
+const dataCaPhe = [];
+const dataSauRieng = [];
+const dataTieu = [];
+const dataLua = [];
+const dataCayKhac = [];
+const dataPhanBon = [];
 
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-// 5. SẦU RIÊNG
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-const dataSauRieng = [
-  { 
-    id: "sau-rieng-01", 
-    categoryId: "sr-keo-coi-1", 
-    title: "KỸ THUẬT KÉO CƠI ĐỌT 1 SẦU RIÊNG", 
-    canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
-    canvaRatio: "1080 / 3000",
-    thumbnail: "", youtubeId: "", content: "" 
-  },
-];
-
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-// 6. TIÊU
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-const dataTieu = [
-  { 
-    id: "tieu-01", 
-    categoryId: "tieu-luu-y", 
-    title: "PHÁC ĐỒ TRỊ BỆNH LỞ CỔ RỄ TIÊU", 
-    canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
-    canvaRatio: "1080 / 3000",
-    thumbnail: "", youtubeId: "", content: "" 
-  }
-];
-
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-// 7. LÚA
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-const dataLua = [
-  { 
-    id: "lua-01", 
-    categoryId: "lua-lam-dong", 
-    title: "LƯU Ý KHI LÚA GIAI ĐOẠN LÀM ĐÒNG", 
-    canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
-    canvaRatio: "1080 / 3000",
-    thumbnail: "", youtubeId: "", content: "" 
-  },
-];
-
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-// 8. CÂY KHÁC (Ớt, Nhãn, Vải, Xoài, Dưa Leo, Hoa Mai, Rau)
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-const dataCayKhac = [
-  { 
-    id: "cay-khac-01", 
-    categoryId: "ck-ot", 
-    title: "QUY TRÌNH CHĂM SÓC ỚT MÙA MƯA", 
-    canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
-    canvaRatio: "1080 / 3000",
-    thumbnail: "", youtubeId: "", content: "" 
-  },
-];
-
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-// 9. PHÂN BÓN
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-const dataPhanBon = [
-  { 
-    id: "phan-bon-01", 
-    categoryId: "pb-npk", 
-    title: "BẢNG PHÂN LOẠI NPK VÀ CÔNG DỤNG", 
-    canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
-    canvaRatio: "1080 / 3000",
-    thumbnail: "", youtubeId: "", content: "" 
-  },
-];
-
-// ★ BƯỚC CUỐI: TỔNG HỢP (TUYỆT ĐỐI KHÔNG SỬA ĐOẠN NÀY) ★
+// ★ BƯỚC CUỐI: TỔNG HỢP ★
 const lessons = [
   ...dataCanhBao, ...dataLinhMoi, ...dataHoatChat, 
   ...dataCaPhe, ...dataSauRieng, ...dataTieu, ...dataLua, 
@@ -250,9 +145,8 @@ const mainMenus = [
   { id: "danh-ba", name: "Danh Bạ", icon: PhoneIcon, subItems: [ { name: "Liên Hệ", id: "lien-he" } ] }
 ];
 
-
 // =========================================================================
-// GIAO DIỆN HIỂN THỊ TỪNG BÀI
+// GIAO DIỆN HIỂN THỊ TỪNG BÀI (ĐÃ LÀM TINH TẾ HƠN, BỎ BO VIỀN THÔ)
 // =========================================================================
 function LessonRow({ lesson }) {
   const containerRef = useRef(null);
@@ -272,8 +166,8 @@ function LessonRow({ lesson }) {
 
   const hasContent = lesson.content ? lesson.content.trim() !== "" : false;
   
-  // XỬ LÝ KHỬ VIỀN ĐEN: Lấy tỷ lệ gốc từ dữ liệu hoặc mặc định 1080/3000
-  const defaultRatio = hasContent ? '1 / 1.414' : '1080 / 3000';
+  // Khớp tỷ lệ Canva chính xác để xóa dải viền đen
+  const defaultRatio = hasContent ? '1 / 1.414' : '1536 / 2048';
   const ratioStyle = lesson.canvaUrl ? { aspectRatio: lesson.canvaRatio || defaultRatio } : (lesson.youtubeId ? { aspectRatio: '16 / 9' } : { minHeight: '300px' });
 
   const renderMedia = () => {
@@ -286,40 +180,46 @@ function LessonRow({ lesson }) {
     } else {
       return (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 p-10 text-center bg-gray-50">
-          <svg className="w-16 h-16 mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-          <p className="text-[15px] font-medium">Chưa có Slide/Video.</p>
+          <svg className="w-12 h-12 mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          <p className="text-[14px] font-medium">Chưa có nội dung đính kèm</p>
         </div>
       );
     }
   };
 
+  // Kiểu hiển thị 1: CÓ CHỮ KÈM THEO
   if (hasContent) {
     return (
-      <div className="flex flex-col lg:flex-row gap-8 bg-white rounded-[24px] border border-google-border p-4 sm:p-6 shadow-sm mb-8">
-        <div className="w-full lg:w-1/2 flex flex-col pt-2">
-          <h2 className="text-[20px] sm:text-[22px] font-bold text-google-text mb-4 uppercase tracking-tight leading-snug">{lesson.title}</h2>
+      <div className="flex flex-col lg:flex-row gap-6 bg-white rounded-2xl border border-gray-100 p-5 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.08)] mb-8 transition-all hover:shadow-md">
+        <div className="w-full lg:w-[40%] flex flex-col pt-2">
+          <h2 className="text-[18px] sm:text-[20px] font-bold text-gray-800 mb-4 tracking-tight leading-snug">{lesson.title}</h2>
           <div className="prose max-w-none flex-1" dangerouslySetInnerHTML={{ __html: lesson.content || "" }} />
         </div>
-        <div className="w-full lg:w-1/2 rounded-[16px] overflow-hidden bg-white border border-gray-100 relative shadow-sm" style={ratioStyle}>
+        {/* Phần Media tràn sát viền góc */}
+        <div className="w-full lg:w-[60%] rounded-xl overflow-hidden bg-gray-50 border border-gray-100 relative" style={ratioStyle}>
           {renderMedia()}
         </div>
       </div>
     );
   }
 
+  // Kiểu hiển thị 2: FULL MÀN HÌNH (GỌN GÀNG, KHÔNG THÔ)
   return (
-    <div className="flex flex-col bg-white rounded-[24px] border border-google-border p-2 sm:p-4 shadow-sm mb-8 overflow-hidden">
-      <h2 className="text-[22px] sm:text-[24px] font-bold text-google-text mt-2 mb-4 uppercase tracking-tight leading-snug text-center">{lesson.title}</h2>
-      <div ref={containerRef} className="w-full rounded-[16px] overflow-hidden bg-white relative group border border-gray-100 shadow-sm" style={ratioStyle}>
+    <div className="flex flex-col bg-white rounded-[20px] border border-gray-100 shadow-[0_2px_16px_-6px_rgba(0,0,0,0.08)] mb-10 overflow-hidden">
+      {/* Thanh Tiêu đề mỏng, thanh lịch */}
+      <div className="px-6 py-4 border-b border-gray-50 flex items-center justify-between">
+         <h2 className="text-[17px] sm:text-[19px] font-bold text-gray-800 tracking-tight">{lesson.title}</h2>
+         {!isFullscreen && (lesson.canvaUrl || lesson.youtubeId) && (
+            <button onClick={handleFullScreen} className="text-gray-400 hover:text-google-blue transition-colors flex items-center gap-1.5 text-sm font-medium">
+               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+               <span className="hidden sm:inline">Phóng to</span>
+            </button>
+         )}
+      </div>
+      
+      {/* Khung ảnh tràn mép màn hình, cắt bỏ lề padding */}
+      <div ref={containerRef} className="w-full bg-[#f4f6f8] relative" style={ratioStyle}>
         {renderMedia()}
-        {!isFullscreen && (lesson.canvaUrl || lesson.youtubeId) && (
-          <div className="absolute inset-0 z-10 cursor-pointer pointer-events-none" onClick={handleFullScreen}>
-             <div className="absolute top-4 right-4 bg-black/70 text-white px-3.5 py-2 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2 backdrop-blur-md pointer-events-auto">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
-                Bấm xem toàn màn hình
-             </div>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -347,22 +247,23 @@ function Dashboard() {
   };
 
   return (
-  <div className="flex flex-col h-screen w-full overflow-hidden bg-google-surface">
+  <div className="flex flex-col h-screen w-full overflow-hidden bg-[#F4F6F8]">
     
-    <div className="bg-white px-4 sm:px-6 py-2.5 flex items-center overflow-x-auto border-b border-google-border flex-shrink-0 gap-2 scrollbar-hide shadow-sm z-20 relative">
+    {/* MENU CHÍNH */}
+    <div className="bg-white px-3 sm:px-6 py-2 flex items-center overflow-x-auto border-b border-gray-200 flex-shrink-0 gap-1.5 scrollbar-hide z-20 relative">
       {mainMenus.map((item) => {
         const isActive = activeMenuId === item.id;
         return (
           <button
             key={item.id}
             onClick={() => handleMenuChange(item.id)}
-            className={`flex flex-shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-[14px] font-bold uppercase tracking-wide transition-all duration-200 
+            className={`flex flex-shrink-0 items-center gap-2 rounded-full px-4 py-2 text-[14px] font-semibold uppercase tracking-wide transition-all duration-200 
             ${isActive 
-              ? "bg-google-lightBlue text-google-blue" 
-              : "text-google-textSecondary hover:bg-black/5 hover:text-google-text"
+              ? "bg-google-lightBlue text-google-blue shadow-sm" 
+              : "text-gray-500 hover:bg-gray-50 hover:text-gray-800"
             }`}
           >
-            <div className={`${isActive ? "text-google-blue" : "text-gray-500"}`}>
+            <div className={`${isActive ? "text-google-blue" : "text-gray-400"}`}>
                <item.icon />
             </div>
             <span className="whitespace-nowrap">{item.name}</span>
@@ -371,13 +272,14 @@ function Dashboard() {
       })}
     </div>
 
-    <div className="bg-google-surface/90 backdrop-blur-md px-4 sm:px-6 py-3 flex items-center overflow-x-auto border-b border-google-border flex-shrink-0 gap-2 scrollbar-hide z-10 relative">
+    {/* TAG CON */}
+    <div className="bg-white/80 backdrop-blur-md px-4 sm:px-6 py-2.5 flex items-center overflow-x-auto border-b border-gray-100 flex-shrink-0 gap-2 scrollbar-hide z-10 relative">
       <button
         onClick={() => setActiveSubMenuId("ALL")}
-        className={`flex-shrink-0 px-4 py-2 rounded-full text-[14px] font-medium transition-all duration-200 border 
+        className={`flex-shrink-0 px-4 py-1.5 rounded-full text-[13px] font-medium transition-all duration-200 border 
           ${activeSubMenuId === "ALL" 
-          ? "bg-google-blue text-white border-google-blue shadow-sm" 
-          : "bg-white text-google-textSecondary border-gray-200 hover:bg-gray-50 hover:text-google-text"
+          ? "bg-google-blue text-white border-google-blue" 
+          : "bg-transparent text-gray-500 border-gray-200 hover:border-gray-300 hover:text-gray-800"
         }`}
       >
         Tất Cả Mục
@@ -388,10 +290,10 @@ function Dashboard() {
           <button
             key={sub.id}
             onClick={() => setActiveSubMenuId(sub.id)}
-            className={`flex-shrink-0 px-4 py-2 rounded-full text-[14px] font-medium transition-all duration-200 border 
+            className={`flex-shrink-0 px-4 py-1.5 rounded-full text-[13px] font-medium transition-all duration-200 border 
               ${isSubActive 
-              ? "bg-google-blue text-white border-google-blue shadow-sm" 
-              : "bg-white text-google-textSecondary border-gray-200 hover:bg-gray-50 hover:text-google-text"
+              ? "bg-google-blue text-white border-google-blue" 
+              : "bg-transparent text-gray-500 border-gray-200 hover:border-gray-300 hover:text-gray-800"
             }`}
           >
             {sub.name}
@@ -400,8 +302,9 @@ function Dashboard() {
       })}
     </div>
 
-    <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-[#F3F4F6]">
-      <div className="mx-auto max-w-[1400px]">
+    {/* NỘI DUNG */}
+    <div className="flex-1 overflow-y-auto p-4 sm:p-8">
+      <div className="mx-auto max-w-[1200px]">
         {filteredLessons.length > 0 ? (
           <div className="flex flex-col">
             {filteredLessons.map(lesson => (
@@ -409,12 +312,12 @@ function Dashboard() {
             ))}
           </div>
         ) : (
-          <div className="mt-6 flex flex-col items-center justify-center rounded-3xl border border-dashed border-gray-300 bg-white p-12 text-center shadow-sm">
-            <div className="h-16 w-16 mb-4 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
+          <div className="mt-8 flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-200 bg-white p-16 text-center shadow-sm">
+            <div className="h-16 w-16 mb-4 rounded-full bg-gray-50 flex items-center justify-center text-gray-300">
                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
             </div>
-            <h3 className="text-[17px] font-semibold text-google-text mb-1">Chưa có bài học nào</h3>
-            <p className="text-google-textSecondary text-sm">Quản trị viên đang cập nhật tài liệu cho phần này.</p>
+            <h3 className="text-[16px] font-semibold text-gray-800 mb-1">Chưa có bài học nào</h3>
+            <p className="text-gray-500 text-sm">Nội dung chuyên môn đang được cập nhật.</p>
           </div>
         )}
       </div>
@@ -424,7 +327,7 @@ function Dashboard() {
 }
 
 // =========================================================================
-// MÀN HÌNH ĐĂNG NHẬP VÀ KHỞI CHẠY
+// MÀN HÌNH ĐĂNG NHẬP
 // =========================================================================
 function App() {
   const CORRECT_PASSWORD = "nonganewgen2026";
@@ -456,14 +359,14 @@ function App() {
   if (isAuthorized) return <Dashboard />;
 
   return (
-  <div className="flex min-h-screen items-center justify-center bg-google-bg p-4">
-    <div className="w-full max-w-[400px] overflow-hidden rounded-[24px] border border-google-border bg-white shadow-xl p-8 sm:p-10">
+  <div className="flex min-h-screen items-center justify-center bg-[#F4F6F8] p-4">
+    <div className="w-full max-w-[400px] overflow-hidden rounded-[24px] border border-gray-100 bg-white shadow-xl p-8 sm:p-10">
       <div className="text-center mb-8">
-        <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-google-blue shadow-md shadow-blue-500/20">
-          <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.315 48.315 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" /></svg>
+        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-google-blue shadow-md shadow-blue-500/20">
+          <svg className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.315 48.315 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" /></svg>
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-google-text mb-2">Đăng nhập hệ thống</h1>
-        <p className="text-sm text-google-textSecondary">Đào tạo kỹ thuật nông nghiệp Newgen</p>
+        <h1 className="text-2xl font-bold tracking-tight text-gray-800 mb-1">Đăng nhập hệ thống</h1>
+        <p className="text-sm text-gray-500">Đào tạo kỹ thuật Nông Á Newgen</p>
       </div>
 
       <form onSubmit={handleLogin} className="space-y-5">
@@ -473,7 +376,7 @@ function App() {
             placeholder="Nhập mã khóa truy cập..." 
             value={password} 
             onChange={(e) => setPassword(e.target.value)} 
-            className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3.5 text-[15px] transition-all focus:border-google-blue focus:bg-white focus:outline-none focus:ring-4 focus:ring-google-lightBlue" 
+            className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-[15px] transition-all focus:border-google-blue focus:bg-white focus:outline-none focus:ring-2 focus:ring-google-lightBlue" 
             required 
           />
         </div>
@@ -483,11 +386,10 @@ function App() {
             {error}
           </div>
         )}
-        <button type="submit" className="w-full rounded-xl bg-google-blue py-3.5 text-center text-[15px] font-semibold text-white shadow-sm transition-all hover:bg-[#0842A0] focus:outline-none focus:ring-4 focus:ring-google-lightBlue">
+        <button type="submit" className="w-full rounded-xl bg-google-blue py-3.5 text-center text-[15px] font-semibold text-white shadow-md transition-all hover:bg-[#0842A0] focus:outline-none focus:ring-2 focus:ring-google-lightBlue">
           Mở khóa hệ thống
         </button>
       </form>
-      <p className="mt-8 text-center text-[12px] text-gray-400">Mọi hành vi truy cập trái phép sẽ bị ghi lại.</p>
     </div>
   </div>
   );
