@@ -58,7 +58,160 @@
 const { useState, useEffect, useRef } = React;
 
 // =========================================================================
-// 1. KHO BỘ ICON ĐẶC TRƯNG TỰ TẠO
+// HƯỚNG DẪN THÊM BÀI VIẾT (BẢNG TRA CỨU TAG CATEGORY)
+// =========================================================================
+/*
+ĐỂ BÀI VIẾT HIỂN THỊ ĐÚNG MỤC, BẠN CẦN ĐIỀN ĐÚNG MÃ "categoryId" BÊN DƯỚI:
+
+1. Cảnh Báo:       "cb-chung"
+2. Lính Mới:       "lm-chung"
+3. Hoạt Chất:      "hc-chung"
+4. Cà Phê:         "cp-luu-y", "cp-trong", "cp-ra-hoa", "cp-sau-thu-hoach"
+5. Sầu Riêng:      "sr-luu-y", "sr-trong", "sr-ra-hoa", "sr-sau-thu-hoach", "sr-keo-coi-1", "sr-keo-coi-2"
+6. Tiêu:           "tieu-luu-y", "tieu-trong", "tieu-ra-hoa", "tieu-sau-thu-hoach"
+7. Lúa:            "lua-luu-y", "lua-gieo-sa", "lua-lam-dong", "lua-sau-benh"
+8. Cây Khác:       "ck-ot", "ck-nhan", "ck-vai", "ck-xoai", "ck-dua-leo", "ck-hoa-mai", "ck-rau"
+9. Phân Bón:       "pb-npk", "pb-phan-no", "pb-phan-nuoc", "pb-huu-co", "pb-trung-vi-luong", "pb-humic", "pb-raikac-a"
+10. Danh Bạ:       "lien-he"
+
+CÚ PHÁP THÊM 1 BÀI VIẾT VÀO GIỮA 2 DẤU NGOẶC VUÔNG [ ... ]:
+  { 
+    id: "gõ-tên-id-tùy-ý-không-dấu", 
+    categoryId: "MÃ-TAG-Ở-TRÊN", 
+    title: "TÊN BÀI VIẾT", 
+    canvaUrl: "link-canva-chứa-chữ-embed", 
+    thumbnail: "", 
+    youtubeId: "", 
+    content: "" 
+  },
+*/
+
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+// 1. CẢNH BÁO
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+const dataCanhBao = [
+  { 
+    id: "canh-bao-01", 
+    categoryId: "cb-chung", 
+    title: "LƯU Ý QUAN TRỌNG KHI PHA THUỐC", 
+    canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
+    thumbnail: "", youtubeId: "", content: "" 
+  },
+];
+
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+// 2. LÍNH MỚI TÒ TE
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+const dataLinhMoi = [
+  { 
+    id: "linh-moi-01", 
+    categoryId: "lm-chung", 
+    title: "KIẾN THỨC CƠ BẢN KHÁCH THƯỜNG HỎI", 
+    canvaUrl: "https://www.canva.com/design/DAHP_pVJPTE/1r_SWXk89pdIzx6V5Dc7pQ/view?embed", 
+    thumbnail: "", youtubeId: "", content: "" 
+  },
+];
+
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+// 3. HOẠT CHẤT
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+const dataHoatChat = [
+  { 
+    id: "hoat-chat-01", 
+    categoryId: "hc-chung", 
+    title: "TỔNG HỢP CÁC HOẠT CHẤT TRỪ NẤM", 
+    canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
+    thumbnail: "", youtubeId: "", content: "" 
+  },
+];
+
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+// 4. CÀ PHÊ
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+const dataCaPhe = [
+  { 
+    id: "ca-phe-01", 
+    categoryId: "cp-ra-hoa", 
+    title: "QUY TRÌNH LÀM BÔNG CÀ PHÊ HIỆU QUẢ", 
+    canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
+    thumbnail: "", youtubeId: "", content: "" 
+  },
+];
+
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+// 5. SẦU RIÊNG
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+const dataSauRieng = [
+  { 
+    id: "sau-rieng-01", 
+    categoryId: "sr-keo-coi-1", 
+    title: "KỸ THUẬT KÉO CƠI ĐỌT 1 SẦU RIÊNG", 
+    canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
+    thumbnail: "", youtubeId: "", content: "" 
+  },
+];
+
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+// 6. TIÊU
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+const dataTieu = [
+  { 
+    id: "tieu-01", 
+    categoryId: "tieu-luu-y", 
+    title: "PHÁC ĐỒ TRỊ BỆNH LỞ CỔ RỄ TIÊU", 
+    canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
+    thumbnail: "", youtubeId: "", content: "" 
+  }
+];
+
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+// 7. LÚA
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+const dataLua = [
+  { 
+    id: "lua-01", 
+    categoryId: "lua-lam-dong", 
+    title: "LƯU Ý KHI LÚA GIAI ĐOẠN LÀM ĐÒNG", 
+    canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
+    thumbnail: "", youtubeId: "", content: "" 
+  },
+];
+
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+// 8. CÂY KHÁC (Ớt, Nhãn, Vải, Xoài, Dưa Leo, Hoa Mai, Rau)
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+const dataCayKhac = [
+  { 
+    id: "cay-khac-01", 
+    categoryId: "ck-ot", 
+    title: "QUY TRÌNH CHĂM SÓC ỚT MÙA MƯA", 
+    canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
+    thumbnail: "", youtubeId: "", content: "" 
+  },
+];
+
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+// 9. PHÂN BÓN
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+const dataPhanBon = [
+  { 
+    id: "phan-bon-01", 
+    categoryId: "pb-npk", 
+    title: "BẢNG PHÂN LOẠI NPK VÀ CÔNG DỤNG", 
+    canvaUrl: "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed", 
+    thumbnail: "", youtubeId: "", content: "" 
+  },
+];
+
+// ★ BƯỚC CUỐI: TỔNG HỢP (TUYỆT ĐỐI KHÔNG SỬA ĐOẠN NÀY) ★
+const lessons = [
+  ...dataCanhBao, ...dataLinhMoi, ...dataHoatChat, 
+  ...dataCaPhe, ...dataSauRieng, ...dataTieu, ...dataLua, 
+  ...dataCayKhac, ...dataPhanBon
+];
+
+// =========================================================================
+// BỘ ICON ĐẶC TRƯNG TỰ TẠO
 // =========================================================================
 function WarningIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>; }
 function NewbieIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" /></svg>; }
@@ -72,7 +225,7 @@ function FertilizerIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="
 function PhoneIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.496-4.196-7.092-7.092l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>; }
 
 // =========================================================================
-// 2. CẤU TRÚC MENU (Đã thêm Icon sinh động)
+// CẤU TRÚC MENU (ĐÃ CHÈN ICON)
 // =========================================================================
 const mainMenus = [
   { id: "canh-bao", name: "Cảnh Báo", icon: WarningIcon, subItems: [ { name: "Tất cả bài viết", id: "cb-chung" } ] },
@@ -88,27 +241,7 @@ const mainMenus = [
 ];
 
 // =========================================================================
-// 3. TỰ ĐỘNG BƠM LINK TEST VÀO TOÀN BỘ CÁC MỤC ĐỂ BẠN KIỂM TRA
-// =========================================================================
-const testCanvaUrl = "https://emilyforsdgs.my.canva.site/ti-u-n-m-b-nh";
-
-// Quét toàn bộ ID của các menu con
-const allSubItemIds = mainMenus.flatMap(menu => menu.subItems.map(sub => sub.id));
-
-// Khởi tạo tự động dữ liệu test chứa Link Canva cho tất cả các ID
-const lessons = allSubItemIds.map(id => ({
-  id: `test-${id}`,
-  categoryId: id,
-  title: `BÀI TEST GIAO DIỆN - THẺ: ${id.toUpperCase()}`,
-  canvaUrl: testCanvaUrl,
-  thumbnail: "",
-  youtubeId: "",
-  content: "" 
-}));
-
-
-// =========================================================================
-// 4. GIAO DIỆN HIỂN THỊ TỪNG BÀI
+// GIAO DIỆN HIỂN THỊ TỪNG BÀI
 // =========================================================================
 function LessonRow({ lesson }) {
   const containerRef = useRef(null);
@@ -184,7 +317,7 @@ function LessonRow({ lesson }) {
 }
 
 // =========================================================================
-// 5. GIAO DIỆN CHÍNH (Đã xóa phần Đầu trang Trailhead)
+// GIAO DIỆN HIỂN THỊ CHÍNH (Đã xóa Header Trailhead)
 // =========================================================================
 function Dashboard() {
   const [activeMenuId, setActiveMenuId] = useState(mainMenus[0].id);
@@ -207,8 +340,8 @@ function Dashboard() {
   return (
   <div className="flex flex-col h-screen w-full overflow-hidden bg-google-surface">
     
-    {/* MENU CHÍNH LUÔN NẰM TRÊN CÙNG */}
-    <div className="bg-white px-4 sm:px-6 py-2 flex items-center overflow-x-auto border-b border-google-border flex-shrink-0 gap-2 scrollbar-hide shadow-sm z-20 relative">
+    {/* MENU CHÍNH NẰM SÁT ĐỈNH TRANG */}
+    <div className="bg-white px-4 sm:px-6 py-2.5 flex items-center overflow-x-auto border-b border-google-border flex-shrink-0 gap-2 scrollbar-hide shadow-sm z-20 relative">
       {mainMenus.map((item) => {
         const isActive = activeMenuId === item.id;
         return (
@@ -285,7 +418,7 @@ function Dashboard() {
 }
 
 // =========================================================================
-// 6. ỨNG DỤNG CHÍNH 
+// MÀN HÌNH ĐĂNG NHẬP VÀ KHỞI CHẠY
 // =========================================================================
 function App() {
   const CORRECT_PASSWORD = "nonganewgen2026";
