@@ -7,7 +7,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -48,6 +48,14 @@
 .prose p { margin-bottom: 1rem; line-height: 1.7; color: #444746; font-size: 15px;}
 .prose ul { padding-left: 1.5rem; margin-bottom: 1rem; color: #444746; font-size: 15px;}
 .prose li { margin-bottom: 0.5rem; }
+
+/* Tạo nền mây trắng lờ mờ cho trang chủ */
+.bg-clouds {
+  background-color: #00B050;
+  background-image: radial-gradient(circle at 10% 20%, rgba(255,255,255,0.15) 0%, transparent 20%),
+                    radial-gradient(circle at 90% 80%, rgba(255,255,255,0.15) 0%, transparent 20%),
+                    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 30%);
+}
 </style>
 </head>
 <body class="bg-[#F4F6F8] text-google-text font-sans antialiased">
@@ -59,16 +67,6 @@ const { useState, useEffect, useRef } = React;
 // =========================================================================
 // HƯỚNG DẪN THÊM BÀI VIẾT (PHIÊN BẢN TỰ ĐỘNG SINH TAG)
 // =========================================================================
-/*
-CÚ PHÁP MỚI SIÊU DỄ:
-Bạn chỉ cần điền đúng mã menuId tương ứng:
-- "canh-bao"    - "linh-moi"    - "hoat-chat"   - "ca-phe"    - "sau-rieng"
-- "tieu"        - "lua"         - "cay-khac"    - "phan-bon"  - "danh-ba"
-
-Sau đó phần "tag", bạn THÍCH GÕ GÌ CŨNG ĐƯỢC. Web sẽ tự tạo nút có chữ đó!
-Ví dụ: menuId: "linh-moi", tag: "Ngày 1-2"
-*/
-
 const DUMMY_CANVA_LINK = "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed";
 
 // ★★★★★ 1. CẢNH BÁO ★★★★★
@@ -76,7 +74,7 @@ const dataCanhBao = [
   { menuId: "canh-bao", tag: "Lưu ý chung", title: "LƯU Ý QUAN TRỌNG", canvaUrl: "https://www.canva.com/design/DAHQA26JkJA/s4rv3YO3CnXz6Ax43WuZkg/view?embed", canvaRatio: "1200 / 3600", thumbnail: "", youtubeId: "", content: "" },
 ];
 
-// ★★★★★ 2. LÍNH MỚI TÒ TE (Đã sửa lỗi ngoặc vuông của bạn) ★★★★★
+// ★★★★★ 2. LÍNH MỚI TÒ TE ★★★★★
 const dataLinhMoi = [
   { menuId: "linh-moi", tag: "Lộ trình học", title: "LỘ TRÌNH HỌC", canvaUrl: "https://www.canva.com/design/DAHQMdtC77U/KtDc4UOmujnaVOd6amZ9Pw/view?embed", canvaRatio: "794 / 1123", thumbnail: "", youtubeId: "", content: "" },
   { menuId: "linh-moi", tag: "Ngày 1-2", title: "NGÀY 1-2", canvaUrl: "https://www.canva.com/design/DAGpFl2kwEc/vK2r4y7HP_A4ZRn5gruFGg/view?embed", canvaRatio: "794 / 1123", thumbnail: "", youtubeId: "", content: "" },
@@ -130,17 +128,17 @@ const dataDanhBa = [
   { menuId: "danh-ba", tag: "Liên Hệ", title: "BÀI MẪU: THÔNG TIN LIÊN HỆ", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
 ];
 
-
 // ★ TỔNG HỢP VÀO HỆ THỐNG ★
 const lessons = [
   ...dataCanhBao, ...dataLinhMoi, ...dataHoatChat, 
   ...dataCaPhe, ...dataSauRieng, ...dataTieu, ...dataLua, 
   ...dataCayKhac, ...dataPhanBon, ...dataDanhBa
-].map((lesson, index) => ({ ...lesson, id: `lesson-${index}` })); // Tự động tạo ID luôn để bạn khỏi phải gõ
+].map((lesson, index) => ({ ...lesson, id: `lesson-${index}` }));
 
 // =========================================================================
 // BỘ ICON ĐẶC TRƯNG TỰ TẠO
 // =========================================================================
+function HomeIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>; }
 function WarningIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>; }
 function NewbieIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" /></svg>; }
 function FlaskIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L4.2 15.3m0 0a2.25 2.25 0 00-1.5 2.143c0 1.25.96 2.22 2.14 2.37A24.168 24.168 0 0012 20.25c2.518 0 4.962-.352 7.16-1.037a2.249 2.249 0 002.14-2.37 2.25 2.25 0 00-1.5-2.143" /></svg>; }
@@ -152,12 +150,10 @@ function LeafIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" 
 function FertilizerIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.027-.392.05-.59.075m0 0c-2.909.371-5.94.581-9 .581s-6.091-.21-9-.581m0 0c-.198-.025-.396-.048-.59-.075m0 0a2.18 2.18 0 01-.75-1.661V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0010.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" /></svg>; }
 function PhoneIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.496-4.196-7.092-7.092l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>; }
 
-// =========================================================================
-// CẤU TRÚC MENU (Đã Xóa Bỏ Hoàn Toàn Mục Cấu Hình Tag Cứng Khắc Nghiệt)
-// =========================================================================
 const mainMenus = [
+  { id: "trang-chu", name: "Trang Chủ", icon: HomeIcon }, // <-- Thêm nút Trang chủ vào Menu
   { id: "canh-bao", name: "Cảnh Báo", icon: WarningIcon },
-  { id: "linh-moi", name: "Lính Mới Tò Te", icon: NewbieIcon },
+  { id: "linh-moi", name: "Lính Mới", icon: NewbieIcon },
   { id: "hoat-chat", name: "Hoạt Chất", icon: FlaskIcon },
   { id: "ca-phe", name: "Cà Phê", icon: CoffeeIcon },
   { id: "sau-rieng", name: "Sầu Riêng", icon: DurianIcon },
@@ -167,6 +163,79 @@ const mainMenus = [
   { id: "phan-bon", name: "Phân Bón", icon: FertilizerIcon },
   { id: "danh-ba", name: "Danh Bạ", icon: PhoneIcon }
 ];
+
+// =========================================================================
+// COMPONENT TRANG CHỦ Y NHƯ ẢNH (Dashboard Card Mới)
+// =========================================================================
+function HomePage({ onNavigate }) {
+  // Hàm này quét xem Menu đó có những tag nào thực tế từ cục dữ liệu
+  const getTagsForMenu = (menuId) => {
+    const lessonsInMenu = lessons.filter(l => l.menuId === menuId);
+    return [...new Set(lessonsInMenu.map(l => l.tag).filter(Boolean))];
+  };
+
+  const CategoryCard = ({ title, titleColor, menuId, tagBg, tagText }) => {
+    const tags = getTagsForMenu(menuId);
+    // Ẩn Card nếu Menu đó chưa có bài viết nào
+    if (tags.length === 0) return null;
+
+    return (
+      <div className="bg-white rounded-[28px] p-5 shadow-lg flex flex-col items-center">
+        <h2 className={`text-[22px] md:text-2xl font-black uppercase mb-4 text-center tracking-tight ${titleColor}`}>
+          {title}
+        </h2>
+        <div className="w-full space-y-2.5 flex-1 flex flex-col justify-start">
+          {tags.map(tag => (
+            <button
+              key={tag}
+              onClick={() => onNavigate(menuId, tag)} // <- Deep link sang bài cụ thể
+              className={`w-full py-2.5 px-3 rounded-full font-bold uppercase text-[12px] md:text-[13px] tracking-wide transition-all active:scale-95 hover:brightness-95 shadow-sm ${tagBg} ${tagText}`}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="bg-clouds w-full h-full overflow-y-auto p-4 md:p-8">
+      <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 xl:gap-10">
+        
+        {/* CỘT TRÁI: LOGO VÀ LÍNH MỚI/CẢNH BÁO */}
+        <div className="w-full lg:w-[320px] flex-shrink-0 flex flex-col relative gap-6">
+          <div className="text-white text-center lg:text-left mb-2 pt-4">
+            <h1 className="text-[42px] sm:text-5xl lg:text-[56px] font-black uppercase leading-[1.1] tracking-tight drop-shadow-md mb-2">
+              SỔ TAY<br/>NÔNG Á
+            </h1>
+            <p className="text-lg sm:text-xl lg:text-2xl font-bold drop-shadow-md tracking-wide">Kiến thức là sức mạnh</p>
+          </div>
+
+          <CategoryCard title="LÍNH MỚI" titleColor="text-[#2B54A3]" menuId="linh-moi" tagBg="bg-[#E6F3FF]" tagText="text-[#2B54A3]" />
+          <CategoryCard title="CẢNH BÁO" titleColor="text-[#2B54A3]" menuId="canh-bao" tagBg="bg-[#E6F3FF]" tagText="text-[#2B54A3]" />
+
+          {/* Nút Hotline */}
+          <div className="mt-4 mx-auto lg:mx-0 inline-flex rounded-full overflow-hidden shadow-lg border-2 border-[#1A4B29] max-w-max">
+            <div className="bg-[#6B902A] text-white px-4 py-2 font-bold text-sm flex items-center">Hotline</div>
+            <div className="bg-[#1A4B29] text-white px-5 py-2 font-bold text-lg tracking-wider">0986 91 44 47</div>
+          </div>
+        </div>
+
+        {/* CỘT PHẢI: LƯỚI THẺ CÂY TRỒNG VÀ CÁC MỤC KHÁC */}
+        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 pt-4 items-start">
+          <CategoryCard title="SẦU RIÊNG" titleColor="text-[#C65911]" menuId="sau-rieng" tagBg="bg-[#EAE6FE]" tagText="text-[#3B4BE8]" />
+          <CategoryCard title="CÀ PHÊ" titleColor="text-[#C65911]" menuId="ca-phe" tagBg="bg-[#EAE6FE]" tagText="text-[#3B4BE8]" />
+          <CategoryCard title="TIÊU" titleColor="text-[#C65911]" menuId="tieu" tagBg="bg-[#EAE6FE]" tagText="text-[#3B4BE8]" />
+          <CategoryCard title="LÚA" titleColor="text-[#2E7D32]" menuId="lua" tagBg="bg-[#EAE6FE]" tagText="text-[#3B4BE8]" />
+          <CategoryCard title="CÂY KHÁC" titleColor="text-[#2E7D32]" menuId="cay-khac" tagBg="bg-[#EAE6FE]" tagText="text-[#3B4BE8]" />
+          <CategoryCard title="PHÂN BÓN" titleColor="text-[#2E7D32]" menuId="phan-bon" tagBg="bg-[#EAE6FE]" tagText="text-[#3B4BE8]" />
+        </div>
+
+      </div>
+    </div>
+  );
+}
 
 // =========================================================================
 // GIAO DIỆN HIỂN THỊ TỪNG BÀI
@@ -188,7 +257,6 @@ function LessonRow({ lesson }) {
   };
 
   const hasContent = lesson.content ? lesson.content.trim() !== "" : false;
-  
   const defaultRatio = hasContent ? '1 / 1.414' : '1200 / 3600';
   const ratioStyle = lesson.canvaUrl ? { aspectRatio: lesson.canvaRatio || defaultRatio } : (lesson.youtubeId ? { aspectRatio: '16 / 9' } : { minHeight: '300px' });
 
@@ -243,29 +311,48 @@ function LessonRow({ lesson }) {
 }
 
 // =========================================================================
-// GIAO DIỆN HIỂN THỊ CHÍNH (Đã Nâng Cấp Logic Lọc Tag Thông Minh)
+// GIAO DIỆN CHÍNH / BẢNG ĐIỀU KHIỂN
 // =========================================================================
 function Dashboard() {
-  const [activeMenuId, setActiveMenuId] = useState(mainMenus[0].id);
+  const [activeMenuId, setActiveMenuId] = useState("trang-chu");
   const [activeTag, setActiveTag] = useState("ALL"); 
 
-  // Bước 1: Lấy toàn bộ bài viết thuộc Menu đang chọn
-  const lessonsInCurrentMenu = lessons.filter(lesson => lesson.menuId === activeMenuId);
+  const handleMenuChange = (menuId, tag = "ALL") => {
+    setActiveMenuId(menuId);
+    setActiveTag(tag);
+  };
 
-  // Bước 2: TỰ ĐỘNG QUÉT VÀ VẼ DANH SÁCH TAG TỪ DỮ LIỆU THỰC TẾ CỦA BẠN!
-  // Mã code này sẽ lọc ra các tên Tag duy nhất (không trùng lặp)
+  // NẾU ĐANG CHỌN TRANG CHỦ -> HIỂN THỊ MÀN HÌNH NỀN XANH CÓ CÁC THẺ (CARD)
+  if (activeMenuId === "trang-chu") {
+    return (
+      <div className="flex flex-col h-screen w-full overflow-hidden">
+        <div className="bg-white px-3 sm:px-6 py-2 flex items-center overflow-x-auto border-b border-gray-200 flex-shrink-0 gap-1.5 scrollbar-hide z-20">
+          {mainMenus.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => handleMenuChange(item.id)}
+              className={`flex flex-shrink-0 items-center gap-2 rounded-full px-4 py-2 text-[14px] font-semibold uppercase tracking-wide transition-all duration-200 
+              ${activeMenuId === item.id ? "bg-google-lightBlue text-google-blue shadow-sm" : "text-gray-500 hover:bg-gray-50 hover:text-gray-800"}`}
+            >
+              <div className={`${activeMenuId === item.id ? "text-google-blue" : "text-gray-400"}`}><item.icon /></div>
+              <span className="whitespace-nowrap">{item.name}</span>
+            </button>
+          ))}
+        </div>
+        <HomePage onNavigate={handleMenuChange} />
+      </div>
+    );
+  }
+
+  // NẾU CHỌN MENU BÀI VIẾT (VÍ DỤ: LÚA, TIÊU...) -> HIỂN THỊ DANH SÁCH BÀI
+  const currentMenu = mainMenus.find(m => m.id === activeMenuId) || mainMenus[1];
+  const lessonsInCurrentMenu = lessons.filter(lesson => lesson.menuId === activeMenuId);
   const dynamicTags = [...new Set(lessonsInCurrentMenu.map(lesson => lesson.tag).filter(Boolean))];
 
-  // Bước 3: Lọc hiển thị cuối cùng
   const filteredLessons = lessonsInCurrentMenu.filter(lesson => {
     if (activeTag === "ALL") return true;
     return lesson.tag === activeTag;
   });
-
-  const handleMenuChange = (menuId) => {
-    setActiveMenuId(menuId);
-    setActiveTag("ALL"); // Reset về Tất cả khi đổi menu chính
-  };
 
   return (
   <div className="flex flex-col h-screen w-full overflow-hidden bg-[#F4F6F8]">
@@ -293,7 +380,7 @@ function Dashboard() {
       })}
     </div>
 
-    {/* MENU TAG CON - TỰ ĐỘNG SINH 100% */}
+    {/* TAG CON */}
     <div className="bg-white/80 backdrop-blur-md px-4 sm:px-6 py-2.5 flex items-center overflow-x-auto border-b border-gray-100 flex-shrink-0 gap-2 scrollbar-hide z-10 relative">
       <button
         onClick={() => setActiveTag("ALL")}
@@ -306,7 +393,6 @@ function Dashboard() {
         Tất Cả Mục
       </button>
       
-      {/* Vòng lặp vẽ nút Tag tự động dựa trên dữ liệu bạn gõ */}
       {dynamicTags.map(tag => {
         const isSubActive = activeTag === tag;
         return (
@@ -325,7 +411,7 @@ function Dashboard() {
       })}
     </div>
 
-    {/* NỘI DUNG BÀI VIẾT */}
+    {/* NỘI DUNG */}
     <div className="flex-1 overflow-y-auto p-4 sm:p-8">
       <div className="mx-auto max-w-[1200px]">
         {filteredLessons.length > 0 ? (
