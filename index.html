@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sổ Tay Nông Á - Kiến Thức Là Sức Mạnh</title>
+<title>Hệ Thống Đào Tạo Nội Bộ - Nông Á Newgen</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,27 +37,23 @@
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
-::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #DADCE0; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #BDC1C6; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-.prose p { margin-bottom: 1rem; line-height: 1.7; color: #444746; font-size: 15px;}
-.prose ul { padding-left: 1.5rem; margin-bottom: 1rem; color: #444746; font-size: 15px;}
-.prose li { margin-bottom: 0.5rem; }
-
-/* HÌNH NỀN VƯỜN CÂY MỜ CHO TRANG CHỦ VÀ GIAO DIỆN */
+/* HÌNH NỀN VƯỜN CÂY (Đã sửa lỗi hiển thị) */
 .bg-garden {
-  background-image: linear-gradient(rgba(244, 246, 248, 0.88), rgba(244, 246, 248, 0.95)), url('https://images.unsplash.com/photo-1592982537447-6f2a6a0c4815?q=80&w=2000&auto=format&fit=crop');
+  background-image: linear-gradient(rgba(244, 246, 248, 0.82), rgba(244, 246, 248, 0.95)), url('https://images.unsplash.com/photo-1592982537447-6f2a6a0c4815?q=80&w=2000&auto=format&fit=crop');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
 }
 
-/* Nền riêng cho khu vực Logo Trái trang chủ */
+/* Nền khối Logo Trang Chủ */
 .bg-logo-area {
   background: linear-gradient(135deg, #00B050 0%, #038a41 100%);
   position: relative;
@@ -71,8 +67,18 @@
   animation: rotate 20s linear infinite;
 }
 @keyframes rotate { 100% { transform: rotate(360deg); } }
+
+/* Hiệu ứng trượt xuống mượt mà cho Popup Hover Menu */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-down {
+  animation: fadeInDown 0.2s ease-out forwards;
+}
 </style>
 </head>
+<!-- QUAN TRỌNG: Đã đổi bg-[#F4F6F8] thành bg-garden để hiện hình nền -->
 <body class="bg-garden text-google-text font-sans antialiased overflow-hidden">
 <div id="root"></div>
 
@@ -80,101 +86,86 @@
 const { useState, useEffect, useRef } = React;
 
 // =========================================================================
-// HƯỚNG DẪN THÊM BÀI VIẾT (PHIÊN BẢN CHUẨN ẢNH BẠN GỬI)
+// HƯỚNG DẪN THÊM BÀI VIẾT TỪ CANVA
 // =========================================================================
 const DUMMY_CANVA_LINK = "https://www.canva.com/design/DAHOs0i8-RU/sDa8MA4bS4YffpXdJpysHg/view?embed";
-const DUMMY_RATIO = "1200 / 3600";
 
-// TÔI ĐÃ LÊN SẴN TOÀN BỘ KHUNG BÀI VIẾT, BẠN CHỈ VIỆC THAY LINK CANVA VÀO NHÉ!
-
-// ★★★★★ 1. LÍNH MỚI (Đã gộp Cảnh báo vào đây) ★★★★★
+// ★★★★★ 1. LÍNH MỚI TÒ TE (Đã gộp Cảnh báo vào đây) ★★★★★
 const dataLinhMoi = [
-  { menuId: "linh-moi", tag: "LỘ TRÌNH HỌC", title: "LỘ TRÌNH HỌC", canvaUrl: "https://www.canva.com/design/DAHQMdtC77U/KtDc4UOmujnaVOd6amZ9Pw/view?embed", canvaRatio: "794 / 1123" },
-  { menuId: "linh-moi", tag: "CẢNH BÁO", title: "CẢNH BÁO KHI LÀM NÔNG", canvaUrl: "https://www.canva.com/design/DAHQA26JkJA/s4rv3YO3CnXz6Ax43WuZkg/view?embed", canvaRatio: "1200 / 3600" },
-  { menuId: "linh-moi", tag: "THUỐC CỎ", title: "LƯU Ý THUỐC CỎ", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "linh-moi", tag: "KHÁCH HAY HỎI", title: "CÂU HỎI THƯỜNG GẶP", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "linh-moi", tag: "PHÂN BÓN", title: "KIẾN THỨC PHÂN BÓN CƠ BẢN", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "linh-moi", tag: "BÀI THUỐC 1 BÌNH", title: "BÀI THUỐC 1 BÌNH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
+  { menuId: "linh-moi", tag: "Lộ Trình Học", title: "LỘ TRÌNH HỌC", canvaUrl: "https://www.canva.com/design/DAHQMdtC77U/KtDc4UOmujnaVOd6amZ9Pw/view?embed", canvaRatio: "794 / 1123", thumbnail: "", youtubeId: "", content: "" },
+  { menuId: "linh-moi", tag: "Cảnh Báo", title: "CẢNH BÁO LƯU Ý QUAN TRỌNG", canvaUrl: "https://www.canva.com/design/DAHQA26JkJA/s4rv3YO3CnXz6Ax43WuZkg/view?embed", canvaRatio: "1200 / 3600", thumbnail: "", youtubeId: "", content: "" },
+  { menuId: "linh-moi", tag: "Thuốc Cỏ", title: "NGUYÊN TẮC THUỐC CỎ", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600", thumbnail: "", youtubeId: "", content: "" },
+  { menuId: "linh-moi", tag: "Khách Hay Hỏi", title: "GIẢI ĐÁP KHÁCH HAY HỎI", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600", thumbnail: "", youtubeId: "", content: "" },
+  { menuId: "linh-moi", tag: "Phân Bón", title: "KIẾN THỨC PHÂN BÓN CƠ BẢN", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600", thumbnail: "", youtubeId: "", content: "" },
+  { menuId: "linh-moi", tag: "Bài Thuốc 1 Bình", title: "CÔNG THỨC BÀI THUỐC 1 BÌNH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600", thumbnail: "", youtubeId: "", content: "" },
 ];
 
-// ★★★★★ 2. SẦU RIÊNG ★★★★★
-const dataSauRieng = [
-  { menuId: "sau-rieng", tag: "TRỒNG - CHĂM SÓC", title: "SẦU RIÊNG: TRỒNG & CHĂM SÓC", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "sau-rieng", tag: "CÂY BÓI 3-5 NĂM", title: "SẦU RIÊNG: GIAI ĐOẠN CÂY BÓI", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "sau-rieng", tag: "CÂY KINH DOANH", title: "SẦU RIÊNG: GIAI ĐOẠN KINH DOANH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "sau-rieng", tag: "NẤM BỆNH", title: "SẦU RIÊNG: QUẢN LÝ NẤM BỆNH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "sau-rieng", tag: "CÔN TRÙNG", title: "SẦU RIÊNG: QUẢN LÝ CÔN TRÙNG", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-];
-
-// ★★★★★ 3. CÀ PHÊ (Đã suy luận theo cấu trúc Sầu Riêng) ★★★★★
-const dataCaPhe = [
-  { menuId: "ca-phe", tag: "TRỒNG - CHĂM SÓC", title: "CÀ PHÊ: TRỒNG & CHĂM SÓC", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "ca-phe", tag: "CÂY KIẾN THIẾT", title: "CÀ PHÊ: GIAI ĐOẠN KIẾN THIẾT", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "ca-phe", tag: "CÂY KINH DOANH", title: "CÀ PHÊ: GIAI ĐOẠN KINH DOANH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "ca-phe", tag: "NẤM BỆNH", title: "CÀ PHÊ: QUẢN LÝ NẤM BỆNH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "ca-phe", tag: "CÔN TRÙNG", title: "CÀ PHÊ: QUẢN LÝ CÔN TRÙNG", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-];
-
-// ★★★★★ 4. TIÊU (Đã suy luận theo cấu trúc Sầu Riêng) ★★★★★
-const dataTieu = [
-  { menuId: "tieu", tag: "TRỒNG - CHĂM SÓC", title: "TIÊU: TRỒNG & CHĂM SÓC", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "tieu", tag: "CÂY KIẾN THIẾT", title: "TIÊU: GIAI ĐOẠN KIẾN THIẾT", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "tieu", tag: "CÂY KINH DOANH", title: "TIÊU: GIAI ĐOẠN KINH DOANH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "tieu", tag: "NẤM BỆNH", title: "TIÊU: QUẢN LÝ NẤM BỆNH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "tieu", tag: "CÔN TRÙNG", title: "TIÊU: QUẢN LÝ CÔN TRÙNG", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-];
-
-// ★★★★★ 5. LÚA ★★★★★
-const dataLua = [
-  { menuId: "lua", tag: "CỎ MẦM 0-3 NGÀY", title: "LÚA: QUẢN LÝ CỎ MẦM 0-3 NGÀY", canvaUrl: "https://www.canva.com/design/DAHQJ9AtNFY/VXbW22i8cOAWtNr_PDEWcA/view?embed", canvaRatio: DUMMY_RATIO },
-  { menuId: "lua", tag: "CỎ MẦM 7-20 NGÀY", title: "LÚA: QUẢN LÝ CỎ MẦM 7-20 NGÀY", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "lua", tag: "KHÔ VẰN ĐẠO ÔN", title: "LÚA: QUẢN LÝ KHÔ VẰN - ĐẠO ÔN", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "lua", tag: "TRỔ BÔNG CHẮC HẠT", title: "LÚA: GIAI ĐOẠN TRỔ BÔNG CHẮC HẠT", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-];
-
-// ★★★★★ 6. NHÃN VẢI ★★★★★
-const dataNhanVai = [
-  { menuId: "nhan-vai", tag: "TRỒNG - CHĂM SÓC", title: "NHÃN VẢI: TRỒNG & CHĂM SÓC", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "nhan-vai", tag: "XỬ LÝ RA HOA", title: "NHÃN VẢI: XỬ LÝ RA HOA", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "nhan-vai", tag: "NUÔI TRÁI", title: "NHÃN VẢI: GIAI ĐOẠN NUÔI TRÁI", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "nhan-vai", tag: "NẤM BỆNH", title: "NHÃN VẢI: QUẢN LÝ NẤM BỆNH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "nhan-vai", tag: "CÔN TRÙNG", title: "NHÃN VẢI: QUẢN LÝ CÔN TRÙNG", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-];
-
-// ★★★★★ 7. RAU MÀU ★★★★★
-const dataRauMau = [
-  { menuId: "rau-mau", tag: "LÀM ĐẤT - GIEO HẠT", title: "RAU MÀU: LÀM ĐẤT & GIEO HẠT", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "rau-mau", tag: "CHĂM SÓC BÓN PHÂN", title: "RAU MÀU: CHĂM SÓC & BÓN PHÂN", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "rau-mau", tag: "NẤM BỆNH", title: "RAU MÀU: QUẢN LÝ NẤM BỆNH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "rau-mau", tag: "CÔN TRÙNG", title: "RAU MÀU: QUẢN LÝ CÔN TRÙNG", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-];
-
-// ★★★★★ 8. HOẠT CHẤT ★★★★★
+// ★★★★★ 2. HOẠT CHẤT ★★★★★
 const dataHoatChat = [
-  { menuId: "hoat-chat", tag: "TRỪ NẤM BỆNH", title: "TỔNG HỢP HOẠT CHẤT TRỪ NẤM", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "hoat-chat", tag: "TRỪ SÂU", title: "TỔNG HỢP HOẠT CHẤT TRỪ SÂU", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "hoat-chat", tag: "ĐIỀU HÒA ST", title: "CHẤT ĐIỀU HÒA SINH TRƯỞNG", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
+  { menuId: "hoat-chat", tag: "Trừ Nấm", title: "TỔNG HỢP HOẠT CHẤT TRỪ NẤM", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "hoat-chat", tag: "Trừ Sâu", title: "TỔNG HỢP HOẠT CHẤT TRỪ SÂU", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
 ];
 
-// ★★★★★ 9. PHÂN BÓN ★★★★★
+// ★★★★★ 3. CÀ PHÊ ★★★★★
+const dataCaPhe = [
+  { menuId: "ca-phe", tag: "Trồng - Chăm sóc", title: "CÀ PHÊ - TRỒNG VÀ CHĂM SÓC", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "ca-phe", tag: "Cây Kiến Thiết", title: "CÀ PHÊ - GIAI ĐOẠN KIẾN THIẾT", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "ca-phe", tag: "Cây Kinh Doanh", title: "CÀ PHÊ - GIAI ĐOẠN KINH DOANH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "ca-phe", tag: "Nấm Bệnh", title: "CÀ PHÊ - QUẢN LÝ NẤM BỆNH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "ca-phe", tag: "Côn Trùng", title: "CÀ PHÊ - QUẢN LÝ CÔN TRÙNG", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+];
+
+// ★★★★★ 4. SẦU RIÊNG ★★★★★
+const dataSauRieng = [
+  { menuId: "sau-rieng", tag: "Trồng - Chăm Sóc", title: "SẦU RIÊNG - TRỒNG VÀ CHĂM SÓC", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "sau-rieng", tag: "Cây Bói 3-5 Năm", title: "SẦU RIÊNG - CÂY BÓI 3-5 NĂM", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "sau-rieng", tag: "Cây Kinh Doanh", title: "SẦU RIÊNG - CÂY KINH DOANH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "sau-rieng", tag: "Nấm Bệnh", title: "SẦU RIÊNG - QUẢN LÝ NẤM BỆNH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "sau-rieng", tag: "Côn Trùng", title: "SẦU RIÊNG - QUẢN LÝ CÔN TRÙNG", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+];
+
+// ★★★★★ 5. TIÊU ★★★★★
+const dataTieu = [
+  { menuId: "tieu", tag: "Trồng - Chăm Sóc", title: "TIÊU - TRỒNG VÀ CHĂM SÓC", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "tieu", tag: "Cây Kiến Thiết", title: "TIÊU - GIAI ĐOẠN KIẾN THIẾT", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "tieu", tag: "Cây Kinh Doanh", title: "TIÊU - GIAI ĐOẠN KINH DOANH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "tieu", tag: "Nấm Bệnh", title: "TIÊU - QUẢN LÝ NẤM BỆNH", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "tieu", tag: "Côn Trùng", title: "TIÊU - QUẢN LÝ CÔN TRÙNG", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+];
+
+// ★★★★★ 6. LÚA ★★★★★
+const dataLua = [
+  { menuId: "lua", tag: "Cỏ Mầm 0-3 Ngày", title: "LÚA - QUẢN LÝ CỎ MẦM 0-3 NGÀY", canvaUrl: "https://www.canva.com/design/DAHQJ9AtNFY/VXbW22i8cOAWtNr_PDEWcA/view?embed", canvaRatio: "1200 / 3600" },
+  { menuId: "lua", tag: "Cỏ Mầm 7-20 Ngày", title: "LÚA - QUẢN LÝ CỎ MẦM 7-20 NGÀY", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "lua", tag: "Khô Vằn Đạo Ôn", title: "LÚA - QUẢN LÝ KHÔ VẰN, ĐẠO ÔN", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "lua", tag: "Trổ Bông Chắc Hạt", title: "LÚA - QUẢN LÝ GIAI ĐOẠN TRỔ BÔNG", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+];
+
+// ★★★★★ 7. CÂY KHÁC ★★★★★
+const dataCayKhac = [
+  { menuId: "cay-khac", tag: "Cây Ớt", title: "BÀI MẪU: ỚT", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "cay-khac", tag: "Cây Nhãn Vải", title: "BÀI MẪU: NHÃN VẢI", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "cay-khac", tag: "Rau Màu", title: "BÀI MẪU: RAU MÀU", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+];
+
+// ★★★★★ 8. PHÂN BÓN ★★★★★
 const dataPhanBon = [
-  { menuId: "phan-bon", tag: "NPK", title: "KIẾN THỨC PHÂN NPK", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "phan-bon", tag: "PHÂN NỞ", title: "KIẾN THỨC PHÂN NỞ", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "phan-bon", tag: "PHÂN NƯỚC", title: "KIẾN THỨC PHÂN NƯỚC", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "phan-bon", tag: "PHÂN HỮU CƠ", title: "KIẾN THỨC PHÂN HỮU CƠ", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "phan-bon", tag: "TRUNG VI LƯỢNG", title: "KIẾN THỨC TRUNG VI LƯỢNG", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
-  { menuId: "phan-bon", tag: "HUMIC", title: "KIẾN THỨC HUMIC", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: DUMMY_RATIO },
+  { menuId: "phan-bon", tag: "NPK", title: "KIẾN THỨC PHÂN NPK", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "phan-bon", tag: "Phân Nở", title: "KIẾN THỨC PHÂN NỞ", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "phan-bon", tag: "Phân Nước", title: "KIẾN THỨC PHÂN NƯỚC", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
+  { menuId: "phan-bon", tag: "Hữu Cơ", title: "KIẾN THỨC PHÂN HỮU CƠ", canvaUrl: DUMMY_CANVA_LINK, canvaRatio: "1200 / 3600" },
 ];
 
 // ★ TỔNG HỢP VÀO HỆ THỐNG ★
 const lessons = [
-  ...dataLinhMoi, ...dataSauRieng, ...dataCaPhe, ...dataTieu, 
-  ...dataLua, ...dataNhanVai, ...dataRauMau, 
-  ...dataHoatChat, ...dataPhanBon
+  ...dataLinhMoi, ...dataHoatChat, 
+  ...dataCaPhe, ...dataSauRieng, ...dataTieu, ...dataLua, 
+  ...dataCayKhac, ...dataPhanBon
 ].map((lesson, index) => ({ ...lesson, id: `lesson-${index}` }));
 
+
 // =========================================================================
-// BỘ ICON ĐẶC TRƯNG TỰ TẠO
+// BỘ ICON ĐẶC TRƯNG 
 // =========================================================================
 function HomeIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>; }
 function NewbieIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" /></svg>; }
@@ -186,7 +177,7 @@ function RiceIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" 
 function LeafIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" /></svg>; }
 function FertilizerIcon() { return <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.027-.392.05-.59.075m0 0c-2.909.371-5.94.581-9 .581s-6.091-.21-9-.581m0 0c-.198-.025-.396-.048-.59-.075m0 0a2.18 2.18 0 01-.75-1.661V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0010.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" /></svg>; }
 
-// CẤU TRÚC MENU MỚI ĐÃ XÓA "CẢNH BÁO", CHIA LẠI "NHÃN VẢI", "RAU MÀU"
+// CẤU TRÚC MENU MỚI - ĐÃ CẮT BỎ CẢNH BÁO
 const mainMenus = [
   { id: "trang-chu", name: "Trang Chủ", icon: HomeIcon },
   { id: "linh-moi", name: "Lính Mới", icon: NewbieIcon },
@@ -194,17 +185,16 @@ const mainMenus = [
   { id: "ca-phe", name: "Cà Phê", icon: CoffeeIcon },
   { id: "tieu", name: "Tiêu", icon: PepperIcon },
   { id: "lua", name: "Lúa", icon: RiceIcon },
-  { id: "nhan-vai", name: "Nhãn Vải", icon: LeafIcon },
-  { id: "rau-mau", name: "Rau Màu", icon: LeafIcon },
+  { id: "cay-khac", name: "Cây Khác", icon: LeafIcon },
   { id: "hoat-chat", name: "Hoạt Chất", icon: FlaskIcon },
-  { id: "phan-bon", name: "Phân Bón", icon: FertilizerIcon }
+  { id: "phan-bon", name: "Phân Bón", icon: FertilizerIcon },
 ];
 
 // =========================================================================
-// COMPONENT TRANG CHỦ Y NHƯ BẢN THIẾT KẾ CỦA BẠN
+// COMPONENT TRANG CHỦ DẠNG CARD
 // =========================================================================
 function HomePage({ onNavigate }) {
-  // Hàm này quét xem Menu đó có những tag nào thực tế từ cục dữ liệu
+  // Hàm quyét Tag tự động
   const getTagsForMenu = (menuId) => {
     const lessonsInMenu = lessons.filter(l => l.menuId === menuId);
     return [...new Set(lessonsInMenu.map(l => l.tag).filter(Boolean))];
@@ -212,19 +202,19 @@ function HomePage({ onNavigate }) {
 
   const CategoryCard = ({ title, titleColor, menuId, tagBg, tagText }) => {
     const tags = getTagsForMenu(menuId);
-    if (tags.length === 0) return null; // Ẩn nếu Menu chưa có bài viết
+    if (tags.length === 0) return null;
 
     return (
-      <div className="bg-white/95 backdrop-blur-md rounded-[28px] p-5 shadow-xl flex flex-col items-center border border-white/50">
-        <h2 className={`text-[22px] md:text-[24px] font-black uppercase mb-4 text-center tracking-tight ${titleColor}`}>
+      <div className="bg-white/95 backdrop-blur-md rounded-[20px] p-4 shadow-lg flex flex-col items-center border border-white/50 h-full">
+        <h2 className={`text-[19px] md:text-[21px] font-black uppercase mb-3 text-center tracking-tight ${titleColor}`}>
           {title}
         </h2>
-        <div className="w-full space-y-2.5 flex-1 flex flex-col justify-start">
+        <div className="w-full space-y-2 flex-1 flex flex-col justify-start">
           {tags.map(tag => (
             <button
               key={tag}
-              onClick={() => onNavigate(menuId, tag)} // Deeplink vào thẳng Tag
-              className={`w-full py-2.5 px-3 rounded-full font-bold uppercase text-[12px] md:text-[13px] tracking-wide transition-all active:scale-95 hover:shadow-md shadow-sm border border-transparent hover:border-black/5 ${tagBg} ${tagText}`}
+              onClick={() => onNavigate(menuId, tag)} 
+              className={`w-full py-2 px-3 rounded-full font-bold uppercase text-[12px] tracking-wide transition-all active:scale-95 hover:shadow-md shadow-sm border border-transparent hover:border-black/5 ${tagBg} ${tagText}`}
             >
               {tag}
             </button>
@@ -235,35 +225,36 @@ function HomePage({ onNavigate }) {
   };
 
   return (
-    <div className="w-full h-full overflow-y-auto p-4 md:p-8">
-      <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 xl:gap-8">
+    // Dồn toàn bộ giao diện lên trên nhờ chỉnh sửa margin/padding và pb-24 để cuộn không bị khuất
+    <div className="w-full h-full overflow-y-auto p-3 md:p-5 pb-24">
+      <div className="max-w-[1300px] mx-auto flex flex-col lg:flex-row gap-5 items-start">
         
         {/* CỘT TRÁI: LOGO VÀ LÍNH MỚI */}
-        <div className="w-full lg:w-[320px] flex-shrink-0 flex flex-col relative gap-6">
-          <div className="bg-logo-area rounded-[32px] p-6 shadow-xl text-center lg:text-left flex flex-col justify-center items-center lg:items-start min-h-[200px]">
-            <h1 className="text-[40px] sm:text-5xl lg:text-[54px] font-black uppercase leading-[1.05] tracking-tight drop-shadow-md text-white mb-2">
+        <div className="w-full lg:w-[280px] flex-shrink-0 flex flex-col gap-4">
+          <div className="bg-logo-area rounded-[24px] p-5 shadow-xl text-center lg:text-left flex flex-col justify-center items-center lg:items-start min-h-[160px]">
+            <h1 className="text-[36px] sm:text-4xl lg:text-[44px] font-black uppercase leading-[1.05] tracking-tight drop-shadow-md text-white mb-2">
               SỔ TAY<br/>NÔNG Á
             </h1>
-            <p className="text-[17px] sm:text-[19px] font-bold drop-shadow-md tracking-wide text-white/90">Kiến thức là sức mạnh</p>
+            <p className="text-[15px] sm:text-[16px] font-bold drop-shadow-md tracking-wide text-white/90">Kiến thức là sức mạnh</p>
           </div>
 
           <CategoryCard title="LÍNH MỚI" titleColor="text-[#2B54A3]" menuId="linh-moi" tagBg="bg-[#E6F3FF]" tagText="text-[#2B54A3]" />
 
           {/* Nút Hotline */}
-          <div className="mt-auto mx-auto lg:mx-0 flex rounded-full overflow-hidden shadow-xl border-2 border-[#1A4B29] max-w-max bg-[#1A4B29]">
-            <div className="bg-[#6B902A] text-white px-5 py-3 font-bold text-sm flex items-center uppercase tracking-wider">Hotline</div>
-            <div className="text-white px-6 py-3 font-black text-[20px] tracking-wider flex items-center">0986 91 44 47</div>
+          <div className="mx-auto lg:mx-0 flex rounded-full overflow-hidden shadow-xl border border-[#1A4B29] max-w-max bg-[#1A4B29]">
+            <div className="bg-[#6B902A] text-white px-4 py-2.5 font-bold text-[13px] flex items-center uppercase tracking-wider">Hotline</div>
+            <div className="text-white px-5 py-2.5 font-black text-[17px] tracking-wider flex items-center">0986 91 44 47</div>
           </div>
         </div>
 
         {/* CỘT PHẢI: LƯỚI THẺ CÂY TRỒNG */}
-        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 items-start pb-10">
+        <div className="flex-1 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <CategoryCard title="SẦU RIÊNG" titleColor="text-[#C65911]" menuId="sau-rieng" tagBg="bg-[#F6EFFF]" tagText="text-[#3B4BE8]" />
           <CategoryCard title="CÀ PHÊ" titleColor="text-[#C65911]" menuId="ca-phe" tagBg="bg-[#F6EFFF]" tagText="text-[#3B4BE8]" />
           <CategoryCard title="TIÊU" titleColor="text-[#C65911]" menuId="tieu" tagBg="bg-[#F6EFFF]" tagText="text-[#3B4BE8]" />
           <CategoryCard title="LÚA" titleColor="text-[#2E7D32]" menuId="lua" tagBg="bg-[#F6EFFF]" tagText="text-[#3B4BE8]" />
-          <CategoryCard title="NHÃN VẢI" titleColor="text-[#2E7D32]" menuId="nhan-vai" tagBg="bg-[#F6EFFF]" tagText="text-[#3B4BE8]" />
-          <CategoryCard title="RAU MÀU" titleColor="text-[#2E7D32]" menuId="rau-mau" tagBg="bg-[#F6EFFF]" tagText="text-[#3B4BE8]" />
+          <CategoryCard title="CÂY KHÁC" titleColor="text-[#2E7D32]" menuId="cay-khac" tagBg="bg-[#F6EFFF]" tagText="text-[#3B4BE8]" />
+          <CategoryCard title="PHÂN BÓN" titleColor="text-[#2E7D32]" menuId="phan-bon" tagBg="bg-[#F6EFFF]" tagText="text-[#3B4BE8]" />
         </div>
 
       </div>
@@ -293,11 +284,11 @@ function LessonRow({ lesson }) {
   const ratioStyle = lesson.canvaUrl ? { aspectRatio: lesson.canvaRatio || '1200 / 3600' } : { minHeight: '300px' };
 
   return (
-    <div className="flex flex-col bg-white/90 backdrop-blur-md rounded-[20px] border border-gray-100 shadow-xl mb-10 overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-white">
+    <div className="flex flex-col bg-white/95 backdrop-blur-md rounded-[20px] border border-gray-100 shadow-xl mb-10 overflow-hidden">
+      <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-white/50">
          <h2 className="text-[17px] sm:text-[19px] font-bold text-gray-800 tracking-tight">{lesson.title}</h2>
          {!isFullscreen && lesson.canvaUrl && (
-            <button onClick={handleFullScreen} className="text-gray-500 hover:text-google-blue transition-colors flex items-center gap-1.5 text-sm font-medium bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200">
+            <button onClick={handleFullScreen} className="text-gray-600 hover:text-google-blue transition-colors flex items-center gap-1.5 text-sm font-bold bg-gray-100 px-3 py-1.5 rounded-lg border border-gray-200">
                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
                <span className="hidden sm:inline">Phóng to</span>
             </button>
@@ -318,42 +309,87 @@ function LessonRow({ lesson }) {
 }
 
 // =========================================================================
-// BẢNG ĐIỀU KHIỂN CHÍNH
+// BẢNG ĐIỀU KHIỂN CHÍNH (Đã Tích Hợp MEGA MENU POPUP THÔNG MINH)
 // =========================================================================
 function Dashboard() {
   const [activeMenuId, setActiveMenuId] = useState("trang-chu");
   const [activeTag, setActiveTag] = useState("ALL"); 
+  const [hoveredMenuId, setHoveredMenuId] = useState(null); // Trạng thái kiểm soát Popup
+  const hoverTimer = useRef(null);
+
+  // Xử lý Cảm biến Chuột
+  const handleMouseEnter = (id) => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    setHoveredMenuId(id);
+  };
+  const handleMouseLeave = () => {
+    hoverTimer.current = setTimeout(() => {
+      setHoveredMenuId(null);
+    }, 150); // Độ trễ mượt mà
+  };
 
   const handleMenuChange = (menuId, tag = "ALL") => {
     setActiveMenuId(menuId);
     setActiveTag(tag);
+    setHoveredMenuId(null); // Tắt popup khi đã bấm chọn
+  };
+
+  // Hàm quét Tag cho Popup
+  const getTagsForMenu = (menuId) => {
+    const lessonsInMenu = lessons.filter(l => l.menuId === menuId);
+    return [...new Set(lessonsInMenu.map(l => l.tag).filter(Boolean))];
   };
 
   return (
   <div className="flex flex-col h-screen w-full overflow-hidden bg-transparent">
     
-    {/* THANH MENU ĐIỀU HƯỚNG */}
-    <div className="bg-white/95 backdrop-blur-md px-3 sm:px-6 py-2 flex items-center overflow-x-auto border-b border-gray-200 flex-shrink-0 gap-1.5 scrollbar-hide z-20 shadow-sm">
-      {mainMenus.map((item) => (
-        <button
-          key={item.id}
-          onClick={() => handleMenuChange(item.id)}
-          className={`flex flex-shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-[14px] font-bold uppercase tracking-wide transition-all duration-200 
-          ${activeMenuId === item.id ? "bg-google-blue text-white shadow-md" : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"}`}
-        >
-          <div className={`${activeMenuId === item.id ? "text-white" : "text-gray-400"}`}><item.icon /></div>
-          <span className="whitespace-nowrap">{item.name}</span>
-        </button>
-      ))}
+    {/* THANH MENU ĐIỀU HƯỚNG BÊN TRÊN + MEGA MENU POPUP */}
+    <div className="relative z-50" onMouseLeave={handleMouseLeave}>
+        
+        {/* Nút bấm Menu */}
+        <div className="bg-white/95 backdrop-blur-md px-3 sm:px-6 py-2 flex items-center overflow-x-auto border-b border-gray-200 gap-1.5 scrollbar-hide shadow-sm relative z-50">
+          {mainMenus.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => handleMenuChange(item.id)}
+              onMouseEnter={() => handleMouseEnter(item.id)}
+              className={`flex flex-shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-[14px] font-bold uppercase tracking-wide transition-all duration-200 
+              ${activeMenuId === item.id ? "bg-google-blue text-white shadow-md" : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"}`}
+            >
+              <div className={`${activeMenuId === item.id ? "text-white" : "text-gray-400"}`}><item.icon /></div>
+              <span className="whitespace-nowrap">{item.name}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* BẢNG MEGA MENU POPUP NGANG (Hiện ra khi rà chuột) */}
+        {hoveredMenuId && hoveredMenuId !== "trang-chu" && getTagsForMenu(hoveredMenuId).length > 0 && (
+          <div 
+             className="absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl shadow-lg border-b border-gray-200 z-40 px-6 py-3 flex items-center gap-2.5 overflow-x-auto transition-all animate-fade-in-down"
+             onMouseEnter={() => handleMouseEnter(hoveredMenuId)}
+          >
+             <span className="text-[12px] font-black uppercase text-gray-400 mr-2 tracking-wider flex-shrink-0">
+                🔍 Tra Cứu Nhanh:
+             </span>
+             {getTagsForMenu(hoveredMenuId).map(tag => (
+                <button
+                   key={tag}
+                   onClick={() => handleMenuChange(hoveredMenuId, tag)}
+                   className="flex-shrink-0 px-4 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wide transition-all duration-200 border bg-google-lightBlue text-google-blue border-google-blue hover:bg-google-blue hover:text-white shadow-sm"
+                >
+                   {tag}
+                </button>
+             ))}
+          </div>
+        )}
     </div>
 
-    {/* NẾU LÀ TRANG CHỦ -> GỌI COMPONENT HOMEPAGE */}
+    {/* NỘI DUNG CHÍNH */}
     {activeMenuId === "trang-chu" ? (
        <HomePage onNavigate={handleMenuChange} />
     ) : (
-      /* NẾU CHỌN MENU BÀI VIẾT -> HIỂN THỊ TAG VÀ BÀI VIẾT */
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* TAG CON DƯỚI MENU */}
+        {/* TAG CON CHO GIAO DIỆN BÀI VIẾT (CỐ ĐỊNH KHI ĐÃ VÀO MENU) */}
         <div className="bg-white/90 backdrop-blur-md px-4 sm:px-6 py-3 flex items-center overflow-x-auto border-b border-gray-100 flex-shrink-0 gap-2 scrollbar-hide z-10 shadow-sm">
           <button
             onClick={() => setActiveTag("ALL")}
@@ -363,7 +399,7 @@ function Dashboard() {
             Tất Cả Mục
           </button>
           
-          {[...new Set(lessons.filter(l => l.menuId === activeMenuId).map(l => l.tag).filter(Boolean))].map(tag => (
+          {getTagsForMenu(activeMenuId).map(tag => (
             <button
               key={tag}
               onClick={() => setActiveTag(tag)}
@@ -376,7 +412,7 @@ function Dashboard() {
         </div>
 
         {/* NỘI DUNG BÀI VIẾT TỪ CANVA */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-8">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-8 pb-20">
           <div className="mx-auto max-w-[1200px]">
             {(() => {
                const filteredLessons = lessons.filter(l => l.menuId === activeMenuId && (activeTag === "ALL" || l.tag === activeTag));
